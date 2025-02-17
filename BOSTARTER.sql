@@ -153,11 +153,13 @@ begin
     declare num_progetti_totali int;
     declare nuova_affidabilità decimal(3,2);
     declare creatore_progetto varchar(40);
-    
+		
+        
         SELECT p.emailUtenteCreatore INTO creatore_progetto
 		FROM PROGETTO p
 		JOIN FINANZIAMENTO f ON f.nomeProgetto = p.nome
-		WHERE f.nomeProgetto = NEW.nomeProgetto;
+		WHERE f.nomeProgetto = NEW.nomeProgetto
+        LIMIT 1;
         
     #Trovo il numero di progetti che hanno ricevuto almeno un finazniamento,
     #Non uso un cursore dato che il valore è solo un numero e non ci possono essere più valori
@@ -220,23 +222,24 @@ $
 DELIMITER ;
 
 DELIMITER $
-create trigger SetProgectStatus
+create trigger SetProjectStatus
 after insert on FINANZIAMENTO
 for each row
 begin
 	
-    declare totale_finanziamenti decimal(10,2);
-    declare is_open int;
+    declare totale_finanziamenti decimal(10,2) default 0;
+    declare is_open int default 0;
     
-    set is_open = (select count(*) from Progetto as p where new.emailUtente=p.emailUtenteCreatore and p.stato='aperto');
-    set totale_finanziamenti = (select sum(importo) as totale_finanziamenti from finanziamento where nomeProgetto = new.nomeProgetto);
-
-    
-    if(is_open>0 and totale_finanziamenti>=(select budget from Progetto where new.nomeProgetto=nome)) then
+    set is_open = (select count(*) from Progetto as p where new.nomeProgetto=p.nome and p.stato='aperto');
+    set totale_finanziamenti = (select sum(importo) as totale_finanziamenti from finanziamento where nomeProgetto = new.nomeProgetto );
+	
+    if(is_open>0 and totale_finanziamenti>=(select budget from Progetto where new.nomeProgetto=nome )) then
 		UPDATE PROGETTO
 		SET stato = 'chiuso'
-		WHERE email = NEW.emailUtente;
-    end if;
+		WHERE nome = new.nomeProgetto;
+
+   end if;
+   
 	
 end
 $ 
@@ -384,10 +387,11 @@ begin
     set is_ok_email = (select count(*) from utente as u where u.email = emailUtente);
     set is_ok_progetto = (select count(*) from progetto as p where p.nome=nomeProgetto and p.stato='aperto');
     set is_ok_reward = (select count(*) from reward as r where reward_id = r.codice and nomeProgetto=r.nomeProgetto);
-    
-    if(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward > 0) then
+     
+	if(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward > 0) then
 		INSERT INTO finanziamento(emailUtente, dataVersamento, nomeProgetto, idReward, importo)
         VALUES (emailUtente, date_now, nomeProgetto, reward_id, importo);
+
     end if;
  end $
  DELIMITER ;
@@ -483,7 +487,75 @@ begin
 end $
 DELIMITER ;
 
+DELIMITER $
+create procedure AggiungiProfilo(nomeProfilo varchar(40), nomeProgettoSoftware varchar(30))
+begin
+	declare is_ok_project int default 0;
+    
+    set is_ok_project = (select count(*) from Progetto_Software as ps where ps.nomeProgetto=nomeProgettoSoftware);
+    
+    if(is_ok_project > 0) then
+		INSERT INTO Profilo(nome, nomeProgettoSoftware)
+        VALUES (nomeProfilo, nomeProgettoSoftware);
+    end if;
+end $
+DELIMITER ;
 
+DELIMITER $
+create procedure AccettaRichiesta(nomeCandidato varchar(40), nomeProgetto varchar(30), profilo varchar(20), accettazione int) #se accettazione=1 allora sarà accettata altrimenti se è 0 sarà rifutata
+begin
+	declare candidatura_esiste int default 0;
+
+    set candidatura_esiste = (select COUNT(*)  from Candidatura as c
+    where c.emailUtente = nomeCandidato and c.nomeProgettoSoftware = nomeProgetto and c.nomeProfilo = profilo and c.esito = 'nonVista');
+
+    if (candidatura_esiste > 0 and accettazione = 1) then
+        UPDATE Candidatura
+        SET esito = 'accettata'
+        WHERE emailUtente = nomeCandidato AND nomeProgettoSoftware = nomeProgetto AND nomeProfilo = profilo AND esito = 'nonVista';
+	elseif (accettazione = 0) then
+		UPDATE Candidatura
+        SET esito = 'rifiutata'
+        WHERE emailUtente = nomeCandidato AND nomeProgettoSoftware = nomeProgetto AND nomeProfilo = profilo AND esito = 'nonVista';
+    end if;
+end $
+DELIMITER ;
+
+create view Top3Creatori(email) as 
+	select nickname
+    from utente
+    where email in(
+	select emailUtente
+    from Creatore
+    order by affidabilità desc
+    limit 3);
+    
+create view ProgettiFinanziati(nome, totale) as
+	select nomeProgetto as nome, sum(importo) as totale
+	from finanziamento as f
+    where nomeProgetto in (select nome from progetto where stato='aperto')
+	group by nomeProgetto;
+create view ProgettiScadenza(nome, rimanenza) as
+	select pf.nome as nome, (p.budget-pf.totale) as rimanenza
+    from ProgettiFinanziati as pf join progetto as p on p.nome=pf.nome;
+create view Top3ProgettiVicinoScadenza(nome) as
+	select ps.nome
+    from ProgettiScadenza as ps
+    order by rimanenza desc
+    limit 3;
+
+create view ClassificaFinanziatori (email, totale) as
+	select emailUtente as email, sum(importo) as totale
+	from finanziamento as f
+	group by emailUtente;
+create view Top3Finanziatori(nickname) as
+	select nickname
+    from utente
+    where email in (select email
+					from ClassificaFinanziatori as cf
+                    order by totale
+					limit 3
+                    );
 
  
  -- Registrazione del primo utente
@@ -521,13 +593,15 @@ VALUES ('E-commerce Platform'), ('Cybersecurity Audit');
 
 CALL InserisciReward('Accesso anticipato alla beta', 'reward_beta.jpg', 'Progetto AI');
 CALL InserisciReward('Certificato di partecipazione', 'certificato.jpg', 'E-commerce Platform');
+CALL InserisciReward('2% delle quote', 'quote.jpg', 'Progetto AI');
 
 CALL FinanziaProgetto('utente2@example.com', 'Progetto AI', 1000.00, 1);
+CALL FinanziaProgetto('utente1@example.com', 'Progetto AI', 49000.00, 3);
 CALL FinanziaProgetto('utente1@example.com', 'E-commerce Platform', 500.00, 2);
 
 
 CALL AggiungiCommento('Un altro commento interessante per il progetto.', 'Progetto AI', 'utente2@example.com');
-
+/*
 INSERT INTO PROFILO (nome, nomeProgettoSoftware)
 VALUES 
 ('Sviluppatore Frontend', 'E-commerce Platform'),
@@ -535,7 +609,13 @@ VALUES
 INSERT INTO PROFILO (nome, nomeProgettoSoftware)
 VALUES
 ('Specialista in Sicurezza Informatica', 'Cybersecurity Audit'),
-('Sviluppatore Backend', 'Cybersecurity Audit');
+('Sviluppatore Backend', 'Cybersecurity Audit');*/
+CALL AggiungiProfilo('Sviluppatore Frontend', 'E-commerce Platform');
+CALL AggiungiProfilo('Project Manager', 'E-commerce Platform');
+CALL AggiungiProfilo('Specialista in Sicurezza Informatica', 'Cybersecurity Audit');
+CALL AggiungiProfilo('Sviluppatore Backend', 'Cybersecurity Audit');
+
+
 INSERT INTO PROFILO_SKILL (nomeProfilo, nomeProgettoSoftware, nomeSkill, livelloRichiesto)
 VALUES
 ('Sviluppatore Frontend', 'E-commerce Platform', 'E-commerce Development', 4),
