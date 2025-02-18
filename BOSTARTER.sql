@@ -527,8 +527,8 @@ create view Top3Creatori(email) as
     where email in(
 	select emailUtente
     from Creatore
-    order by affidabilità desc
-    limit 3);
+    order by affidabilità desc)
+    limit 3;
     
 create view ProgettiFinanziati(nome, totale) as
 	select nomeProgetto as nome, sum(importo) as totale
@@ -553,9 +553,8 @@ create view Top3Finanziatori(nickname) as
     from utente
     where email in (select email
 					from ClassificaFinanziatori as cf
-                    order by totale
-					limit 3
-                    );
+                    order by totale)
+	limit 3;
 
  
  -- Registrazione del primo utente
@@ -622,7 +621,7 @@ VALUES
 ('Project Manager', 'E-commerce Platform', 'Gestione Progetti', 5);
 INSERT INTO PROFILO_SKILL (nomeProfilo, nomeProgettoSoftware, nomeSkill, livelloRichiesto)
 VALUES
-('Specialista in Sicurezza Informatica', 'Cybersecurity Audit', 'Cybersecurity', 5),
+('Specialista in Sicurezza Informatica', 'Cybersecurity Audit', 'Cybersecurity', 2),
 ('Sviluppatore Backend', 'Cybersecurity Audit', 'Database Management', 4);
 
 CALL InserisciProgetto('Progetto Sistema Distribuito', 'Sviluppo di un sistema di comunicazione', 50000.00, '2024-12-31 23:59:59', 'creatore4@example.com');
