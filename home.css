@@ -1,0 +1,45 @@
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column
+}
+header{
+    padding-left: 10vw;
+    padding-right: 10vw;
+    width: 100%;
+    background-color: #222;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+#actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+}
+#actions a{
+    color: white; 
+    background-color: #343a40;
+    padding: 10px; 
+    text-decoration: none;
+}
+.titleWebSite {
+    font-size: 5vw; /* Occupa circa 2/5 dell'altezza */
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #ff0055;
+    text-align: center;
+    text-shadow: 
+        3px 3px 0px #000,
+        -3px -3px 0px #000,
+        3px -3px 0px #000,
+        -3px 3px 0px #000,
+        6px 6px 5px rgba(0, 0, 0, 0.5);
+}
