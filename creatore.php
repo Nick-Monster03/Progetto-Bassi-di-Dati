@@ -24,7 +24,8 @@
       }
       echo "</table>";
     } catch (PDOException $e) {
-      echo "errore pirla";
+
+      echo "errore bischero";
     }
   ?>
 <body>
