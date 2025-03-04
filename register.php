@@ -70,6 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bindValue(":annoNascita", $annoNascita, PDO::PARAM_STR); // Formato già corretto
             $stmt->bindValue(":luogoNascita", $luogoNascita, PDO::PARAM_STR);
             $stmt->execute();
+    echo "<script>console.log('userRole: " . $email . "');</script>";
     switch ($userRole) {
         case 'utente':
             echo "Registrazione avvenuta con successo!";
