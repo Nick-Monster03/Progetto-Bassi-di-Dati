@@ -1,0 +1,60 @@
+
+ELENCO OBIETTIVI:
+
+- PHP GREZZO DELLA HOME
+    NELLA HOME:
+        - pulsante REGISTRATI
+        REGISTRATI
+            -form con dati necessari
+            - button con opzioni: CREATORE, AMMINISTRATORE ed UTENTE
+
+        - pulsante Login che porta alla schermata di Log
+        LOGIN:
+            - form con dati necessari
+            - button con opzioni: CREATORE, AMMINISTRATORE ed UTENTE
+            - ritorno alla home con identificazione del profilo
+
+        LOGIN AMMINISTRATORE:
+            - aggiungere skill alla form
+
+        LOGIN CREATORE:
+            - form per aggiungere progetto con decisione a monte se HARDWARE o SOFTWARE
+             (ed appositi reward (con foto))
+            - in base alla scelta varia il contenuto del form (default HARDWARE)
+            - sezione dedicata(indirizzo ad altra pagina)
+
+            CANDIDATURE PER CREATORE:
+                - visualizzazione candidature non visualizzate
+                  (con possibilità di accettare o meno la candidatura)
+
+
+     - nella home aggiungere skill curriculum (solo con log)
+     - nella home 2 sezioni: PROGETTI HARWARE E PROGETTI SOFTWARE
+       entrambi con presentazione con titolo e descrizione in card di presentazione
+       dei primi 2-3 progetti
+     - le card devono generarsi automaticamente nella home nell'inizializzazione
+     -IL CLIC DEL TITOLO DELLA CARD PORTA ALLA SCHERMATA "PROGETTO"
+
+- IMPLEMENTAZIONE DATA MONGO DB PER TENERE TRACCA DI NUOVI EVENTI (es nuovi utenti, progetti ecc)
+    INSERITI COME MESSAGGI DI TESTO ALL'INTERNO DI UN LOG (probabilmente stampati?)
+
+
+
+- PHP GREZZO DELLA SCHERMATA PROGETTO
+    - titolo e descrizione progetto
+    - finanziamenti
+    - pulsante sostieni (per iniziare finanziamento)
+    - sezione commenti e scrivere
+    - se CREATORE può rispondere e visualizzare commenti (sezione apposita)
+    - PULSANTE CANDIDATI (con apertura form dedicata/popup ecc)
+    - CONTROLLO SULLA BASE DI DATI DA IMPLEMENTARE (un utente può candidarsi per un solo profilo
+      del progetto)
+    - in PHP verificare se le competenze corrispondono a quel determinato profilo
+
+
+
+- PHP GREZZO DELLA SCHERMATA FINANZIA-PROGETTO/REWARD
+    - form con inserimento finanziamento e conseguente checkbox per selezione reward
+    (una reward sola)
+
+
