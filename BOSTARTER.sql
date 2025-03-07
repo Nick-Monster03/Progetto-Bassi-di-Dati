@@ -301,7 +301,7 @@ begin
     declare is_ok int default 0;
     
 	if (email is null or email = '' or nickname is null or nickname = '' or nome is null or nome = '' or 
-		cognome is null or cognome = '' or annoNascita is null or luogoNascita is null or luogoNascita = '' or annoNascita >= CURDATE()) then
+		cognome is null or cognome = '' or annoNascita is null or luogoNascita is null or luogoNascita = '' ) then
         set is_ok = 0;
 	else
 		set is_ok = 1;
@@ -595,20 +595,11 @@ CALL InserisciReward('Certificato di partecipazione', 'certificato.jpg', 'E-comm
 CALL InserisciReward('2% delle quote', 'quote.jpg', 'Progetto AI');
 
 CALL FinanziaProgetto('utente2@example.com', 'Progetto AI', 1000.00, 1);
-CALL FinanziaProgetto('utente1@example.com', 'Progetto AI', 49000.00, 3);
+CALL FinanziaProgetto('utente1@example.com', 'Progetto AI', 900.00, 3);
 CALL FinanziaProgetto('utente1@example.com', 'E-commerce Platform', 500.00, 2);
 
 
 CALL AggiungiCommento('Un altro commento interessante per il progetto.', 'Progetto AI', 'utente2@example.com');
-/*
-INSERT INTO PROFILO (nome, nomeProgettoSoftware)
-VALUES 
-('Sviluppatore Frontend', 'E-commerce Platform'),
-('Project Manager', 'E-commerce Platform');
-INSERT INTO PROFILO (nome, nomeProgettoSoftware)
-VALUES
-('Specialista in Sicurezza Informatica', 'Cybersecurity Audit'),
-('Sviluppatore Backend', 'Cybersecurity Audit');*/
 CALL AggiungiProfilo('Sviluppatore Frontend', 'E-commerce Platform');
 CALL AggiungiProfilo('Project Manager', 'E-commerce Platform');
 CALL AggiungiProfilo('Specialista in Sicurezza Informatica', 'Cybersecurity Audit');
