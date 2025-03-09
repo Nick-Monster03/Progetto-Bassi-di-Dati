@@ -16,7 +16,8 @@
         exit();
     }
 
-    $query = $pdo->query('SELECT * FROM Progetto');
+    $query = $pdo->prepare('SELECT * FROM Progetto');
+    $query->execute();
     $result = [];
     while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         foreach ($row as $column => $value) {
