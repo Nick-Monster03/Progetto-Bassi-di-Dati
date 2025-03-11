@@ -148,13 +148,11 @@ create trigger SetAffidabilitàFinanziamento
 after insert on FINANZIAMENTO
 for each row
 begin
-
 	declare num_progetti_finanziati int;
     declare num_progetti_totali int;
     declare nuova_affidabilità decimal(3,2);
     declare creatore_progetto varchar(40);
 		
-        
         SELECT p.emailUtenteCreatore INTO creatore_progetto
 		FROM PROGETTO p
 		JOIN FINANZIAMENTO f ON f.nomeProgetto = p.nome
@@ -172,7 +170,6 @@ begin
     SELECT COUNT(*) INTO num_progetti_totali
     FROM PROGETTO p
     WHERE p.emailUtenteCreatore = creatore_progetto;
-    
      if num_progetti_totali > 0 then
         set nuova_affidabilità = num_progetti_finanziati / num_progetti_totali;
 	else
@@ -191,7 +188,6 @@ create trigger SetAffidabilitàProgetto
 after insert on PROGETTO
 for each row
 begin
-
 	declare num_progetti_finanziati int;
     declare num_progetti_totali int;
     declare nuova_affidabilità decimal(3,2);
@@ -226,7 +222,6 @@ create trigger SetProjectStatus
 after insert on FINANZIAMENTO
 for each row
 begin
-	
     declare totale_finanziamenti decimal(10,2) default 0;
     declare is_open int default 0;
     
@@ -237,10 +232,7 @@ begin
 		UPDATE PROGETTO
 		SET stato = 'chiuso'
 		WHERE nome = new.nomeProgetto;
-
-   end if;
-   
-	
+    end if;
 end
 $ 
 DELIMITER ;
@@ -256,8 +248,7 @@ begin
     
     UPDATE CREATORE
 	SET nr_progetti = new_numero+1
-	WHERE NEW.emailUtenteCreatore=emailUtente;
-    
+	WHERE NEW.emailUtenteCreatore=emailUtente;  
 end
 $ 
 DELIMITER ;
@@ -268,7 +259,6 @@ ON SCHEDULE
 EVERY 1 DAY 
 DO
 begin
-	
     declare progetto_nome varchar(30);
     declare progetto_data_limite datetime;
     declare progetto_stato enum('aperto', 'chiuso');
@@ -297,7 +287,6 @@ DELIMITER $
 create procedure Registrazione(IN email varchar(40), IN nickname varchar(20), IN nome varchar(20), 
 							   IN cognome varchar (20), IN annoNascita datetime, IN luogoNascita varchar(30))
 begin
-	
     declare is_ok int default 0;
     
 	if (email is null or email = '' or nickname is null or nickname = '' or nome is null or nome = '' or 
@@ -311,8 +300,9 @@ begin
 		INSERT INTO utente (email, nickname, nome, cognome, annoNascita, luogoNascita) 
 		VALUES (email, nickname, nome, cognome, annoNascita, luogoNascita);
 	end if;
-end $
- DELIMITER ;
+end 
+$
+DELIMITER ;
 
 DELIMITER $
 create procedure RegistrazioneAmministratore(IN email varchar(40), IN codice_sicurezza varchar(20))
@@ -324,10 +314,11 @@ begin
 		INSERT INTO amministratore(emailUtente, codice_sicurezza) 
 		VALUES (email, codice_sicurezza);
     end if;
-end $
- DELIMITER ;
+end
+$
+DELIMITER ;
  
- DELIMITER $
+DELIMITER $
 create procedure RegistrazioneCreatore(email varchar(40))
 begin
 	declare is_ok int default 0;
@@ -337,10 +328,11 @@ begin
 		INSERT INTO creatore(emailUtente) 
 		VALUES (email);
     end if;
-end $
- DELIMITER ;
+end
+$
+DELIMITER ;
  
-  DELIMITER $
+DELIMITER $
 create procedure InserisciSkillCurriculum(nomeskill varchar(25), emailUtente varchar(40), livello int)
 begin
 	declare is_ok_email int default 0;
@@ -361,19 +353,19 @@ begin
 			VALUES (nomeskill, emailutente, livello);
 		end if;
     end if;
- end $
- DELIMITER ;
+end
+$
+DELIMITER ;
  
- DELIMITER $
+DELIMITER $
 create procedure VisualizzaProgettiDispsonibili()
 begin
-
 	SELECT *
     FROM progetto
     WHERE stato='aperto';
-    
- end $
- DELIMITER ;
+end 
+$
+DELIMITER ;
  
 DELIMITER $
 create procedure FinanziaProgetto(emailUtente varchar(40), nomeProgetto varchar(30), importo decimal(10,2), reward_id int)
@@ -391,25 +383,25 @@ begin
 	if(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward > 0) then
 		INSERT INTO finanziamento(emailUtente, dataVersamento, nomeProgetto, idReward, importo)
         VALUES (emailUtente, date_now, nomeProgetto, reward_id, importo);
-
     end if;
- end $
+ end
+ $
  DELIMITER ;
  
  DELIMITER $
 create procedure AggiungiCommento(testo varchar(400), nomeProgetto varchar(30), emailUtente varchar(40))
 begin
-
 	declare dataCommento datetime;
     
     set dataCommento = now();
     
 	INSERT INTO COMMENTO(testo, dataCommento, nomeProgetto, emailUtente)
     VALUES (testo, dataCommento, nomeProgetto, emailUtente);
- end $
- DELIMITER ;
+end
+$
+DELIMITER ;
  
- DELIMITER $
+DELIMITER $
 create procedure Candidati(nomeProfilo varchar(20), nomeProgettoSoftware varchar(30), emailUtente varchar(40))
 begin
 	declare is_ok_email int default 0;
@@ -424,10 +416,11 @@ begin
 		INSERT INTO Candidatura(nomeProfilo, nomeProgettoSoftware, emailUtente)
         VALUES (nomeProfilo, nomeProgettoSoftware, emailUtente);
     end if;
- end $
- DELIMITER ;
+end
+$
+DELIMITER ;
  
-  DELIMITER $
+DELIMITER $
 create procedure InserisciCompetenza(nuovaCompetenza varchar(25))
 begin
 	declare exist int default 0;
@@ -438,10 +431,11 @@ begin
 		INSERT INTO skill(nome)
         VALUES (nuovaCompetenza);
     end if;
- end $
- DELIMITER ;
+end
+$
+DELIMITER ;
  
-  DELIMITER $
+DELIMITER $
 create procedure InserisciProgetto(nome varchar(30), descrizione varchar(300), budget decimal(10,2), data_limite datetime, emailUtenteCreatore varchar(40))
 begin
 	declare date_now datetime;
@@ -454,15 +448,17 @@ begin
 		INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, emailUtenteCreatore)
 		VALUES(nome, descrizione, date_now, budget, data_limite, emailUtenteCreatore);
     end if;
- end $
- DELIMITER ;
+end
+$
+DELIMITER ;
  
 DELIMITER $
 create procedure InserisciReward(descrizione varchar(300), foto varchar(40), nomeProgetto varchar(30))
 begin
     INSERT INTO REWARD (descrizione, foto, nomeProgetto)
     VALUES (descrizione, foto, nomeProgetto);
-end $
+end
+$
 DELIMITER ;
 
 DELIMITER $
@@ -484,7 +480,8 @@ begin
             VALUES (idCommento, emailCreatore, risposta);
         end if;
     end if;
-end $
+end
+$
 DELIMITER ;
 
 DELIMITER $
@@ -498,7 +495,8 @@ begin
 		INSERT INTO Profilo(nome, nomeProgettoSoftware)
         VALUES (nomeProfilo, nomeProgettoSoftware);
     end if;
-end $
+end
+$
 DELIMITER ;
 
 DELIMITER $
@@ -518,7 +516,8 @@ begin
         SET esito = 'rifiutata'
         WHERE emailUtente = nomeCandidato AND nomeProgettoSoftware = nomeProgetto AND nomeProfilo = profilo AND esito = 'nonVista';
     end if;
-end $
+end
+$
 DELIMITER ;
 
 create view Top3Creatori(email) as 
@@ -620,4 +619,3 @@ CALL InserisciProgetto('Progetto Sistema Distribuito', 'Sviluppo di un sistema d
 CALL RispondiCommento(1, 'creatore@example.com', 'grazie per il tuo commento è stato molto utile');
 CALL RispondiCommento(1, 'creatore2@example.com', 'grazie per il tuo commento è stato molto utile');
 CALL RispondiCommento(2, 'creatore@example.com', 'grazie per il tuo commento è stato molto utile');
-
