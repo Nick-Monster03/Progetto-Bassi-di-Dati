@@ -522,10 +522,10 @@ DELIMITER ;
 
 create view Top3Creatori(email) as 
 	select nickname
-    from utente
+    from UTENTE
     where email in(
 	select emailUtente
-    from Creatore
+    from CREATORE
     order by affidabilità desc)
     limit 3;
     

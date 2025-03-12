@@ -74,6 +74,9 @@ displayTable($pdo, "SELECT * FROM FINANZIAMENTO", "FINANZIAMENTO");
 displayTable($pdo, "SELECT * FROM COMMENTO", "COMMENTO");
 displayTable($pdo, "SELECT * FROM RISPOSTA", "RISPOSTA");
 displayTable($pdo, "SELECT * FROM CANDIDATURA", "CANDIDATURA");
+displayTable($pdo, "SELECT * FROM CANDIDATURA", "Top3Finanziatori");
+displayTable($pdo, "SELECT * FROM CANDIDATURA", "Top3ProgettiVicinoScadenza");
+displayTable($pdo, "SELECT * FROM CANDIDATURA", "Top3Creatori");
 
 
 require 'vendor/autoload.php';  // Assicurati che 'vendor/autoload.php' esista nella tua cartella di progetto

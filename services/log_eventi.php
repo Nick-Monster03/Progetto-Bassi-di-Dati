@@ -1,6 +1,6 @@
 <?php
     function addLog($tipoInserimento, $newInsert) { //bisogna passare a questa funzione che tipo di nuiovo ato è stato inseirto e un oggetto con i dati da inserire nel log
-        require 'vendor/autoload.php'; 
+        require 'vendor/autoload.php';  
         try {
             $client = new MongoDB\Client("mongodb://localhost:27017");
             // Seleziona il database
