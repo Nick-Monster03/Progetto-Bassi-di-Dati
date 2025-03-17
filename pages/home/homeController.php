@@ -1,6 +1,9 @@
 <?php
 
     session_start();
+    if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+        logout();
+    }
     try {
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -17,4 +20,11 @@
         }
     }
     $GLOBALS['projects'] = $projects;
+
+    function logout() {
+        header("Location: ../login/login.php");
+        $_SESSION=[];
+        session_destroy();
+        header("Location: ../home/home.php");
+    }
 ?>

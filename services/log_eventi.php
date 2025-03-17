@@ -16,6 +16,9 @@
                 case "nuovo_progetto":
                     $descrizioneEvento = "Un nuovo progetto è stato creato: " . $newInsert->nome;
                     break;
+                case "nuova_skill":
+                    $descrizioneEvento = "Una nuova skill è stata aggiunta: " . $newInsert->nome;
+                    break;
                 case "nuovo_finanziamento":
                     $descrizioneEvento = "è stato aggiunto un nuovo progetto " . $newInsert->tipo . "\t" . $newInsert->nome . " dell'utente " . $newInsert->creatore;
                     break;
