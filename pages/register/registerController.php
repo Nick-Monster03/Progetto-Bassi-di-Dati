@@ -33,21 +33,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             case 'utente':
                 //echo "Registrazione avvenuta con successo!";
                 addLog("nuovo_utente", (object) ["email" => $email, "ruolo" => $userRole]);
-                setcookie("user_email", $email, time() - 3600, "/"); 
-                setcookie("user_role", $userRole, time() - 3600, "/");
                 header("Location: ../home/home.php");
                 exit();
                 break;
 
             case 'creatore':
-                $sql = "INSERT INTO CREATORE (emailUtente) VALUES (:email)";
+                $sql = "CALL RegistrazioneCreatore(:email)";
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindValue(":email", $email, PDO::PARAM_STR);
                 $stmt->execute();
                 //echo "Registrazione avvenuta con successo come Creatore!";
                 addLog("nuovo_utente", (object) ["email" => $email, "ruolo" => $userRole]);
-                setcookie("user_email", $email, time() - 3600, "/"); 
-                setcookie("user_role", $userRole, time() - 3600, "/");
                 header("Location: ../home/home.php");
                 exit();
                 break;
@@ -87,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
                 exit();
             }
-            $sql = "INSERT INTO AMMINISTRATORE(emailUtente, codice_sicurezza) VALUES (:email, :securityCode)";
+            $sql = "CALL RegistrazioneAmministratore(:email, :securityCode)";
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(":email", $email, PDO::PARAM_STR);
             $stmt->bindValue(":securityCode", $securityCode, PDO::PARAM_STR);
@@ -95,8 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $userRole = $_COOKIE['user_role'];
             addLog("nuovo_utente", (object) ["email" => $email, "ruolo" => $_COOKIE['user_role']]);
             //echo "Registrazione avvenuta con successo come Amministratore!";
-            setcookie("user_email", $email, time() - 3600, "/"); 
-            setcookie("user_role", $userRole, time() - 3600, "/");
         } catch (PDOException $e) {
             echo "<script>alert('[ERRORE] Operazione non riuscita. Errore: " . $e->getMessage() . "');</script>";
         }

@@ -74,7 +74,7 @@ create table PROGETTO_SOFTWARE(
 create table COMPONENTE(
 	nome varchar(20) primary key,
     descrizione varchar(300),
-    prezzo decimal(4,2)
+    prezzo decimal(8,2)
 ) ENGINE="INNODB";
 
 create table COMPONENTI_PROGETTO(
@@ -100,7 +100,7 @@ create table PROFILO_SKILL(
     livelloRichiesto int,
     foreign key (nomeProfilo, nomeProgettoSoftware) references PROFILO(nome, nomeProgettoSoftware) on delete cascade,
     foreign key (nomeSkill) references SKILL(nome) on delete cascade,
-    primary key (nomeProfilo, nomeProgettoSoftware)
+    primary key (nomeProfilo, nomeProgettoSoftware, nomeSkill)
 ) ENGINE="INNODB";
 
 create table  FINANZIAMENTO(
@@ -448,6 +448,7 @@ begin
 		INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, emailUtenteCreatore)
 		VALUES(nome, descrizione, date_now, budget, data_limite, emailUtenteCreatore);
     end if;
+    
 end
 $
 DELIMITER ;
@@ -619,3 +620,11 @@ CALL InserisciProgetto('Progetto Sistema Distribuito', 'Sviluppo di un sistema d
 CALL RispondiCommento(1, 'creatore@example.com', 'grazie per il tuo commento è stato molto utile');
 CALL RispondiCommento(1, 'creatore2@example.com', 'grazie per il tuo commento è stato molto utile');
 CALL RispondiCommento(2, 'creatore@example.com', 'grazie per il tuo commento è stato molto utile');
+
+INSERT INTO COMPONENTE (nome, descrizione, prezzo)
+VALUES 
+('CPU Intel i7', 'Processore Intel Core i7 di ultima generazione', 300.00),
+('GPU NVIDIA GTX 3080', 'Scheda grafica NVIDIA RTX 3080 con 10 GB di memoria', 750.00),
+('RAM Corsair 16GB', 'Modulo RAM Corsair da 16 GB DDR4', 100.00),
+('SSD Samsung 1TB', 'Disco SSD Samsung 1TB NVMe', 120.00),
+('HDD Seagate 2TB', 'Hard disk Seagate da 2 TB per storage di massa', 60.00);

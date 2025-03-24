@@ -22,7 +22,8 @@
         <?php else: 
             echo "<div id='actions'><a href='#'>Visualizza Profilo</a>";
             if ($_SESSION['user_role'] == 'creatore') {
-            echo " | <a href='#'>Crea Progetto</a>";
+            echo " | <a href='../newProject/newProject.php'>Crea Progetto</a>";
+            echo " | <a href='#'>Visualizza Candidature</a>";
             } elseif ($_SESSION['user_role'] == 'amministratore') {
             echo "| <a href='#'>Visualizza Lista Competenze</a>";
             }
