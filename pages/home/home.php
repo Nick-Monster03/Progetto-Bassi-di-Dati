@@ -15,17 +15,18 @@
             Bostarter
         </div>
         <?php if (!isset($_SESSION['user_role'])): ?>
-        <div id='actions'>
+            <div id='actions'>
                 <a href="/pages/register/register.php" >Registrati</a> |
                 <a href="/pages/login/login.php" >Login</a>
-        </div>
+            </div>
         <?php else: 
             echo "<div id='actions'><a href='#'>Visualizza Profilo</a>";
             if ($_SESSION['user_role'] == 'creatore') {
-            echo " | <a href='../newProject/newProject.php'>Crea Progetto</a>";
-            echo " | <a href='../candidature/candidatura.php'>Visualizza Candidature</a>";
-            } elseif ($_SESSION['user_role'] == 'amministratore') {
-            echo "| <a href='#'>Visualizza Lista Competenze</a>";
+                echo " | <a href='../newProject/newProject.php'>Crea Progetto</a>";
+                echo " | <a href='../candidature/candidatura.php'>Visualizza Candidature</a>";
+            }
+            elseif ($_SESSION['user_role'] == 'amministratore') {
+                echo "| <a href='../skillList/skillList.php'>Visualizza Lista Competenze</a>";
             }
             echo " | <button onclick=\"window.location.href='homeController.php?action=logout'\">Logout</button></div>";
         ?>
