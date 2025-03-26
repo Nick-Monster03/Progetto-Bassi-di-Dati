@@ -28,6 +28,7 @@
             elseif ($_SESSION['user_role'] == 'amministratore') {
                 echo "| <a href='../skillList/skillList.php'>Visualizza Lista Competenze</a>";
             }
+            echo "| <a href='../skillList/skillList.php'>Mie Competenze</a>";
             echo " | <button onclick=\"window.location.href='homeController.php?action=logout'\">Logout</button></div>";
         ?>
         <?php endif; ?>

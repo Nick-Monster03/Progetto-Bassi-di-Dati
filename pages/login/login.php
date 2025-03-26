@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
-    <a href="home.php">&lt;Home</a>
+    <a href="../home/home.php">&lt;Home</a>
     <form action='login.php' method="post">
         <br>
         <br>
