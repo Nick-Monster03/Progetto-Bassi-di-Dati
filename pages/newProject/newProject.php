@@ -32,6 +32,10 @@
             <input type="radio" id="tipologia" name="tipologia" value="Software" required> Progetto Software
         </label>
         <br><br>
+        <label>Seleziona immagine:</label>
+        
+            <input type="file" name="immagine" id="immagine" required>
+        <br><br>
         
         <button type="submit">Add Project</button>
     </form>

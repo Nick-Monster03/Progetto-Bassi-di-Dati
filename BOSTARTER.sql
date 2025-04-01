@@ -253,34 +253,48 @@ end
 $ 
 DELIMITER ;
 
-DELIMITER $
-CREATE EVENT event_name
-ON SCHEDULE
-EVERY 1 DAY 
+-- DELIMITER $
+-- CREATE EVENT event_name
+-- ON SCHEDULE
+-- EVERY 1 DAY 
+-- DO
+-- begin
+--     declare progetto_nome varchar(30);
+--     declare progetto_data_limite datetime;
+--     declare progetto_stato enum('aperto', 'chiuso');
+--     declare done int default 0;
+
+--     declare cur cursor for 
+--         select nome, data_limite, stato from progetto;
+--     declare continue handler for not found set done = 1;
+
+--     open cur;
+-- 		fetch cur into progetto_nome, progetto_data_limite, progetto_stato;
+-- 		while done = 0 do
+-- 			if progetto_data_limite < now() and progetto_stato = 'aperto' then
+-- 				UPDATE progetto 
+-- 				SET stato = 'chiuso' 
+-- 				WHERE nome = progetto_nome;
+-- 			end if;
+-- 			fetch cur into progetto_nome, progetto_data_limite, progetto_stato;
+-- 		end while;
+--     close cur;
+-- end
+-- $ 
+-- DELIMITER ;
+DELIMITER $$
+
+CREATE EVENT aggiorna_progetti
+ON SCHEDULE EVERY 1 DAY
+STARTS CURRENT_TIMESTAMP
 DO
-begin
-    declare progetto_nome varchar(30);
-    declare progetto_data_limite datetime;
-    declare progetto_stato enum('aperto', 'chiuso');
-    declare done int default 0;
+BEGIN
+    UPDATE PROGETTO
+    SET stato = 'chiuso'
+    WHERE data_limite < NOW()
+      AND stato = 'aperto';
+END $$
 
-    declare cur cursor for 
-        select nome, data_limite, stato from progetto;
-    declare continue handler for not found set done = 1;
-
-    open cur;
-		fetch cur into progetto_nome, progetto_data_limite, progetto_stato;
-		while done = 0 do
-			if progetto_data_limite < now() and progetto_stato = 'aperto' then
-				UPDATE progetto 
-				SET stato = 'chiuso' 
-				WHERE nome = progetto_nome;
-			end if;
-			fetch cur into progetto_nome, progetto_data_limite, progetto_stato;
-		end while;
-    close cur;
-end
-$ 
 DELIMITER ;
 
 DELIMITER $
@@ -412,7 +426,7 @@ begin
 	set is_ok_progetto = (select count(*) from progetto where nome = nomeprogettosoftware);
 	set is_ok_profilo = (select count(*) from profilo as p where p.nome=nomeProfilo and p.nomeProgettoSoftware=nomeProgettoSoftware);
     
-	if (is_ok_profilo > 0 and is_ok_progetto > 0) then
+	if (is_ok_profilo > 0 and is_ok_progetto > 0 and is_ok_email>0) then
 		INSERT INTO Candidatura(nomeProfilo, nomeProgettoSoftware, emailUtente)
         VALUES (nomeProfilo, nomeProgettoSoftware, emailUtente);
     end if;
@@ -436,17 +450,27 @@ $
 DELIMITER ;
  
 DELIMITER $
-create procedure InserisciProgetto(nome varchar(30), descrizione varchar(300), budget decimal(10,2), data_limite datetime, emailUtenteCreatore varchar(40))
+create procedure InserisciProgetto(nome varchar(30), descrizione varchar(300), budget decimal(10,2), data_limite datetime, emailUtenteCreatore varchar(40), foto varchar(40))
 begin
-	declare date_now datetime;
+    declare date_now datetime;
     DECLARE is_ok_creatore int default 0;
-    
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "Errore durante l\'inserimento del progetto o della foto.";
+    END;
+
     set date_now = now();
 	set is_ok_creatore = (select count(*) from CREATORE where emailUtente = emailUtenteCreatore);
     
     if(is_ok_creatore > 0) then
+        START TRANSACTION;
 		INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, emailUtenteCreatore)
 		VALUES(nome, descrizione, date_now, budget, data_limite, emailUtenteCreatore);
+        INSERT INTO FOTO (foto, nomeProgetto)
+        VALUES (foto, nome);
+        COMMIT;
     end if;
     
 end
@@ -582,10 +606,11 @@ CALL InserisciSkillCurriculum('Programmazione Java', 'utente1@example.com', 6);
 
 INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, stato, emailUtenteCreatore)
 VALUES 
-('Progetto AI', 'Sviluppo di un sistema AI per il riconoscimento immagini.', '2024-02-16 10:30:00', 50000.00, '2024-12-31 23:59:59', 'aperto', 'creatore@example.com'),
-('E-commerce Platform', 'Creazione di una piattaforma di e-commerce scalabile.', '2024-02-16 11:00:00', 75000.00, '2024-11-30 23:59:59', 'aperto', 'creatore2@example.com'),
+('Progetto AI', 'Sviluppo di un sistema AI per il riconoscimento immagini.', '2024-02-16 10:30:00', 50000.00, '2025-12-31 23:59:59', 'aperto', 'creatore@example.com'),
+('E-commerce Platform', 'Creazione di una piattaforma di e-commerce scalabile.', '2024-02-16 11:00:00', 75000.00, '2025-06-30 23:59:59', 'aperto', 'creatore2@example.com'),
 ('Cybersecurity Audit', 'Analisi e miglioramento della sicurezza aziendale.', '2024-02-15 09:45:00', 30000.00, '2024-06-30 23:59:59', 'chiuso', 'creatore@example.com'),
 ('Interfaccia Gestionale', 'Sviluppo di un sistema di interfaccio per gestione di utenti', '2024-02-16 10:30:00', 50000.00, '2024-12-31 23:59:59', 'aperto', 'creatore3@example.com');
+
 
 INSERT INTO progetto_software (nomeProgetto)
 VALUES ('E-commerce Platform'), ('Cybersecurity Audit');
@@ -615,7 +640,7 @@ VALUES
 ('Specialista in Sicurezza Informatica', 'Cybersecurity Audit', 'Cybersecurity', 2),
 ('Sviluppatore Backend', 'Cybersecurity Audit', 'Database Management', 4);
 
-CALL InserisciProgetto('Progetto Sistema Distribuito', 'Sviluppo di un sistema di comunicazione', 50000.00, '2024-12-31 23:59:59', 'creatore4@example.com');
+CALL InserisciProgetto('Progetto Sistema Distribuito', 'Sviluppo di un sistema di comunicazione', 50000.00, '2024-12-31 23:59:59', 'creatore4@example.com', "fotoInesistente5.jpg");
 
 CALL RispondiCommento(1, 'creatore@example.com', 'grazie per il tuo commento è stato molto utile');
 CALL RispondiCommento(1, 'creatore2@example.com', 'grazie per il tuo commento è stato molto utile');
