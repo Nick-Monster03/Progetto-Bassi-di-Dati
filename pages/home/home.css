@@ -1,45 +1,157 @@
+/* Corpo principale */
 body {
     height: 100vh;
     width: 100vw;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    flex-direction:column
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
 }
-header{
-    padding-left: 10vw;
-    padding-right: 10vw;
-    width: 100%;
-    background-color: #222;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-}
-#actions{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
 
+/* Header */
+header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    color: black;
 }
-#actions a{
-    color: white; 
-    background-color: #343a40;
-    padding: 10px; 
+
+.menu-item {
+    margin: 0 10px;
     text-decoration: none;
-}
-.titleWebSite {
-    font-size: 5vw; /* Occupa circa 2/5 dell'altezza */
+    color: #28a745;
     font-weight: bold;
-    text-transform: uppercase;
-    color: #ff0055;
+}
+
+.menu-item:hover {
+    color: #218838;
+}
+
+/* Barra di ricerca */
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+#search-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.search-bar button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #218838;
+}
+
+.search-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.search-dropdown.show {
+    display: block;
+}
+
+/* Bottoni di azione */
+#actions a, #actions button {
+    color: white;
+    background-color: #28a745;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+#actions a:hover, #actions button:hover {
+    background-color: #218838;
+}
+
+/* Layout dei Progetti */
+.card {
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin-bottom: 20px;
+    background-color: white;
+    border: none;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Sezione di contenitore progetti */
+.container {
+    margin-top: 30px;
+}
+
+.row {
+    margin-bottom: 30px;
+}
+
+/* Footer */
+footer {
+    background-color: #0f0f0f;
+    color: #f8f9fa;
+    padding: 20px 0;
     text-align: center;
-    text-shadow: 
-        3px 3px 0px #000,
-        -3px -3px 0px #000,
-        3px -3px 0px #000,
-        -3px 3px 0px #000,
-        6px 6px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Media Query per mobile */
+@media (max-width: 767px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #actions {
+        margin-top: 10px;
+    }
+
+    .titleWebSite {
+        font-size: 1.5rem;
+    }
+
+    .card {
+        font-size: 0.9rem;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
 }
