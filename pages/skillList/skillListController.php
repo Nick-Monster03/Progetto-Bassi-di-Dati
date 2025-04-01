@@ -15,7 +15,7 @@
         $livello = $_POST['level'];
         $emailUtente = $_SESSION["email"];
         echo($livello);
-       
+
 
         try{
             $query = $pdo->prepare("INSERT INTO CURRICULUM(nomeskill, emailUtente, livello) VALUES (:nomeskill, :emailUtente, :livello)");
@@ -30,7 +30,7 @@
             echo("[ERRORE] Query SQL (Insert) non riuscita. Errore: " . $e->getMessage());
             exit();
         }
-        
+
     }
 
     // header("Location: ../skillList.php");
@@ -61,7 +61,7 @@
             $query = $pdo->prepare("SELECT nomeskill, livello FROM CURRICULUM WHERE emailUtente = :email");
             $query->bindValue(":email", $emailUtente);
             $query->execute();
-    
+
             return $query->fetchAll(PDO::FETCH_ASSOC);
         }
         catch (PDOException $e) {
