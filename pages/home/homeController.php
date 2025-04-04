@@ -7,7 +7,10 @@ try {
 } catch (PDOException $e) {
     die("Connessione al DB non riuscita. Errore: " . $e->getMessage());
 }
-
+if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+    logout();
+    exit(); // ← importante: blocca l’esecuzione dopo il redirect
+}
 $projects = [];
 try {
     $res = $pdo->query("SELECT nome FROM Progetto");
@@ -30,5 +33,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'search') {
         echo json_encode(["error" => "Query SQL non riuscita. Errore: " . $e->getMessage()]);
     }
     exit();
+}
+
+function logout() {
+    
+    $_SESSION=[];
+    session_destroy();
+    header("Location: ../home/home.php");
 }
 ?>

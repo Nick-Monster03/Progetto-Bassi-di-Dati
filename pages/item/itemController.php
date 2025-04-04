@@ -10,18 +10,23 @@
         $nomeProgetto = $_GET['nome'];
         //il nome del progetto è stato inserito in cookie così da avere un tempo di limite di iterazione
         setcookie("nomeProgetto", $nomeProgetto, time() + 3600, "/");
+
         //per debug echo($_COOKIE["nomeProgetto"]);
         $query = $pdo->prepare('SELECT * FROM Progetto WHERE nome = :nomeProgetto');
         $query->bindValue(':nomeProgetto', $nomeProgetto);
         $query->execute();
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         if ($result) {
+            echo $_COOKIE["creatore"];
             echo "<h2>Dettagli del Progetto:</h2>";
             foreach ($result as $row) {
                 foreach ($row as $column => $value) {
                     echo "<p><strong>$column:</strong> $value</p>";
-                    if($column == "emailUtenteCreatore")
+                    if($column == "emailUtenteCreatore"){
                         $creatore = $value;
+                        setcookie("creatore", $creatore, time() + 3600, "/");
+                    }
+                        
                     else if($column == "stato" )
                         $stato = $value;
                 }

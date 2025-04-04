@@ -32,9 +32,7 @@
     foreach ($profili as $p) { 
         $gruppoProfili[$p['nomeProfilo']][] = new Competenza($p['nomeSkill'], $p['livelloRichiesto']);
     }
-    ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+   
 
     ?>
    
@@ -89,17 +87,41 @@ error_reporting(E_ALL);
                 </ul>
             </td>
             <td style="vertical-align: middle;">
-                <?php if ($utenteCompatibile): 
-                    ?>
-                    
+            <?php 
+            session_start();
+            $esito=checkCandidatura($nomeProfilo, $_SESSION["email"], $nomeProgetto);
+            if ($utenteCompatibile): ?>
+                <?php if ($esito === null): ?>
+                    <!-- Nessuna candidatura trovata: mostra il form -->
                     <form action="richiestaCandidaturaController.php" method="POST" style="margin: 0;">
                         <input type="hidden" name="nomeProfilo" value="<?= htmlspecialchars($nomeProfilo) ?>">
                         <input type="hidden" name="nomeProgettoSoftware" value="<?= htmlspecialchars($nomeProgetto) ?>">
                         <button type="submit">Candidati</button>
                     </form>
-                <?php else: ?>
-                    <span style="color: red; font-weight: bold;">Non idoneo</span>
-                <?php endif; ?>
+                    <?php else: ?>
+                        <?php
+                            // Imposta colore in base all'esito
+                            switch ($esito) {
+                                case 'accettata':
+                                    $colore = 'green';
+                                    break;
+                                case 'rifiutata':
+                                    $colore = 'red';
+                                    break;
+                                default: //quindi nonVista
+                                    $colore = 'blue'; 
+                            }
+                        ?>
+
+                        <label style="font-weight: bold; color: <?= $colore ?>;">
+                            Esito candidatura: <?= htmlspecialchars($esito) ?>
+                        </label>
+                        <br>
+                    <?php endif; ?>
+
+            <?php else: ?>
+                <span style="color: red; font-weight: bold;">Non idoneo</span>
+            <?php endif; ?>
             </td>
         </tr>
     <?php endforeach; ?>
@@ -107,8 +129,8 @@ error_reporting(E_ALL);
     <?php else: ?>
         <p style="text-align: center;">Nessun profilo definito per questo progetto.</p>
     <?php endif; ?>
-
-    <!-- PER DEBUG 
+<!-- 
+    PER DEBUG 
     <?php if (count($skill_utente) > 0): ?>
         <h3>Le tue skill</h3>
         <ul>
@@ -120,7 +142,7 @@ error_reporting(E_ALL);
         </ul>
     <?php else: ?>
         <p>Non hai ancora aggiunto skill al tuo curriculum.</p>
-    <?php endif; ?>-->
+    <?php endif; ?> -->
     
 </body>
 </html>

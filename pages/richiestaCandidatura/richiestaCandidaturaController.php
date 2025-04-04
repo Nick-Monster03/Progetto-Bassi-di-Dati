@@ -1,54 +1,81 @@
 <?php
     try{
+        session_start();
+        
         $pdo = new PDO("mysql:host=localhost;dbname=BOSTARTER", "root", "changeme");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        if (!isset($_COOKIE['nomeProgetto'])) {
-        throw new Exception("SESSIONE SCADUTA");
+        
+        // --- Se è POST, gestisci la candidatura
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!isset($_POST['nomeProfilo'], $_POST['nomeProgettoSoftware'], $_SESSION['email'])) {
+                die("Dati mancanti");
+            }
+        
+            $stmt = $pdo->prepare("CALL Candidati(:nomeProfilo, :nomeProgettoSoftware, :emailUtente)");
+            $stmt->execute([
+                ':nomeProfilo' => $_POST['nomeProfilo'],
+                ':nomeProgettoSoftware' => $_POST['nomeProgettoSoftware'],
+                ':emailUtente' => $_SESSION['email']
+            ]);
+        
+            header("Location: " . $_SERVER['PHP_SELF'] . "?success=1");
+            exit();
         }
+        
 
+        if (!isset($_COOKIE['nomeProgetto'])) {
+            throw new Exception("SESSIONE SCADUTA");
+        }
+        
         $nomeProgetto = $_COOKIE['nomeProgetto'];
+        
         $stmt = $pdo->prepare("SELECT nomeProfilo, nomeSkill, livelloRichiesto
             FROM PROFILO_SKILL
             WHERE nomeProgettoSoftware = :progetto
             ORDER BY nomeProfilo");
         $stmt->bindValue(":progetto", $nomeProgetto);
         $stmt->execute();
-
         $profili = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        session_start();
-        $emailUtente=$_SESSION['email'];
-        $stmt = $pdo->prepare("SELECT nomeskill, livello FROM CURRICULUM WHERE emailutente =:emailutente");
+        
+        // Skill dell’utente
+        $emailUtente = $_SESSION['email'];
+        $stmt = $pdo->prepare("SELECT nomeskill, livello FROM CURRICULUM WHERE emailutente = :emailutente");
         $stmt->bindValue(":emailutente", $emailUtente);
         $stmt->execute();
         $skill_utente = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['nomeProfilo'], $_POST['nomeProgettoSoftware'])) {
-            throw new Exception("DATI MANCANTI");
-        }
-        else {
-        $nomeProfilo = $_POST['nomeProfilo'];
-        $nomeProgettoSoftware = $_POST['nomeProgettoSoftware'];
         
-        // PER DEBUG
-        // echo "<h3>DEBUG: Dati ricevuti dal form</h3>";
-        // echo "<pre>";
-        // echo "nomeProfilo: " . htmlspecialchars($nomeProfilo) . "\n";
-        // echo "nomeProgettoSoftware: " . htmlspecialchars($nomeProgettoSoftware) . "\n";
-        // echo "emailUtente: " . htmlspecialchars($emailUtente) . "\n";
-        // echo "</pre>";
-        $stmt = $pdo->prepare("CALL Candidati(:nomeProfilo, :nomeProgettoSoftware, :emailUtente)");
-        $stmt->bindParam(":nomeProfilo", $nomeProfilo, PDO::PARAM_STR);
-        $stmt->bindParam(":nomeProgettoSoftware", $nomeProgettoSoftware, PDO::PARAM_STR);
-        $stmt->bindParam(":emailUtente", $emailUtente, PDO::PARAM_STR);
+        $stmt = $pdo->prepare("SELECT esito FROM CANDIDATURA WHERE nomeProfilo = :nomeProfilo AND emailUtente = :emailUtente AND nomeProgettoSoftware = :nomeProgetto");
+        $stmt->bindParam(':nomeProfilo', $nomeProfilo, PDO::PARAM_STR);
+        $stmt->bindParam(':emailUtente', $emailUtente, PDO::PARAM_STR);
+        $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
         $stmt->execute();
-        header("Location: confermaCandidatura.php"); 
-        exit();
-        }
+
+        $esito = $stmt->fetchColumn();
+
     }catch(PDOException $e){
         echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
         exit();
     }catch(Exception $e){
         echo("SESSIONE SCADUTA");
+    }
+
+    function checkCandidatura($nomeProfilo, $emailUtente, $nomeProgetto){
+        try{
+            $pdo = new PDO("mysql:host=localhost;dbname=BOSTARTER", "root", "changeme");
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $stmt = $pdo->prepare("SELECT esito FROM CANDIDATURA WHERE nomeProfilo = :nomeProfilo AND emailUtente = :emailUtente AND nomeProgettoSoftware = :nomeProgetto");
+            $stmt->bindParam(':nomeProfilo', $nomeProfilo, PDO::PARAM_STR);
+            $stmt->bindParam(':emailUtente', $emailUtente, PDO::PARAM_STR);
+            $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
+            $stmt->execute();
+            $esito = $stmt->fetchColumn();
+            return $esito;
+        } catch(PDOException $e){
+        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
+        exit();
+    }
+       
     }
 
     
