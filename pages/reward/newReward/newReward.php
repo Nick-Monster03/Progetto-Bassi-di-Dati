@@ -18,7 +18,7 @@
         <button type="submit">Create Reward</button>
     </form>
 
-    <button type="button" onclick="window.location.href='../reward.php'">Torna indietro</button>
+    <a href='../reward.php'>Torna indietro</a>
 
 </body>
 </html>

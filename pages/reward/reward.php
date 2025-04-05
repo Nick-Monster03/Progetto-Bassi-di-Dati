@@ -50,7 +50,7 @@
     <?php endif; ?>
     <div class="actions">
         <button onclick="window.location.href='../home/home.php'">Torna alla Home</button>
-        <button onclick="window.history.back()">Torna Indietro</button>
+        <button onclick="window.location.href='../item/item.php?nome=<?= urlencode($nomeProgetto) ?>'">Torna Indietro</button>
     </div>
     <?php
         session_start();

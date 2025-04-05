@@ -313,7 +313,11 @@ begin
     if(is_ok = 1) then
 		INSERT INTO utente (email, nickname, nome, cognome, annoNascita, luogoNascita) 
 		VALUES (email, nickname, nome, cognome, annoNascita, luogoNascita);
+    else
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'I campi specificati non possono essere nulli o vuoti';
 	end if;
+
 end 
 $
 DELIMITER ;
@@ -327,7 +331,10 @@ begin
     if (is_ok > 0) then
 		INSERT INTO amministratore(emailUtente, codice_sicurezza) 
 		VALUES (email, codice_sicurezza);
-    end if;
+    else
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Non è statop creato alcun utente con questo nome';
+	end if;
 end
 $
 DELIMITER ;
@@ -341,7 +348,12 @@ begin
     if (is_ok > 0) then
 		INSERT INTO creatore(emailUtente) 
 		VALUES (email);
-    end if;
+     else
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Non è statop creato alcun utente con questo nome';
+	end if;
+    
+    
 end
 $
 DELIMITER ;
@@ -362,10 +374,13 @@ begin
             UPDATE curriculum as c
             SET c.livello = livello 
             WHERE c.nomeskill = nomeskill AND c.emailutente = emailutente;
-        elseif existing_level is null then #cioè non esiste nessun record in curriculum con quella email e quealla skill
+        else if existing_level is null then 
 			INSERT INTO curriculum(nomeskill, emailutente, livello) 
 			VALUES (nomeskill, emailutente, livello);
 		end if;
+    else
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Errore: email o skill non validi.';
     end if;
 end
 $
@@ -394,9 +409,12 @@ begin
     set is_ok_progetto = (select count(*) from progetto as p where p.nome=nomeProgetto and p.stato='aperto');
     set is_ok_reward = (select count(*) from reward as r where reward_id = r.codice and nomeProgetto=r.nomeProgetto);
      
-	if(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward > 0) then
-		INSERT INTO finanziamento(emailUtente, dataVersamento, nomeProgetto, idReward, importo)
-        VALUES (emailUtente, date_now, nomeProgetto, reward_id, importo);
+    if(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward > 0) then
+            INSERT INTO finanziamento(emailUtente, dataVersamento, nomeProgetto, idReward, importo)
+            VALUES (emailUtente, date_now, nomeProgetto, reward_id, importo);
+    else
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Errore: email, progetto o reward non validi.';
     end if;
  end
  $
@@ -429,7 +447,11 @@ begin
 	if (is_ok_profilo > 0 and is_ok_progetto > 0 and is_ok_email>0) then
 		INSERT INTO Candidatura(nomeProfilo, nomeProgettoSoftware, emailUtente)
         VALUES (nomeProfilo, nomeProgettoSoftware, emailUtente);
+    else
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Errore: email, progetto o profilo non validi.';
     end if;
+    
 end
 $
 DELIMITER ;
@@ -444,6 +466,9 @@ begin
     if(exist = 0) then
 		INSERT INTO skill(nome)
         VALUES (nuovaCompetenza);
+    else
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Errore: la competenza esiste già.';
     end if;
 end
 $
@@ -454,23 +479,20 @@ create procedure InserisciProgetto(nome varchar(30), descrizione varchar(300), b
 begin
     declare date_now datetime;
     DECLARE is_ok_creatore int default 0;
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        ROLLBACK;
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = "Errore durante l\'inserimento del progetto o della foto.";
-    END;
+    
 
     set date_now = now();
 	set is_ok_creatore = (select count(*) from CREATORE where emailUtente = emailUtenteCreatore);
     
     if(is_ok_creatore > 0) then
-        START TRANSACTION;
 		INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, emailUtenteCreatore)
 		VALUES(nome, descrizione, date_now, budget, data_limite, emailUtenteCreatore);
         INSERT INTO FOTO (foto, nomeProgetto)
         VALUES (foto, nome);
-        COMMIT;
+
+    else
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Errore: creatore non valido.';
     end if;
     
 end
@@ -504,6 +526,9 @@ begin
             INSERT INTO RISPOSTA (idCommento, emailUtenteCreatore, risposta)
             VALUES (idCommento, emailCreatore, risposta);
         end if;
+    else
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Errore: commento inesistente.';
     end if;
 end
 $
@@ -519,6 +544,9 @@ begin
     if(is_ok_project > 0) then
 		INSERT INTO Profilo(nome, nomeProgettoSoftware)
         VALUES (nomeProfilo, nomeProgettoSoftware);
+    else
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Errore: progetto non valido.';
     end if;
 end
 $
@@ -536,10 +564,13 @@ begin
         UPDATE Candidatura
         SET esito = 'accettata'
         WHERE emailUtente = nomeCandidato AND nomeProgettoSoftware = nomeProgetto AND nomeProfilo = profilo AND esito = 'nonVista';
-	elseif (accettazione = 0) then
+	else if (accettazione = 0) then
 		UPDATE Candidatura
         SET esito = 'rifiutata'
         WHERE emailUtente = nomeCandidato AND nomeProgettoSoftware = nomeProgetto AND nomeProfilo = profilo AND esito = 'nonVista';
+    else
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Errore: candidatura non esistente o già accettata/rifiutata.';
     end if;
 end
 $

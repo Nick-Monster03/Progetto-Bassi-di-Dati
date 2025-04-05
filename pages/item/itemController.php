@@ -17,7 +17,7 @@
         $query->execute();
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         if ($result) {
-            echo $_COOKIE["creatore"];
+            
             echo "<h2>Dettagli del Progetto:</h2>";
             foreach ($result as $row) {
                 foreach ($row as $column => $value) {
@@ -38,6 +38,7 @@
             $foto = $result["foto"];
             echo "<img src=.$foto. alt='fotoProgetto'></img>";
             $valoreAttuale = trovaImporto($nomeProgetto)["total"] ?? 0;
+            setcookie("valoreAttuale", $valoreAttuale, time() + 3600, "/");
         } else {
             //per debug echo "<p>Nessun progetto trovato con il nome '$nomeProgetto'.</p>";
             throw new Exception("non è stato trovato nessun progetto con qeusto nome");
@@ -47,7 +48,8 @@
         echo "[ERRORE] Database non accessibile: " . $e->getMessage();
         exit();
     } catch (Exception $e) {
-        header("Location: home.php");
+        echo "<p>[ERRORE] " . $e->getMessage() . "</p>";
+        echo "<a href='../home/home.php'>Torna alla home</a>";
         exit();
     }
     

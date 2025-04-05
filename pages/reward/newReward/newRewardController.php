@@ -16,7 +16,7 @@ try {
             $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $stmt = $pdo->prepare("INSERT INTO REWARD (descrizione, foto, nomeProgetto) VALUES (:descrizione, :foto, :nomeProgetto)");
+            $stmt = $pdo->prepare("CALL InserisciReward(:descrizione, :foto, :nomeProgetto)");
             $stmt->bindParam(':descrizione', $descrizione, PDO::PARAM_STR);
             $stmt->bindParam(':foto', $fileName, PDO::PARAM_STR);
             $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);

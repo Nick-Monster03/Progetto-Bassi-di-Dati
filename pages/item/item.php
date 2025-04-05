@@ -44,6 +44,7 @@
      <a href="../richiestaCandidatura/richiestaCandidatura.php">Lavora Per questo progetto</a>
 
     <?php endif; ?>
+    <a href="../commenti/commenti.php">Visualizza Commenti</a>
     <?php if ($stato == "aperto"): ?>
     <a href="../reward/reward.php">Visualizza Reward</a>
     <?php endif; ?>

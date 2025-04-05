@@ -1,6 +1,10 @@
 <?php
 session_start();
-
+if(isset($_COOKIE["creatore"]) || isset($_COOKIE["nomeProgetto"]) || isset($_COOKIE["valoreAttuale"])){
+    setcookie("nomeProgetto", "", time() - 3600, "/");
+    setcookie("creatore", "", time() - 3600, "/");
+    setcookie("valoreAttuale", "", time() - 3600, "/");
+}
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
