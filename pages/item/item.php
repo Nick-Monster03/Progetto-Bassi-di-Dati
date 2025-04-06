@@ -17,7 +17,7 @@
     </header>
     <div class="container mt-5">
         <div class="text-center mt-4">
-            <button class="btn btn-secondary" onclick="window.history.back()">Torna Indietro</button>
+            <button class="btn btn-secondary" onclick="window.location.href='../home/home.php'">Torna alla Home</button>
         </div>
     </div>
     <?php
@@ -39,11 +39,24 @@
     <br>
     <?php 
         session_start();
-        if ($creatore != $_SESSION["email"] && $stato == "aperto"): 
+        if ($creatore != $_SESSION["email"] && $stato == "aperto") {
+            $flag_software = isSoftware();
+            echo "<script>console.log('isSoftware value: " . ($flag_software ? 'true' : 'false') . "');</script>";
+            if ($flag_software) {
     ?>
-     <a href="../richiestaCandidatura/richiestaCandidatura.php">Lavora Per questo progetto</a>
-
-    <?php endif; ?>
+                <a href="../richiestaCandidatura/richiestaCandidatura.php">Lavora Per questo progetto</a>
+    <?php 
+            }
+        }
+    ?>
+    <?php
+         $flag_software = isSoftware();
+        if (!$flag_software) {
+    ?>
+    <a href="../componenti/componenti.php">Visualizza Componenti</a>
+    <?php
+        }
+    ?>
     <a href="../commenti/commenti.php">Visualizza Commenti</a>
     <?php if ($stato == "aperto"): ?>
     <a href="../reward/reward.php">Visualizza Reward</a>

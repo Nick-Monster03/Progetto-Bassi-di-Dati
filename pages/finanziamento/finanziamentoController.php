@@ -29,6 +29,18 @@
                 $stmt->bindParam(':importo', $importo, PDO::PARAM_STR);
                 $stmt->bindParam(':reward_id', $reward_id, PDO::PARAM_INT);
                 $stmt->execute();
+
+                // Se l'esecuzione ha avuto successo, calcola la somma di tutti i finanziamenti per il progetto
+                $stmt = $pdo->prepare("SELECT SUM(importo) AS totaleFinanziamenti FROM FINANZIAMENTO WHERE nomeProgetto = :nomeProgetto");
+                $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                // Aggiorna il valore del cookie con il nuovo totale
+                if ($result && isset($result['totaleFinanziamenti'])) {
+                    setcookie('valoreAttuale', $result['totaleFinanziamenti'], time() + 3600, '/');
+                }
+
                 header('Location: ../finanziamento/finanziamento.php');
                 exit();
             } else {

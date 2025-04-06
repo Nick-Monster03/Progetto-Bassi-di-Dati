@@ -27,7 +27,7 @@
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
             ]);
-            $sql = 'SELECT nomeComponente, quantità FROM COMPONENTI_PROGETTO WHERE nomeProgettoHardware ="'.$_SESSION['projectName'].'"';
+            $sql = 'SELECT nomeComponente, quantita FROM COMPONENTI_PROGETTO WHERE nomeProgettoHardware ="'.$_SESSION['projectName'].'"';
             $res=$pdo->prepare($sql);
             $res->execute();
             return $res->fetchAll();

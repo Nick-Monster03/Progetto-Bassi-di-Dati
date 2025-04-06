@@ -12,13 +12,11 @@
             }
         
             $stmt = $pdo->prepare("CALL Candidati(:nomeProfilo, :nomeProgettoSoftware, :emailUtente)");
-            $stmt->execute([
-                ':nomeProfilo' => $_POST['nomeProfilo'],
-                ':nomeProgettoSoftware' => $_POST['nomeProgettoSoftware'],
-                ':emailUtente' => $_SESSION['email']
-            ]);
+            $stmt->bindParam(':nomeProfilo', $_POST['nomeProfilo'], PDO::PARAM_STR);
+            $stmt->bindParam(':nomeProgettoSoftware', $_POST['nomeProgettoSoftware'], PDO::PARAM_STR);
+            $stmt->bindParam(':emailUtente', $_SESSION['email'], PDO::PARAM_STR);
+            $stmt->execute();
         
-            header("Location: " . $_SERVER['PHP_SELF'] . "?success=1");
             exit();
         }
         
@@ -53,7 +51,7 @@
         $esito = $stmt->fetchColumn();
 
     }catch(PDOException $e){
-        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
+        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage() . " sulla linea " . $e->getLine());
         exit();
     }catch(Exception $e){
         echo("SESSIONE SCADUTA");
@@ -72,8 +70,8 @@
             $esito = $stmt->fetchColumn();
             return $esito;
         } catch(PDOException $e){
-        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
-        exit();
+            echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
+            exit();
     }
        
     }

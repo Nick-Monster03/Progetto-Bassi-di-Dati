@@ -36,7 +36,7 @@
                             <a href="../newProject/newProject.php">Crea Progetto</a>
                             <a href="../candidature/candidatura.php">Visualizza Candidature</a>
                         <?php elseif ($_SESSION['user_role'] == 'amministratore'): ?>
-                            <a href="../skillList/skillList.php">Visualizza Lista Competenze</a>
+                            <a href="../competenze/competenze.php">Visualizza Lista Competenze</a>
                         <?php endif; ?>
                         <a href="../skillList/skillList.php">Mie Competenze</a>
                         <button onclick="window.location.href='homeController.php?action=logout'">Logout</button>

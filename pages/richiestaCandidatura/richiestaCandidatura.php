@@ -91,11 +91,11 @@
             session_start();
             $esito=checkCandidatura($nomeProfilo, $_SESSION["email"], $nomeProgetto);
             if ($utenteCompatibile): ?>
-                <?php if ($esito === null): ?>
+                <?php if ($esito == null || $esito ==''): ?>
                     <!-- Nessuna candidatura trovata: mostra il form -->
                     <form action="richiestaCandidaturaController.php" method="POST" style="margin: 0;">
-                        <input type="hidden" name="nomeProfilo" value="<?= htmlspecialchars($nomeProfilo) ?>">
-                        <input type="hidden" name="nomeProgettoSoftware" value="<?= htmlspecialchars($nomeProgetto) ?>">
+                        <input type="hidden" name="nomeProfilo" id="nomeProfilo" value="<?= htmlspecialchars($nomeProfilo) ?>">
+                        <input type="hidden" name="nomeProgettoSoftware" id="nomeProgetto" value="<?= htmlspecialchars($nomeProgetto) ?>">
                         <button type="submit">Candidati</button>
                     </form>
                     <?php else: ?>

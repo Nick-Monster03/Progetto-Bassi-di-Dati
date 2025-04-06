@@ -80,21 +80,21 @@ create table COMPONENTE(
 create table COMPONENTI_PROGETTO(
 	nomeProgettoHardware varchar(30),
     nomeComponente varchar(20),
-    quantità int check (quantità > 0),
+    quantita int check (quantita > 0),
     foreign key (nomeProgettoHardware) references PROGETTO_HARDWARE(nomeProgetto) on delete cascade,
     foreign key (nomeComponente) references COMPONENTE(nome) on delete cascade,
     primary key(nomeProgettoHardware, nomeComponente)
 ) ENGINE="INNODB";
 
 create table PROFILO(
-	nome varchar(40),
+	nome varchar(50),
     nomeProgettoSoftware varchar(30),
     foreign key (nomeProgettoSoftware) references PROGETTO_SOFTWARE(nomeProgetto) on delete cascade,
     primary key(nome, nomeProgettoSoftware)
 ) ENGINE="INNODB";
 
 create table PROFILO_SKILL(
-	nomeProfilo varchar(40),
+	nomeProfilo varchar(50),
     nomeProgettoSoftware varchar(30),
     nomeSkill varchar(25),
     livelloRichiesto int,
@@ -134,7 +134,7 @@ create table RISPOSTA(
 ) ENGINE="INNODB";
 
 create table CANDIDATURA(
-	nomeProfilo varchar(20),
+	nomeProfilo varchar(50),
     nomeProgettoSoftware varchar(30),
     emailUtente varchar(40),
     esito enum('nonVista', 'accettata', 'rifiutata') default 'nonVista',
@@ -282,18 +282,19 @@ DELIMITER ;
 -- end
 -- $ 
 -- DELIMITER ;
-DELIMITER $$
+DELIMITER $
 
 CREATE EVENT aggiorna_progetti
 ON SCHEDULE EVERY 1 DAY
-STARTS CURRENT_TIMESTAMP
+ STARTS NOW()  -- parte subito
+ON COMPLETION PRESERVE ENABLE
 DO
 BEGIN
     UPDATE PROGETTO
     SET stato = 'chiuso'
     WHERE data_limite < NOW()
       AND stato = 'aperto';
-END $$
+END $
 
 DELIMITER ;
 
@@ -374,7 +375,7 @@ begin
             UPDATE curriculum as c
             SET c.livello = livello 
             WHERE c.nomeskill = nomeskill AND c.emailutente = emailutente;
-        else if existing_level is null then 
+        elseif existing_level is null then 
 			INSERT INTO curriculum(nomeskill, emailutente, livello) 
 			VALUES (nomeskill, emailutente, livello);
 		end if;
@@ -434,7 +435,7 @@ $
 DELIMITER ;
  
 DELIMITER $
-create procedure Candidati(nomeProfilo varchar(20), nomeProgettoSoftware varchar(30), emailUtente varchar(40))
+create procedure Candidati(nomeProfilo varchar(50), nomeProgettoSoftware varchar(30), emailUtente varchar(40))
 begin
 	declare is_ok_email int default 0;
 	declare is_ok_progetto int default 0;
@@ -517,15 +518,8 @@ begin
     set is_ok_commento = (select count(*) from COMMENTO where id = idCommento);
     
     if is_ok_commento > 0 then
-        select p.emailUtenteCreatore into email_creatore_progetto
-        from COMMENTO c
-        join PROGETTO p on c.nomeProgetto = p.nome
-        where c.id = idCommento;
-        
-        if (email_creatore_progetto = emailCreatore) then
-            INSERT INTO RISPOSTA (idCommento, emailUtenteCreatore, risposta)
-            VALUES (idCommento, emailCreatore, risposta);
-        end if;
+        INSERT INTO RISPOSTA (idCommento, emailUtenteCreatore, risposta)
+        VALUES (idCommento, emailCreatore, risposta);
     else
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Errore: commento inesistente.';
@@ -535,7 +529,7 @@ $
 DELIMITER ;
 
 DELIMITER $
-create procedure AggiungiProfilo(nomeProfilo varchar(40), nomeProgettoSoftware varchar(30))
+create procedure AggiungiProfilo(nomeProfilo varchar(50), nomeProgettoSoftware varchar(30))
 begin
 	declare is_ok_project int default 0;
     
@@ -553,7 +547,7 @@ $
 DELIMITER ;
 
 DELIMITER $
-create procedure AccettaRichiesta(nomeCandidato varchar(40), nomeProgetto varchar(30), profilo varchar(20), accettazione int) #se accettazione=1 allora sarà accettata altrimenti se è 0 sarà rifutata
+create procedure AccettaRichiesta(nomeCandidato varchar(40), nomeProgetto varchar(30), profilo varchar(50), accettazione int) #se accettazione=1 allora sarà accettata altrimenti se è 0 sarà rifutata
 begin
 	declare candidatura_esiste int default 0;
 
@@ -564,7 +558,7 @@ begin
         UPDATE Candidatura
         SET esito = 'accettata'
         WHERE emailUtente = nomeCandidato AND nomeProgettoSoftware = nomeProgetto AND nomeProfilo = profilo AND esito = 'nonVista';
-	else if (accettazione = 0) then
+	elseif (accettazione = 0) then
 		UPDATE Candidatura
         SET esito = 'rifiutata'
         WHERE emailUtente = nomeCandidato AND nomeProgettoSoftware = nomeProgetto AND nomeProfilo = profilo AND esito = 'nonVista';
@@ -633,18 +627,17 @@ VALUES ('Programmazione Java'), ('Database Management'), ('Sicurezza Informatica
 CALL InserisciSkillCurriculum('Programmazione Java', 'utente1@example.com', 4);
 CALL InserisciSkillCurriculum('Database Management', 'utente2@example.com', 3);
 CALL InserisciSkillCurriculum('Database Management', 'utente2@example.com', 5);
-CALL InserisciSkillCurriculum('Programmazione Java', 'utente1@example.com', 6);
 
 INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, stato, emailUtenteCreatore)
 VALUES 
 ('Progetto AI', 'Sviluppo di un sistema AI per il riconoscimento immagini.', '2024-02-16 10:30:00', 50000.00, '2025-12-31 23:59:59', 'aperto', 'creatore@example.com'),
 ('E-commerce Platform', 'Creazione di una piattaforma di e-commerce scalabile.', '2024-02-16 11:00:00', 75000.00, '2025-06-30 23:59:59', 'aperto', 'creatore2@example.com'),
-('Cybersecurity Audit', 'Analisi e miglioramento della sicurezza aziendale.', '2024-02-15 09:45:00', 30000.00, '2024-06-30 23:59:59', 'chiuso', 'creatore@example.com'),
-('Interfaccia Gestionale', 'Sviluppo di un sistema di interfaccio per gestione di utenti', '2024-02-16 10:30:00', 50000.00, '2024-12-31 23:59:59', 'aperto', 'creatore3@example.com');
+('Cybersecurity Audit', 'Analisi e miglioramento della sicurezza aziendale.', '2024-02-15 09:45:00', 30000.00, '2025-06-30 23:59:59', 'chiuso', 'creatore@example.com'),
+('Interfaccia Gestionale', 'Sviluppo di un sistema di interfaccio per gestione di utenti', '2024-02-16 10:30:00', 50000.00, '2025-12-31 23:59:59', 'aperto', 'creatore3@example.com');
 
 
 INSERT INTO progetto_software (nomeProgetto)
-VALUES ('E-commerce Platform'), ('Cybersecurity Audit');
+VALUES ('E-commerce Platform'), ('Cybersecurity Audit'),('Interfaccia Gestionale'),('Progetto AI');
 
 CALL InserisciReward('Accesso anticipato alla beta', 'reward_beta.jpg', 'Progetto AI');
 CALL InserisciReward('Certificato di partecipazione', 'certificato.jpg', 'E-commerce Platform');
@@ -675,7 +668,6 @@ CALL InserisciProgetto('Progetto Sistema Distribuito', 'Sviluppo di un sistema d
 
 CALL RispondiCommento(1, 'creatore@example.com', 'grazie per il tuo commento è stato molto utile');
 CALL RispondiCommento(1, 'creatore2@example.com', 'grazie per il tuo commento è stato molto utile');
-CALL RispondiCommento(2, 'creatore@example.com', 'grazie per il tuo commento è stato molto utile');
 
 INSERT INTO COMPONENTE (nome, descrizione, prezzo)
 VALUES 

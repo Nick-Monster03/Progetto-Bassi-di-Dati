@@ -67,4 +67,21 @@
             exit();
         }
     }
+
+    function isSoftware(){
+        try {
+            session_start();
+            $nomeProgetto = $_COOKIE["nomeProgetto"];
+            $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $res = $pdo->prepare("SELECT count(*) as count FROM PROGETTO_SOFTWARE WHERE nomeProgetto = :nomeProgetto");
+            $res->bindValue(":nomeProgetto", $nomeProgetto);
+            $res->execute();
+            $result = $res->fetch(PDO::FETCH_ASSOC);
+            return $result['count'] >= 1;
+        }catch(PDOException $e){
+            echo "[ERRORE] Database non accessibile: " . $e->getMessage();
+            exit();
+        }
+    }
 ?>

@@ -18,7 +18,8 @@
 
     <div class="container mt-5">
         <div class="text-center mt-4">
-            <button class="btn btn-secondary" onclick="window.history.back()">Torna Indietro</button>
+        <a href="../home/home.php" class="btn btn-secondary">Torna alla Home</a>
+        
         </div>
         <div class="row mt-4">
             <div class="col-12">
