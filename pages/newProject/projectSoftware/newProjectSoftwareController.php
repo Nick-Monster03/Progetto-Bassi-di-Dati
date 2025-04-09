@@ -4,23 +4,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($pdo)) {
         Init();
     }
-    $projectName = $_SESSION['projectName'];
-    $profileName = $_POST['profileName'] ;
 
-    if (!empty($profileName)) {
-        try {
-            $sql = "CALL AggiungiProfilo (:profileName, :nomeProgettoSoftware)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':profileName', $profileName);
-            $stmt->bindParam(':nomeProgettoSoftware', $projectName);
-            $stmt->execute();
-            header("Location: newProjectSoftware.php");
-        } catch (PDOException $e) {
-            echo "[ERRORE] Errore durante l'inserimento dei dati: " . $e->getMessage();
+    
+    try {
+        if (!isset($_POST['profileName']) || empty($_POST['profileName'])) {
+            throw new Exception("Il nome del profilo non è definito.");
         }
-    } else {
-        echo "[ERRORE] Tutti i campi sono obbligatori.";
+
+        $projectName = $_COOKIE['nomeProgetto'];
+        echo "<p>Nome Progetto: " . htmlspecialchars($projectName) . "</p>";
+        $profileName = $_POST['profileName'];
+        $sql = "CALL AggiungiProfilo (:profileName, :nomeProgettoSoftware)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':profileName', $profileName);
+        $stmt->bindParam(':nomeProgettoSoftware', $projectName);
+        $stmt->execute();
+        header("Location: newProjectSoftware.php");
+    } catch (PDOException $e) {
+        echo "<p>[ERRORE] Errore durante la connsessione con il db: " . $e->getMessage() . $e->getLine() . "</p>";
+        echo '<a href="../../home/home.php">Torna alla Home</a>';
+    } 
+    catch (Exception $e) {
+        echo "<p>[ERRORE] " . $e->getMessage() . "</p>";
+        echo '<a href="../../home/home.php">Torna alla Home</a>';
     }
+    
 }
 
 function Init(){
@@ -33,7 +41,7 @@ function Init(){
         exit();
     }
     session_start();
-    $nomeProgettoSoftware = $_SESSION['projectName'];
+    $nomeProgettoSoftware = $_COOKIE['nomeProgetto'];
 
     $stmt = $pdo->prepare("SELECT * FROM PROFILO WHERE nomeProgettoSoftware = :nomeProgettoSoftware");
 

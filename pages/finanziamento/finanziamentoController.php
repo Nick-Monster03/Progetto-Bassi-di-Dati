@@ -16,12 +16,7 @@
                 $nomeProgetto = $_COOKIE['nomeProgetto'];
                 $importo = $_POST['importo'];
                 $reward_id = getFirstReward($pdo, $nomeProgetto); //prendo il primo reward disponibile
-                if($reward_id == null){
-                    //se non ci sono reward non è possibile ionviare la post, ma per sicurezza gestiamo anche la casistica
-                    //in cui la post sia stata inviata nonostate non ci siano reward disponibili
-                    //in questo caso non viene eseguita la query e viene lanciata un eccezione
-                    throw new Exception('Nessun reward disponibile al momento.'); 
-                }
+               
                 $sql = "CALL FinanziaProgetto(:emailUtente, :nomeProgetto, :importo, :reward_id)";
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindParam(':emailUtente', $emailUtente, PDO::PARAM_STR);
@@ -69,7 +64,7 @@
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($result['numero'] == 0 && !empty($rewards)) { //se non ha effettuato nessun finanziamento e ci sono ancora reward disponibili allora può finazniare
+            if ($result['numero'] == 0 ) { //se non ha effettuato nessun finanziamento nelle ultime 24 ore allora può finazniare
                 $flag_finanziamento = true;
                 $motivazione = "";
             } else {

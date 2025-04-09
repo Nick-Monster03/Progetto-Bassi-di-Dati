@@ -11,10 +11,14 @@
         session_start();
         include('registerController.php');
     ?>
-    <form action="register.php" method="post">
+    <form action="registerController.php" method="post">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password"  name="password">
         </div>
         <div class="mb-3">
             <label for="nickname" class="form-label">Nickname</label>

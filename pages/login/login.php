@@ -27,6 +27,8 @@
             <tr>
             <td><b>Inserisci la tua email:</b></td>
             <td><input type='text' name="email" id="email"></td>
+            <td><b>Inserisci la tua password:</b></td>
+            <td><input type='password' name="password" id="password"></td>
             </tr>
         </table>
         <div><input type='submit' value='Login'></div>
@@ -34,7 +36,7 @@
     <br>
     <?php
     session_start();
-    if (isset($_GLOBALS['check_security_code']) && $_GLOBALS['check_security_code']== 1) {
+    if (isset($_GLOBALS['check_security_code']) && $_GLOBALS['check_security_code'] == 1) {
     ?>
         <br>
         <form method="POST" action="login.php">

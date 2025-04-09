@@ -37,8 +37,9 @@
                 <div class="reward-card">
                     <h4>Codice: <?= htmlspecialchars($r['codice']) ?></h4>
                     <p><?= htmlspecialchars($r['descrizione']) ?></p>
+                    <p><?= htmlspecialchars($r['foto']) ?></p>
                     <?php if (!empty($r['foto'])): ?>
-                        <img src="<?= htmlspecialchars($r['foto']) ?>" alt="reward image">
+                        <img src="../../services/uploads/<?= htmlspecialchars($r['foto']) ?>" alt="reward image">
                     <?php else: ?>
                         <p><em>Nessuna immagine disponibile</em></p>
                     <?php endif; ?>

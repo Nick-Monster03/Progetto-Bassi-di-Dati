@@ -24,7 +24,9 @@
         include "richiestaCandidaturaController.php";
     ?>
     <h2 style="text-align: center;">Profili richiesti per il progetto "<?= htmlspecialchars($nomeProgetto) ?>"</h2>
-
+    <div style="position: absolute; top: 20px; right: 20px;">
+        <button onclick="window.location.href='../item/item.php?nome=<?= urlencode($nomeProgetto) ?>';" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Torna Indietro</button>
+    </div>
     <?php if (count($profili) > 0): ?>
     <?php
     // Raggruppa le skill per nomeProfilo
@@ -61,16 +63,23 @@
         <?php
         // Verifica compatibilità, prende per ogni competenza richiesta da quel profilo 
         //e la confronta con quelle  possedute dal mio utente se c' è corrispondenza e il 
-        //livello è maggiore o uguale allora risulterà passato e si passerà alla skill successiva
+        //livello è maggiore o uguale allora risulterà passato e si passerà alla skill successiva.
+        //il flag $utenteCompatibile è un flag che ci dice che l' utente è compatibile per il profilo
+        //indicato da $nomeProfilo
         $utenteCompatibile = true;
         foreach ($competenze as $cRichiesta) {
             $pass = false;
             foreach ($competenzeUtente as $cPosseduta) {
+                //cRichiesta e cPosseduta sono oggetti Competenza e per confrontarli
+                //userò la funzione equalOrUpper che ho definito nella classe Competenza
                 if ($cRichiesta->equalOrUpper($cPosseduta)) {
                     $pass = true;
                     break;
                 }
             }
+            //Se una sola delle skill di quel profilo non è posseduta allora l' utente non è compatibile
+            //per quel profilo e con il break esciuma dal secondo ciclo per for-each
+            //e andremo a selezionare un' altro profilo e verificheremo la compatibilità 
             if (!$pass) {
                 $utenteCompatibile = false;
                 break;

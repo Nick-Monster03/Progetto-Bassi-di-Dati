@@ -31,7 +31,7 @@
                         <a href="/pages/register/register.php">Registrati</a>
                         <a href="/pages/login/login.php">Login</a>
                     <?php else: ?>
-                        <a href="#">Visualizza Profilo</a>
+                        <a href="../profiloUtente/profiloUtente.php">Visualizza Profilo</a>
                         <?php if ($_SESSION['user_role'] == 'creatore'): ?>
                             <a href="../newProject/newProject.php">Crea Progetto</a>
                             <a href="../candidature/candidatura.php">Visualizza Candidature</a>

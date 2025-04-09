@@ -6,8 +6,9 @@
     $data_limite=$_POST['endDate'];
     $tipologia=$_POST['tipologia'];
     $email_creatore=$_SESSION['email'];
-    $img = basename($_FILES["immagine"]["name"]); 
-    
+    $img = basename($_FILES["immagine"]["name"]);
+   
+
     try {
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -23,26 +24,34 @@
         if($stmt->execute()){
 
             $file = $_FILES["immagine"];
-            $destinazione = "uploads/" . basename($file["name"]);
-            move_uploaded_file($file["tmp_name"], $destinazione);
+    
+            // Costruisci il path completo per salvare il file
+            $uploadPath = __DIR__ . "/../../services/uploads/" . basename($file["name"]);
+        
+            // Salva il file
+            if (move_uploaded_file($file["tmp_name"], $uploadPath)) {
+                echo "File caricato correttamente.";
+            } else {
+                echo "Errore nel caricamento.";
+            }
 
             require '../../services/log_eventi.php';
             addLog("nuovo_progetto", (object) ["nome" => $nome, "descrizione" => $descrizione, "budget" => $budget, "data_limite" => $data_limite, "email_creatore" => $email_creatore]);
-            $_SESSION['projectName'] = $nome;
+            setcookie("nomeProgetto", $nome, time() + 3600, "/");
             
             if($tipologia == "Hardware"){
-                $sql='INSERT INTO progetto_hardware(nomeProgetto) VALUES("'.$_SESSION['projectName'].'")';
+                $sql='INSERT INTO progetto_hardware(nomeProgetto) VALUES("'.$nome.'")';
                 $res=$pdo->exec($sql);
                 header("Location: projectHardware/newProjectHardware.php");
             } else {
-                $sql='INSERT INTO progetto_software(nomeProgetto) VALUES("'.$_SESSION['projectName'].'")';
+                $sql='INSERT INTO progetto_software(nomeProgetto) VALUES("'.$nome.'")';
                 $res=$pdo->exec($sql);
                 header("Location: projectSoftware/newProjectSoftware.php");
             }
         }
     
 } catch (PDOException $e) {
-    echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
+    echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage() . $e->getLine() . "]");
     exit();
 }
 

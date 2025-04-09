@@ -8,7 +8,7 @@
         // --- Se è POST, gestisci la candidatura
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!isset($_POST['nomeProfilo'], $_POST['nomeProgettoSoftware'], $_SESSION['email'])) {
-                die("Dati mancanti");
+                throw new Exception("SESSIONE SCADUTA o DATI MANCANTI");
             }
         
             $stmt = $pdo->prepare("CALL Candidati(:nomeProfilo, :nomeProgettoSoftware, :emailUtente)");
@@ -16,8 +16,9 @@
             $stmt->bindParam(':nomeProgettoSoftware', $_POST['nomeProgettoSoftware'], PDO::PARAM_STR);
             $stmt->bindParam(':emailUtente', $_SESSION['email'], PDO::PARAM_STR);
             $stmt->execute();
-        
+            header("Location: ../richiestaCandidatura/richiestaCandidatura.php");
             exit();
+            
         }
         
 

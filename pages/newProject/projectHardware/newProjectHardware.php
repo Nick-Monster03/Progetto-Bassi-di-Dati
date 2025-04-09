@@ -34,7 +34,7 @@
         $components = getComponentsIn();
         echo "<ul>";
         foreach ($components as $component) {
-            echo "<li>" . htmlspecialchars($component['nomeComponente']) . " - Quantità: " . htmlspecialchars($component['quantità']) . "</li>";
+            echo "<li>" . htmlspecialchars($component['nomeComponente']) . " - Quantità: " . htmlspecialchars($component['quantita']) . "</li>";
         }
         echo "</ul>";
         ?>

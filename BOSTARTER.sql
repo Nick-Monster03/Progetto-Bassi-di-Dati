@@ -5,6 +5,7 @@ use BOSTARTER;
 create table UTENTE(
 	email varchar(40) primary key,
     nickname varchar(20),
+    password varchar(40),
     nome varchar(20),
     cognome varchar (20),
     annoNascita datetime,
@@ -103,11 +104,11 @@ create table PROFILO_SKILL(
     primary key (nomeProfilo, nomeProgettoSoftware, nomeSkill)
 ) ENGINE="INNODB";
 
-create table  FINANZIAMENTO(
-	emailUtente varchar(40) not null,
+create table FINANZIAMENTO(
+    emailUtente varchar(40) not null,
     dataVersamento dateTime,
     nomeProgetto varchar(30),
-    idReward int,
+    idReward int null,
     importo decimal(10,2),
     foreign key (emailUtente) references UTENTE(email) on delete cascade,
     foreign key (nomeProgetto) references PROGETTO(nome) on delete cascade,
@@ -299,12 +300,12 @@ END $
 DELIMITER ;
 
 DELIMITER $
-create procedure Registrazione(IN email varchar(40), IN nickname varchar(20), IN nome varchar(20), 
+create procedure Registrazione(IN email varchar(40), IN password varchar(40), IN nickname varchar(20), IN nome varchar(20), 
 							   IN cognome varchar (20), IN annoNascita datetime, IN luogoNascita varchar(30))
 begin
     declare is_ok int default 0;
     
-	if (email is null or email = '' or nickname is null or nickname = '' or nome is null or nome = '' or 
+	if (email is null or email = '' or password is null or password ='' or nickname is null or nickname = '' or nome is null or nome = '' or 
 		cognome is null or cognome = '' or annoNascita is null or luogoNascita is null or luogoNascita = '' ) then
         set is_ok = 0;
 	else
@@ -312,8 +313,8 @@ begin
     END IF;
     
     if(is_ok = 1) then
-		INSERT INTO utente (email, nickname, nome, cognome, annoNascita, luogoNascita) 
-		VALUES (email, nickname, nome, cognome, annoNascita, luogoNascita);
+		INSERT INTO utente (email, password, nickname, nome, cognome, annoNascita, luogoNascita) 
+		VALUES (email, password, nickname, nome, cognome, annoNascita, luogoNascita);
     else
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'I campi specificati non possono essere nulli o vuoti';
@@ -413,6 +414,9 @@ begin
     if(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward > 0) then
             INSERT INTO finanziamento(emailUtente, dataVersamento, nomeProgetto, idReward, importo)
             VALUES (emailUtente, date_now, nomeProgetto, reward_id, importo);
+    elseif(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward < 1) then
+            INSERT INTO finanziamento(emailUtente, dataVersamento, nomeProgetto, importo)
+            VALUES (emailUtente, date_now, nomeProgetto, importo);
     else
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Errore: email, progetto o reward non validi.';
@@ -570,14 +574,16 @@ end
 $
 DELIMITER ;
 
-create view Top3Creatori(email) as 
-	select nickname
-    from UTENTE
-    where email in(
-	select emailUtente
-    from CREATORE
-    order by affidabilità desc)
-    limit 3;
+CREATE VIEW Top3Creatori AS
+SELECT u.email, u.nickname, c.affidabilità
+FROM UTENTE u
+JOIN (
+    SELECT *
+    FROM CREATORE
+    ORDER BY affidabilità DESC
+    LIMIT 3
+) c ON u.email = c.emailUtente;
+
     
 create view ProgettiFinanziati(nome, totale) as
 	select nomeProgetto as nome, sum(importo) as totale
@@ -587,32 +593,31 @@ create view ProgettiFinanziati(nome, totale) as
 create view ProgettiScadenza(nome, rimanenza) as
 	select pf.nome as nome, (p.budget-pf.totale) as rimanenza
     from ProgettiFinanziati as pf join progetto as p on p.nome=pf.nome;
-create view Top3ProgettiVicinoScadenza(nome) as
-	select ps.nome
+create view Top3ProgettiVicinoScadenza(nome,rimanenza) as
+	select ps.nome,rimanenza
     from ProgettiScadenza as ps
-    order by rimanenza desc
+    order by rimanenza asc
     limit 3;
 
 create view ClassificaFinanziatori (email, totale) as
 	select emailUtente as email, sum(importo) as totale
 	from finanziamento as f
 	group by emailUtente;
-create view Top3Finanziatori(nickname) as
-	select nickname
-    from utente
-    where email in (select email
-					from ClassificaFinanziatori as cf
-                    order by totale)
-	limit 3;
+create view top3finanziatori as
+select u.nickname, cf.totale
+from classificafinanziatori cf
+join utente u on u.email = cf.email
+order by cf.totale desc
+limit 3;
 
  
  -- Registrazione del primo utente
-CALL Registrazione('utente1@example.com', 'user1', 'Mario', 'Rossi', '1990-05-15', 'Roma');
-CALL Registrazione('utente2@example.com', 'user2', 'Luca', 'Bianchi', '1995-08-22', 'Milano');
-CALL Registrazione('creatore@example.com', 'creatorUser', 'Anna', 'Neri', '1988-07-20', 'Firenze');
-CALL Registrazione('creatore2@example.com', 'creatorUser2', 'Marco', 'Verdi', '2000-07-24', 'Bari');
-CALL Registrazione('creatore3@example.com', 'creatore3', 'Giovanni', 'Rossi', '1985-06-20', 'Napoli');
-CALL Registrazione('creatore4@example.com', 'creatore4', 'Aldo', 'Baglio', '1999-08-10', 'Palermo');
+CALL Registrazione('utente1@example.com', 'u1', 'user1', 'Mario', 'Rossi', '1990-05-15', 'Roma');
+CALL Registrazione('utente2@example.com', 'u2','user2', 'Luca', 'Bianchi', '1995-08-22', 'Milano');
+CALL Registrazione('creatore@example.com', 'c1','creatorUser', 'Anna', 'Neri', '1988-07-20', 'Firenze');
+CALL Registrazione('creatore2@example.com', 'c2', 'creatorUser2', 'Marco', 'Verdi', '2000-07-24', 'Bari');
+CALL Registrazione('creatore3@example.com', 'c3', 'creatore3', 'Giovanni', 'Rossi', '1985-06-20', 'Napoli');
+CALL Registrazione('creatore4@example.com', 'c4', 'creatore4', 'Aldo', 'Baglio', '1999-08-10', 'Palermo');
 
 CALL RegistrazioneAmministratore('utente1@example.com', 'SECURECODE123');
 CALL RegistrazioneCreatore('creatore@example.com');
@@ -667,7 +672,7 @@ VALUES
 CALL InserisciProgetto('Progetto Sistema Distribuito', 'Sviluppo di un sistema di comunicazione', 50000.00, '2024-12-31 23:59:59', 'creatore4@example.com', "fotoInesistente5.jpg");
 
 CALL RispondiCommento(1, 'creatore@example.com', 'grazie per il tuo commento è stato molto utile');
-CALL RispondiCommento(1, 'creatore2@example.com', 'grazie per il tuo commento è stato molto utile');
+CALL RispondiCommento(2, 'creatore2@example.com', 'grazie per il tuo commento è stato molto utile');
 
 INSERT INTO COMPONENTE (nome, descrizione, prezzo)
 VALUES 

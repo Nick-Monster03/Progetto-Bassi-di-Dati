@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Create a New Project</h1>
-    <form action="newProjectController.php" method="post">
+    <form action="newProjectController.php" method="post" enctype="multipart/form-data">
         <label for="projectName">Nome Progetto:</label>
         <input type="text" id="projectName" name="projectName" required>
         <br><br>

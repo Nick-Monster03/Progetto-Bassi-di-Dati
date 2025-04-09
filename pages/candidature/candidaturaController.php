@@ -8,7 +8,7 @@ error_reporting(E_ALL);
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
             ]);
-            $sql = 'SELECT nome FROM PROGETTO WHERE emailUtenteCreatore = "'.$_SESSION['email'].'"';
+            $sql = 'SELECT nome FROM PROGETTO WHERE emailUtenteCreatore = "'.$_SESSION['email'].'" AND stato = "aperto" AND EXISTS (SELECT * FROM PROGETTO_SOFTWARE WHERE PROGETTO.nome = PROGETTO_SOFTWARE.nomeProgetto)';
             $res=$pdo->prepare($sql);
             $res->execute();
             return $res->fetchAll();

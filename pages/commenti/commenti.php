@@ -12,13 +12,20 @@
 
         <?php 
             include './commentiController.php';
+            
             foreach ($completeComments as $item): ?>
             <?php
                 $commento = $item->getCommento();     // Oggetto Commento
-                $risposte = $item->getRisposte();     // Array di Risposta o null
+                $risposta = $item->getRisposte(); 
+            //     echo '<pre>';
+            // print_r($commento);
+            // echo '</pre>';    
+            // echo '<pre>';
+            // print_r($risposta);
+            // echo '</pre>';// Array di Risposta o null
             ?>
             <div style="position: absolute; top: 20px; right: 20px;">
-                <a href="../home/home.php" class="btn btn-secondary">Home</a>
+                <a href="../item/item.php?nome=<?= urlencode($commento->getNomeProgetto()) ?>" class="btn btn-secondary">Torna indietro</a>
             </div>
             <div class="card mb-3">
                 <div class="card-header bg-primary text-white">
@@ -29,16 +36,16 @@
                     <p><strong>Data:</strong> <?= htmlspecialchars($commento->getDataCommento()) ?></p>
                    
 
-                    <?php if (!empty($risposte)): ?>
+                    <?php if (!empty($risposta)): ?>
                         <div class="mt-3">
                             <h6>Risposte:</h6>
                             <ul class="list-group">
-                                <?php foreach ($risposte as $risposta): ?>
+                                
                                     <li class="list-group-item">
                                         <strong><?= htmlspecialchars($risposta->getEmailUtenteCreatore()) ?>:</strong>
                                         <?= htmlspecialchars($risposta->getRisposta()) ?>
                                     </li>
-                                <?php endforeach; ?>
+                               
                             </ul>
                         </div>
                     <?php else: ?>

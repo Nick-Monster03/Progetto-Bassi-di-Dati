@@ -1,24 +1,20 @@
 <?php
-if (isset($_POST["email"]) and isset($_POST["role"])) {
+if (isset($_POST["email"]) and isset($_POST["role"]) and isset($_POST["password"])) {
 
     $email = $_POST["email"];
     $role = $_POST["role"];
-
+    $password = $_POST["password"];
     // Connessione al DB
     try {
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
-        exit();
-    }
-
-    try {
-        $res = $pdo->prepare("SELECT * FROM UTENTE WHERE email = :email");
+   
+        $res = $pdo->prepare("SELECT * FROM UTENTE WHERE email = :email AND password = :password");
         $res->bindValue(":email",$email);
+        $res->bindValue(":password",$password);
         $res->execute(); 
     } catch (PDOException $e) {
-        echo("[ERRORE] Query SQL (Insert) non riuscita. Errore: " . $e->getMessage());
+        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
         exit();
     }
     $row = $res->rowCount();
@@ -41,7 +37,7 @@ if (isset($_POST["email"]) and isset($_POST["role"])) {
                 $_SESSION['user_role'] = $role;
                 header("Location: ../home/home.php");
             }else{
-                echo("<p style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Non esiste un creatore con questa email</p>");
+                echo("<p style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Non esiste un utente con questa email</p>");
             }
         }else if($role == "creatore"){
             $resC = $pdo->prepare("SELECT * FROM CREATORE WHERE emailUtente = :email");
@@ -54,7 +50,6 @@ if (isset($_POST["email"]) and isset($_POST["role"])) {
                 $_SESSION['user_role'] = $role;
                 header("Location: ../home/home.php");
             }else{
-                //header("Location: login.php");
                 echo("<p style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Non esiste un creatore con questa email</p>");
             }
         }else if($role == "amministratore"){
@@ -74,18 +69,14 @@ if(isset($_POST["security_code"])){
     try {
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
-        exit();
-    }
-    try {
+    
         $res = $pdo->prepare("SELECT * FROM amministratore WHERE emailUtente = :email AND codice_sicurezza = :security_code");
         $res->bindValue(":email", $email);
         $res->bindValue(":security_code", $security_code);
         $res->execute();
        
     } catch (PDOException $e) {
-        echo("[ERRORE] Query SQL non riuscita. Errore: " . $e->getMessage());  
+        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
         exit();
     }
     $row = $res->rowCount();
@@ -93,7 +84,6 @@ if(isset($_POST["security_code"])){
     if($row > 0){
         $_SESSION['authorized'] = 1;
         $_SESSION['user_role'] = "amministratore";
-        //echo("Login effettuato con successo. Email: " . $email . ", Codice di sicurezza: " . $security_code);
         header("Location: ../home/home.php");
     } else {
         echo("<p style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Codice di sicurezza errato, riprova</p>");

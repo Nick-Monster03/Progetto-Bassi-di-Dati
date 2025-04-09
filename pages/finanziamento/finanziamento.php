@@ -44,7 +44,7 @@
                     <h4>Codice: <?= htmlspecialchars($r['codice']) ?></h4>
                     <p><?= htmlspecialchars($r['descrizione']) ?></p>
                     <?php if (!empty($r['foto'])): ?>
-                        <img src="<?= htmlspecialchars($r['foto']) ?>" alt="reward image">
+                        <img src="<?= htmlspecialchars('../../services/uploads/' . $r['foto']) ?>" alt="reward image">
                     <?php else: ?>
                         <p><em>Nessuna immagine disponibile</em></p>
                     <?php endif; ?>

@@ -16,27 +16,21 @@
         $query->bindValue(':nomeProgetto', $nomeProgetto);
         $query->execute();
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $isSoftware = isSoftware($nomeProgetto);
         if ($result) {
-            
-            echo "<h2>Dettagli del Progetto:</h2>";
-            foreach ($result as $row) {
-                foreach ($row as $column => $value) {
-                    echo "<p><strong>$column:</strong> $value</p>";
-                    if($column == "emailUtenteCreatore"){
-                        $creatore = $value;
-                        setcookie("creatore", $creatore, time() + 3600, "/");
-                    }
-                        
-                    else if($column == "stato" )
-                        $stato = $value;
-                }
-            }
             $query = $pdo->prepare('SELECT * FROM FOTO WHERE nomeProgetto = :nomeProgetto');
             $query->bindValue(':nomeProgetto', $nomeProgetto);
             $query->execute();
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            $foto = $result["foto"];
-            echo "<img src=.$foto. alt='fotoProgetto'></img>";
+            $row = $query->fetch(PDO::FETCH_ASSOC);
+            $foto = $row ? "../../services/uploads/" . $row['foto'] : null;
+
+            echo '<h2 class="text-center mb-4">Dettagli del Progetto: ' . htmlspecialchars($nomeProgetto, ENT_QUOTES, 'UTF-8') . '</h2>';
+
+            if ($foto) {
+                echo "<img src='" . htmlspecialchars($foto) . "' alt='Foto Progetto' style='max-width: 400px;'>";
+            } else {
+                echo "<p>Nessuna foto disponibile.</p>";
+            }
             $valoreAttuale = trovaImporto($nomeProgetto)["total"] ?? 0;
             setcookie("valoreAttuale", $valoreAttuale, time() + 3600, "/");
         } else {
@@ -68,10 +62,9 @@
         }
     }
 
-    function isSoftware(){
+    function isSoftware($nomeProgetto){
         try {
             session_start();
-            $nomeProgetto = $_COOKIE["nomeProgetto"];
             $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $res = $pdo->prepare("SELECT count(*) as count FROM PROGETTO_SOFTWARE WHERE nomeProgetto = :nomeProgetto");

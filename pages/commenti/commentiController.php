@@ -37,32 +37,29 @@
 
         foreach ($commenti as $commento) {
             $commentoObj = new Commento(
-                $commento['id'],
-                $commento['testo'],
-                $commento['dataCommento'],
-                $commento['nomeProgetto'],
-                $commento['emailUtente']
+            $commento['id'],
+            $commento['testo'],
+            $commento['dataCommento'],
+            $commento['nomeProgetto'],
+            $commento['emailUtente']
             );
 
-            // Fetch responses for the current comment
-            $query = $pdo->prepare("SELECT * FROM risposta WHERE idCommento=:idCommento");
+            // Fetch the single response for the current comment
+            $query = $pdo->prepare("SELECT * FROM risposta WHERE idCommento=:idCommento LIMIT 1");
             $query->bindParam(':idCommento', $commento['id'], PDO::PARAM_INT);
             $query->execute();
-            $risposte = $query->fetchAll(PDO::FETCH_ASSOC);
+            $risposta = $query->fetch(PDO::FETCH_ASSOC);
 
-            $risposteObj = null;
-            if (!empty($risposte)) {
-                $risposteObj = [];
-                foreach ($risposte as $risposta) {
-                    $risposteObj[] = new Risposta(
-                        $risposta['idCommento'],
-                        $risposta['emailUtenteCreatore'],
-                        $risposta['risposta']
-                    );
-                }
+            $rispostaObj = null;
+            if ($risposta) {
+            $rispostaObj = new Risposta(
+                $risposta['idCommento'],
+                $risposta['emailUtenteCreatore'],
+                $risposta['risposta']
+            );
             }
 
-            $completeComments[] = new CompleteComment($commentoObj, $risposteObj);
+            $completeComments[] = new CompleteComment($commentoObj, $rispostaObj);
         }
 
         
