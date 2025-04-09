@@ -3,13 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Commenti Completi</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../../bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body class="p-4">
 
     <div class="container">
         <h2 class="mb-4">Commenti con risposte</h2>
-
+        <!-- Link per aprire la modal -->
+        
+        <?php 
+        session_start();
+        if (isset($_SESSION['email']) && isset($_COOKIE['creatore']) && $_SESSION['email'] != $_COOKIE['creatore']): ?> 
+        <!-- Se il coockie dovessere scaduto e quindi non c' è $_COOCKIE['creatore'] l' eccezioe sarebbe lanciata
+        Successivamente una volta inclusa la pagina commentiController.php, -->
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#commentModal">+ Aggiungi Commento</a>
+        <?php endif; ?>
+        <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="commentiController.php" method="POST" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="commentModalLabel">Aggiungi un commento</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="testo" class="form-label">Testo del commento</label>
+                            <textarea class="form-control" id="testoCommento" name="testoCommento" rows="4" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                        <button type="submit" class="btn btn-success">Invia Commento</button>
+                    </div>
+                </form>
+            </div>
+        </div>  
+        <div style="position: absolute; top: 20px; right: 20px;">
+            <a href="../item/item.php?nome=<?= urlencode($_COOKIE['nomeProgetto'] ?? '') ?>" class="btn btn-secondary">Torna indietro</a>
+        </div>
         <?php 
             include './commentiController.php';
             
@@ -24,6 +56,8 @@
             // print_r($risposta);
             // echo '</pre>';// Array di Risposta o null
             ?>
+            
+
             <div style="position: absolute; top: 20px; right: 20px;">
                 <a href="../item/item.php?nome=<?= urlencode($commento->getNomeProgetto()) ?>" class="btn btn-secondary">Torna indietro</a>
             </div>

@@ -670,6 +670,8 @@ VALUES
 ('Sviluppatore Backend', 'Cybersecurity Audit', 'Database Management', 4);
 
 CALL InserisciProgetto('Progetto Sistema Distribuito', 'Sviluppo di un sistema di comunicazione', 50000.00, '2024-12-31 23:59:59', 'creatore4@example.com', "fotoInesistente5.jpg");
+INSERT INTO progetto_software (nomeProgetto)
+VALUES ('Progetto Sistema Distribuito');
 
 CALL RispondiCommento(1, 'creatore@example.com', 'grazie per il tuo commento è stato molto utile');
 CALL RispondiCommento(2, 'creatore2@example.com', 'grazie per il tuo commento è stato molto utile');

@@ -6,7 +6,7 @@ try{
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
         require '../../services/log_eventi.php';
-            if (!isset($_POST['userRole'], $_POST['email'], $_POST['nickname'], $_POST['password'], $_POST['nome'], $_POST['cognome'], $_POST['annoNascita'], $_POST['luogoNascita'])) {
+            if (!(isset($_POST['securityCode']) || (isset($_POST['userRole'], $_POST['email'], $_POST['nickname'], $_POST['password'], $_POST['nome'], $_POST['cognome'], $_POST['annoNascita'], $_POST['luogoNascita'])))) {
                 throw new Exception("DATI MANCANTI");
             }
 
@@ -27,7 +27,10 @@ try{
             echo "Cognome: $cognome<br>";
             echo "Anno di Nascita: $annoNascita<br>";
             echo "Luogo di Nascita: $luogoNascita<br>";
-
+            
+            ini_set('display_errors', 1);             // Mostra gli errori a schermo
+            ini_set('display_startup_errors', 1);     // Mostra errori in fase di startup
+            error_reporting(E_ALL);   
 
             $sql = "CALL Registrazione(:email, :password, :nickname, :nome, :cognome, :annoNascita, :luogoNascita)";
             $stmt = $pdo->prepare($sql);
@@ -72,23 +75,20 @@ try{
                     setcookie("user_cognome", $cognome, time() + 3600, "/");
                     setcookie("user_annoNascita", $annoNascita, time() + 3600, "/");
                     setcookie("user_luogoNascita", $luogoNascita, time() + 3600, "/");
-                    verifyAdmin();
+                    echo '
+                    <form method="post" action="registerController.php">
+                        <h2>Codice di Sicurezza Richiesto</h2>
+                        <label for="securityCode" class="form-label">Inserisci il codice di sicurezza:</label>
+                        <input type="password" class="form-control" id="securityCode" name="securityCode" required>
+                        <br>
+                        <button type="submit" class="btn btn-danger">Verifica</button>
+                    </form>';
                     break;
                     
                 default:
                     $message = "Seleziona un ruolo valido.";
                     break;
             }
-        function verifyAdmin() {
-                echo '
-                <form method="post">
-                    <h2>Codice di Sicurezza Richiesto</h2>
-                    <label for="securityCode" class="form-label">Inserisci il codice di sicurezza:</label>
-                    <input type="password" class="form-control" id="securityCode" name="securityCode" required>
-                    <br>
-                    <button type="submit" class="btn btn-danger">Verifica</button>
-                </form>';
-        }
         if (isset($_POST['securityCode'])) {
             
                 $securityCode = $_POST['securityCode'];
@@ -146,4 +146,5 @@ catch (Exception $e) {
         $pdo->rollBack();
     }
 }
+
 ?>

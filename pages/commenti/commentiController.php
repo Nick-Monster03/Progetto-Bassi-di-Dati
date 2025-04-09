@@ -1,7 +1,7 @@
 <?php
     try {
         
-        if (!isset($_COOKIE["nomeProgetto"]))
+        if (!isset($_COOKIE["nomeProgetto"], $_COOKIE["creatore"]))
             throw new Exception("SESSIONE SCADUTA.");
 
         $nomeProgetto = $_COOKIE["nomeProgetto"];
@@ -26,6 +26,18 @@
             $stmt->execute();
             header("Location: commenti.php");
             exit();
+        }
+        if(isset($_POST['testoCommento'])){
+            session_start();
+            $testo= $_POST['testoCommento'];
+            $emailUtente = $_SESSION['email'];
+
+            $sql = $pdo->prepare("CALL AggiungiCommento(:testo, :nomeProgetto, :emailUtente)");
+            $sql->bindParam(':testo', $testo, PDO::PARAM_STR);
+            $sql->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
+            $sql->bindParam(':emailUtente', $emailUtente, PDO::PARAM_STR);
+            $sql->execute();
+            header("Location: commenti.php");
         }
         // Fetch comments
         $query = $pdo->prepare("SELECT * FROM commento WHERE nomeProgetto=:nomeProgetto");
