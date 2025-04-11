@@ -14,7 +14,7 @@
         $competenza = $_POST['competenzeDisponibili'];
         $livello = $_POST['level'];
         $emailUtente = $_SESSION["email"];
-        echo($livello);
+
 
 
         try{
@@ -28,6 +28,7 @@
         }
         catch(PDOException $e){
             echo("[ERRORE] Query SQL (Insert) non riuscita. Errore: " . $e->getMessage());
+            echo '<a href="../home/home.php" class="btn btn-secondary">Torna alla Home</a>';
             exit();
         }
 
@@ -44,6 +45,7 @@
             ]);
         } catch (PDOException $e) {
             echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
+            echo '<a href="../home/home.php" class="btn btn-secondary">Torna alla Home</a>';
             exit();
         }
 
@@ -66,6 +68,7 @@
         }
         catch (PDOException $e) {
             echo("[ERRORE] Query SQL (Insert) non riuscita. Errore: " . $e->getMessage());
+            echo '<a href="../home/home.php" class="btn btn-secondary">Torna alla Home</a>';
             exit();
         }
     }

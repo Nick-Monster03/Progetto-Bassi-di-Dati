@@ -1,6 +1,8 @@
 <?php
     try {
-        
+        ini_set('display_errors', 1); // Mostra gli errori
+ini_set('display_startup_errors', 1);
+        include '../../services/log_eventi.php';
         if (!isset($_COOKIE["nomeProgetto"], $_COOKIE["creatore"]))
             throw new Exception("SESSIONE SCADUTA.");
 
@@ -24,6 +26,8 @@
             $stmt->bindParam(':emailCreatore', $emailCreatore, PDO::PARAM_STR);
             $stmt->bindParam(':risposta', $risposta, PDO::PARAM_STR);
             $stmt->execute();
+            addLog("nuova_risposta", new Risposta($idCommento, $emailCreatore, $risposta));
+            
             header("Location: commenti.php");
             exit();
         }
@@ -37,6 +41,9 @@
             $sql->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
             $sql->bindParam(':emailUtente', $emailUtente, PDO::PARAM_STR);
             $sql->execute();
+            addLog("nuovo_commento", new Commento(null, $testo, null, $nomeProgetto, $emailUtente));//tanto sono necessari per il log solo nomeProgetto e emailUtente
+            
+
             header("Location: commenti.php");
         }
         // Fetch comments
@@ -77,6 +84,8 @@
         
     } catch (PDOException $e) {
         echo "Errore di connessione al db: " . $e->getMessage();
+        echo ' <div><a href="../home/home.php" class="btn btn-secondary">Home</a></div>';
+        exit();
     } catch (Exception $e) {
         echo $e->getMessage();
         echo ' <div><a href="../home/home.php" class="btn btn-secondary">Home</a></div>';

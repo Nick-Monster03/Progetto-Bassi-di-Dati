@@ -32,7 +32,7 @@ if (isset($_POST["email"]) and isset($_POST["role"]) and isset($_POST["password"
             $resA->execute(); 
             $rowA = $resA->rowCount();
             if($rowC==0 && $rowA==0){ //verifica che non sia un creatore o un amministratore
-                $_SESSION['authorized'] = 1;
+        
                 $_SESSION['email'] = $email;
                 $_SESSION['user_role'] = $role;
                 header("Location: ../home/home.php");
@@ -45,7 +45,7 @@ if (isset($_POST["email"]) and isset($_POST["role"]) and isset($_POST["password"
             $resC->execute(); 
             $rowC = $resC->rowCount();
             if($rowC>0){
-                $_SESSION['authorized'] = 1;
+        
                 $_SESSION['email'] = $email;
                 $_SESSION['user_role'] = $role;
                 header("Location: ../home/home.php");
@@ -82,7 +82,7 @@ if(isset($_POST["security_code"])){
     $row = $res->rowCount();
 
     if($row > 0){
-        $_SESSION['authorized'] = 1;
+
         $_SESSION['user_role'] = "amministratore";
         header("Location: ../home/home.php");
     } else {

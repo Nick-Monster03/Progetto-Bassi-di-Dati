@@ -21,7 +21,8 @@ create table CURRICULUM(
     emailutente varchar(40), 
     livello int check (livello between 0 and 5),
     foreign key (nomeskill) references SKILL(nome) on delete cascade,
-    foreign key (emailutente) references UTENTE(email) on delete cascade
+    foreign key (emailutente) references UTENTE(email) on delete cascade,
+    primary key (nomeskill, emailutente)
 )ENGINE="INNODB";
 
 create table AMMINISTRATORE(
@@ -286,9 +287,9 @@ DELIMITER ;
 DELIMITER $
 
 CREATE EVENT aggiorna_progetti
-ON SCHEDULE EVERY 1 DAY
+ON SCHEDULE EVERY 1 minute
+-- ON SCHEDULE EVERY 1 DAY
  STARTS NOW()  -- parte subito
-ON COMPLETION PRESERVE ENABLE
 DO
 BEGIN
     UPDATE PROGETTO

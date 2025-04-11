@@ -51,7 +51,8 @@
         }
     
 } catch (PDOException $e) {
-    echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage() . $e->getLine() . "]");
+    echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage() .  "]");
+    echo '<a href="../home/home.php" class="btn btn-secondary">Torna alla Home</a>';
     exit();
 }
 

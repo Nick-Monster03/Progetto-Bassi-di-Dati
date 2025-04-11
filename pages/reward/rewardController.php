@@ -13,6 +13,7 @@
             $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
             $stmt->execute();
             $rewards = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
         } else {
             throw new Exception("SESSIONE SCADUTA");
         }

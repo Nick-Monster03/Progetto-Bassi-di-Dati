@@ -19,19 +19,6 @@ try{
             $annoNascita = $_POST['annoNascita']; // Riceve in formato YYYY-MM-DD
             $luogoNascita = $_POST['luogoNascita'];
 
-            echo "Ruolo Utente: $userRole<br>";
-            echo "Email: $email<br>";
-            echo "Nickname: $nickname<br>";
-            echo "Password: $password<br>";
-            echo "Nome: $nome<br>";
-            echo "Cognome: $cognome<br>";
-            echo "Anno di Nascita: $annoNascita<br>";
-            echo "Luogo di Nascita: $luogoNascita<br>";
-            
-            ini_set('display_errors', 1);             // Mostra gli errori a schermo
-            ini_set('display_startup_errors', 1);     // Mostra errori in fase di startup
-            error_reporting(E_ALL);   
-
             $sql = "CALL Registrazione(:email, :password, :nickname, :nome, :cognome, :annoNascita, :luogoNascita)";
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(":email", $email, PDO::PARAM_STR);
@@ -136,7 +123,8 @@ try{
         }
     }
 } catch (PDOException $e) {
-    echo "<script>alert('[ERRORE] Operazione non riuscita. Errore: " . $e->getMessage() . "');</script>" . $e->getLine();
+    // echo "<script>alert('[ERRORE] Operazione non riuscita. Errore: " . $e->getMessage() . "');</script>" . $e->getLine();
+    echo "[ERRORE] Operazione non riuscita. Errore: " . $e->getMessage() . "";
     echo "<button onclick='window.history.back();'>TORNA ALLA SCHERMATA PRECEDENTE</button>";
     $pdo->rollBack();
 }

@@ -11,6 +11,7 @@
         session_start();
         include('registerController.php');
     ?>
+    <a href="../home/home.php" class="btn btn-secondary">Torna alla Home</a>
     <form action="registerController.php" method="post">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>

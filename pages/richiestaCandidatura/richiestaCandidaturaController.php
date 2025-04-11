@@ -1,7 +1,7 @@
 <?php
     try{
         session_start();
-        
+        include '../../services/log_eventi.php';
         $pdo = new PDO("mysql:host=localhost;dbname=BOSTARTER", "root", "changeme");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
@@ -16,6 +16,7 @@
             $stmt->bindParam(':nomeProgettoSoftware', $_POST['nomeProgettoSoftware'], PDO::PARAM_STR);
             $stmt->bindParam(':emailUtente', $_SESSION['email'], PDO::PARAM_STR);
             $stmt->execute();
+            addLog("nuova_candidatura", (object)['emailUtente' => $_Session['email'],'nomeProgettoSoftware' => $_POST['nomeProgettoSoftware'], 'nomeProfilo' => $_POST['nomeProfilo']]);
             header("Location: ../richiestaCandidatura/richiestaCandidatura.php");
             exit();
             

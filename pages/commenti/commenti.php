@@ -85,7 +85,9 @@
                     <?php else: ?>
                         <p class="text-muted">Nessuna risposta disponibile.</p>
                         <?php 
-                        session_start();
+                        if (session_status() === PHP_SESSION_NONE) {
+                            session_start();
+                        }
                         if (isset($_SESSION['email']) && isset($_COOKIE['creatore']) && $_SESSION['email'] == $_COOKIE['creatore']): ?>
                             <div class="mt-3">
                                 <form action="commentiController.php" method="post">    

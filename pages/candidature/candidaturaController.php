@@ -1,6 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+    include '../../services/log_eventi.php';
     function getProjects() {
         try {
             session_start();
@@ -77,10 +78,17 @@ error_reporting(E_ALL);
         $newEsito = $esito == 'accettata' ? 1 : 0;
         $stmt->bindParam(':accettazione', $newEsito);
         $stmt->execute();
-    } catch (PDOException $e) {
-        echo "[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage();
-        exit();
-    }
+        addLog("nuovo_esitoCandidatura", (object)['nomeProfilo' => $nomeProfilo, 'nomeProgetto' => $nomeProgetto, 'esito' => $esito]);
+        
+ 
+        
+        } catch (PDOException $e) {
+            echo "[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage();
+            exit();
+        } catch (Exception $e) {
+            echo "[ERRORE] : " . $e->getMessage();
+            exit();
+        }
     header("Location: candidatura.php");
     }
 ?>

@@ -1,6 +1,6 @@
 <?php
     try{
-
+        include '../../services/log_eventi.php';
         if(!isset($_COOKIE['nomeProgetto'])) {
             throw new Exception('SESSIONE SCADUTA. <a href="../home/home.php">backHome</a>');
         }
@@ -24,6 +24,8 @@
                 $stmt->bindParam(':importo', $importo, PDO::PARAM_STR);
                 $stmt->bindParam(':reward_id', $reward_id, PDO::PARAM_INT);
                 $stmt->execute();
+                addLog("nuovo_finanziamento", (object)['nomeProgetto'=>$nomeProgetto, 'utente'=>$emailUtente]);
+                
 
                 // Se l'esecuzione ha avuto successo, calcola la somma di tutti i finanziamenti per il progetto
                 $stmt = $pdo->prepare("SELECT SUM(importo) AS totaleFinanziamenti FROM FINANZIAMENTO WHERE nomeProgetto = :nomeProgetto");
@@ -75,6 +77,8 @@
     }catch(PDOException $e){
             echo 'Errore di connessione: ' . $e->getMessage();
             echo "<a href='../item/item.php'>Torna alla pagina del progetto</a>";
+            
+            exit();
     }catch(Exception $e){
         echo 'Errore: ' . $e->getMessage();
     }

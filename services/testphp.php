@@ -86,22 +86,41 @@ try {
     $client = new MongoDB\Client("mongodb://localhost:27017");
     // Seleziona il database
     $db = $client->Movimenti;
-    echo "Connessione al database 'Movimenti' riuscita.<br>";
+    echo "<h2>LOG EVENTI MongoDB</h2>";
 
-    $collection = $db->log_eventi;
-    $documents = $collection->find();
-    echo "Documenti trovati nella collezione 'log_eventi':<br>";
-    echo '<table border="1">';
-    echo '<tr><th>Tipo Inserimento</th><th>Descrizione Evento</th><th>Timestamp</th></tr>';
-    foreach ($documents as $document) {
-        echo '<tr>';
-        echo '<td>' . $document['tipoInserimento'] . '</td>';
-        echo '<td>' . $document['descrizioneEvento'] . '</td>';
-        echo '<td>' . $document['timestamp'] . '</td>';
-        echo '</tr>';
+    $collections = $db->listCollections();
+
+    foreach ($collections as $collectionInfo) {
+        $collectionName = $collectionInfo->getName();
+        echo "<h3>Collezione: <strong>" . htmlspecialchars($collectionName) . "</strong></h3>";
+
+        $collection = $db->$collectionName;
+        $documents = $collection->find();
+
+        $firstRow = true;
+        echo "<table border='1'>";
+
+        foreach ($documents as $document) {
+            // Intestazioni solo la prima volta
+            if ($firstRow) {
+                echo "<tr>";
+                foreach ($document as $key => $value) {
+                    echo "<th>" . htmlspecialchars($key) . "</th>";
+                }
+                echo "</tr>";
+                $firstRow = false;
+            }
+
+            // Riga dati
+            echo "<tr>";
+            foreach ($document as $key => $value) {
+                echo "<td>" . htmlspecialchars(is_object($value) ? json_encode($value) : $value) . "</td>";
+            }
+            echo "</tr>";
+        }
+
+        echo "</table><br>";
     }
-    echo '</table>';
-
 } catch (Exception $e) {
     echo "Errore nella connessione a MongoDB: ", $e->getMessage();
 }

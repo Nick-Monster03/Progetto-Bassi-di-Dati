@@ -2,6 +2,7 @@
 session_start();
 
 try {
+    include '../../../services/log_eventi.php';
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!isset($_COOKIE['nomeProgetto']) || !isset($_FILES['foto'])) {
             throw new Exception("Sessione scaduta. Progetto non selezionato.");
@@ -32,6 +33,7 @@ try {
             $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
 
             $stmt->execute();
+            addLog('nuovo_reward', (object)['nomeProgetto' => $nomeProgetto]);
             header("Location: newReward.php");
             exit();
         // } else {

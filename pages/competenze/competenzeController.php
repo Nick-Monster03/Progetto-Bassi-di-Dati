@@ -1,4 +1,5 @@
 <?php
+    include '../../services/log_eventi.php';
     try{
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -12,6 +13,8 @@
             $query = $pdo->prepare("INSERT INTO skill (nome) VALUES (:nome)");
             $query->bindParam(':nome', $nuovaCompetenza);
             $query->execute();
+            addLog("nuova_skill", (object)['nome'=>$nuovaCompetenza]);
+            
             header("Location: competenze.php");
             exit();
         }
