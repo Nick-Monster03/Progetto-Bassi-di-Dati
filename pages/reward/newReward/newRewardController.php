@@ -44,7 +44,11 @@ try {
     }
 } catch (PDOException $e) {
     echo "Errore del database: " . $e->getMessage();
+    echo '<a href="./newReward.php">Torna alla Home</a>';
+    exit();
 } catch (Exception $e) {
     echo "Errore: " . $e->getMessage();
+    echo '<a href="./newReward.php">Torna alla Home</a>';
+    exit();
 }
 ?>

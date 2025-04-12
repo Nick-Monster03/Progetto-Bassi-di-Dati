@@ -53,7 +53,8 @@
         $esito = $stmt->fetchColumn();
 
     }catch(PDOException $e){
-        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage() . " sulla linea " . $e->getLine());
+        echo("[ERRORE] Connessione al DB non riuscita. Errore " . $e->getMessage() );
+        echo '<a href="../home/home.php">Torna alla Home</a>';
         exit();
     }catch(Exception $e){
         echo("SESSIONE SCADUTA");
@@ -73,6 +74,7 @@
             return $esito;
         } catch(PDOException $e){
             echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
+            echo '<a href="../home/home.php">Torna alla Home</a>';
             exit();
     }
        

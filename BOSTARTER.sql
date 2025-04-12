@@ -74,14 +74,14 @@ create table PROGETTO_SOFTWARE(
 ) ENGINE="INNODB";
 
 create table COMPONENTE(
-	nome varchar(20) primary key,
+	nome varchar(40) primary key,
     descrizione varchar(300),
     prezzo decimal(8,2)
 ) ENGINE="INNODB";
 
 create table COMPONENTI_PROGETTO(
 	nomeProgettoHardware varchar(30),
-    nomeComponente varchar(20),
+    nomeComponente varchar(40),
     quantita int check (quantita > 0),
     foreign key (nomeProgettoHardware) references PROGETTO_HARDWARE(nomeProgetto) on delete cascade,
     foreign key (nomeComponente) references COMPONENTE(nome) on delete cascade,
@@ -255,40 +255,11 @@ end
 $ 
 DELIMITER ;
 
--- DELIMITER $
--- CREATE EVENT event_name
--- ON SCHEDULE
--- EVERY 1 DAY 
--- DO
--- begin
---     declare progetto_nome varchar(30);
---     declare progetto_data_limite datetime;
---     declare progetto_stato enum('aperto', 'chiuso');
---     declare done int default 0;
-
---     declare cur cursor for 
---         select nome, data_limite, stato from progetto;
---     declare continue handler for not found set done = 1;
-
---     open cur;
--- 		fetch cur into progetto_nome, progetto_data_limite, progetto_stato;
--- 		while done = 0 do
--- 			if progetto_data_limite < now() and progetto_stato = 'aperto' then
--- 				UPDATE progetto 
--- 				SET stato = 'chiuso' 
--- 				WHERE nome = progetto_nome;
--- 			end if;
--- 			fetch cur into progetto_nome, progetto_data_limite, progetto_stato;
--- 		end while;
---     close cur;
--- end
--- $ 
--- DELIMITER ;
 DELIMITER $
 
 CREATE EVENT aggiorna_progetti
-ON SCHEDULE EVERY 1 minute
--- ON SCHEDULE EVERY 1 DAY
+-- ON SCHEDULE EVERY 1 minute
+ON SCHEDULE EVERY 1 DAY
  STARTS NOW()  -- parte subito
 DO
 BEGIN

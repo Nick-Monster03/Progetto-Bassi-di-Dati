@@ -31,7 +31,7 @@
                     $collectionName = "nuovo_progetto";
                     break;
                 case "nuova_skill":
-                    $descrizioneEvento = "Una nuova skill è stata aggiunta: " . $newInsert->nome;
+                    $descrizioneEvento = "L' amministratore ha aggiunto la competenza:  " . $newInsert->nome;
                     $document = [
                         "descrizioneEvento" => $descrizioneEvento,
                         "timestamp" => $timestamp,
@@ -49,6 +49,16 @@
                     ];
                     $collectionName = "nuovo_finanziamento";
                     break;
+                    case "nuovo_profilo":
+                        $descrizioneEvento = "E' stato aggiunto un nuovo profilo " . $newInsert->nomeProfilo . "\t" . "al progetto " . $newInsert->nomeProgettoSoftware;
+                        $document = [
+                            "descrizioneEvento" => $descrizioneEvento,
+                            "timestamp" => $timestamp,
+                            "nomeProfilo" => $newInsert->nomeProfilo,
+                            "nomeProgettoSoftware" => $newInsert->nomeProgettoSoftware
+                        ];
+                        $collectionName = "nuovo_profilo";
+                        break;
                 case "nuova_candidatura":
                     $descrizioneEvento = $newInsert->emailUtente . " ha inviato una candidatura: per la figura di " . $newInsert->nomeProfilo . " del progetto " . $newInsert->nomeProgettoSoftware;
                     $document = [
@@ -90,12 +100,13 @@
                     ];
                     $collectionName = "nuovo_esitoCandidatura";
                     break;
-                case "nuova_Competenza":
-                    $descrizioneEvento = "L' amministratore ha aggiunto la competenza:  " . $newInsert->nuovaCompetenza;
+                case "nuova_competenza":
+                    $descrizioneEvento = "L' utente " . $newInsert->emailUtente . " ha aggiunto una nuova competenza al suo profilo " . $newInsert->nuovaCompetenza;
                     $document = [
                         "descrizioneEvento" => $descrizioneEvento,
                         "timestamp" => $timestamp,
-                        "nuovaCompetenza" => $newInsert->nuovaCompetenza
+                        "nuovaCompetenza" => $newInsert->nuovaCompetenza,
+                        "emailUtente" => $newInsert->emailUtente
                     ];
                     $collectionName = "nuova_Competenza";
                     break;
@@ -107,6 +118,7 @@
                         "nomeProgetto" => $newInsert->nomeProgetto                    ];
                     $collectionName = "nuovo_reward";
                     break;
+                
                 default:
                     $descrizioneEvento = "Evento non riconosciuto.";
                     $document = [

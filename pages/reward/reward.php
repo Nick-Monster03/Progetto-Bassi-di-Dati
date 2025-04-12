@@ -55,7 +55,7 @@
     </div>
     <?php
         session_start();
-        //la casistica in cui il coockie sia scaduto è già gestita nel controller, quindi non serve fare un controllo qui
+        //la casistica in cui il coockie sia scaduto è già gestita nel controller, quindi non serve fare un controllo anche qui
         if($_COOKIE["creatore"] == $_SESSION["email"]){
             echo "<a href='./newReward/newReward.php'>Aggiungi un nuovo reward</a>";
         }

@@ -15,16 +15,6 @@
         <hr> LOGIN </hr>
         <table>
             <tr>
-                <td><b>Specifica che ruolo ricopri</b></td>
-                <td>
-                    <select name="role" id="role">
-                        <option value="utente" selected>Utente</option>
-                        <option value="creatore">Creatore</option>
-                        <option value="amministratore">Amministratore</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
             <td><b>Inserisci la tua email:</b></td>
             <td><input type='text' name="email" id="email"></td>
             <td><b>Inserisci la tua password:</b></td>
@@ -36,7 +26,8 @@
     <br>
     <?php
     session_start();
-    if (isset($_GLOBALS['check_security_code']) && $_GLOBALS['check_security_code'] == 1) {
+    
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'amministratore') {       
     ?>
         <br>
         <form method="POST" action="login.php">

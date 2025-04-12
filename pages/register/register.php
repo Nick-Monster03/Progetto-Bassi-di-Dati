@@ -51,5 +51,15 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <?php 
+    if (isset($_SESSION['is_administrator'])): ?>
+        <form method="post" action="registerController.php">
+            <h2>Codice di Sicurezza Richiesto</h2>
+            <label for="securityCode" class="form-label">Inserisci il codice di sicurezza:</label>
+            <input type="password" class="form-control" id="securityCode" name="securityCode" required>
+            <br>
+            <button type="submit" class="btn btn-danger">Verifica</button>
+        </form>
+    <?php endif; ?>
 </body>
 </html>

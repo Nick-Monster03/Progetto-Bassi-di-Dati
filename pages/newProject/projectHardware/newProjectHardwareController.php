@@ -52,6 +52,7 @@
             header('Location: ./newProjectHardware.php');
         }catch(PDOException $e){
             echo("[ERRORE] INSERT non riuscita " . $e->getMessage());
+            echo '<a href="./newProjectHardware.php">Torna alla Home</a>';
             exit();
         }
     }

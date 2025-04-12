@@ -34,6 +34,7 @@
             exit();
         } else {
             // No conflict, proceed with insert
+            
             $sql = "INSERT INTO PROFILO_SKILL (nomeProfilo, nomeProgettoSoftware, nomeSkill, livelloRichiesto) VALUES (:nomeProfilo, :nomeProgettoSoftware, :nomeSkill, :livelloRichiesto)";
             $res = $pdo->prepare($sql);
             $res->bindValue(":nomeProfilo", $nome);
@@ -41,6 +42,7 @@
             $res->bindValue(":nomeSkill", $competenza);
             $res->bindValue(":livelloRichiesto", $livello);
             $res->execute();
+            
         }
 
         header("Location: menageProfile.php?nome=" . urlencode($nome) . "&nomeProgettoSoftware=" . urlencode($nomeProgettoSoftware));
