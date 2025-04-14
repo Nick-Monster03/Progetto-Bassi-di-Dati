@@ -6,8 +6,6 @@
 </head>
 <body>
     <?php
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
         try{
             if (!isset($_COOKIE['nomeProgetto']) || !isset($_COOKIE['valoreAttuale'])) {
                 throw new Exception('SESSIONE SCADUTA. <a href="../home/home.php">backHome</a>');
@@ -23,13 +21,19 @@
         
     ?>
     <h2>Budget attuale: € <?= number_format($budgetAttuale, 2, ',', '.') ?></h2>
-
+    <div style="position: absolute; top: 10px; right: 10px;">
+        <a href="../item/item.php?nome=<?= urlencode($nomeProgetto) ?>" style="text-decoration: none; padding: 10px 20px; background-color: #007BFF; color: white; border-radius: 5px;">Torna indietro</a>
+    </div>
     <form action="finanziamentoController.php" method="POST">
-
-
-        <label for="importo">Importo (€):</label><br>
-        <input type="number" id="importo" name="importo" step="0.01" min="0.01" required><br><br>
-
+        <div>
+            <label for="importo">Importo (€):</label><br>
+            <input type="number" id="importo" name="importo" step="0.01" min="0.01" required><br><br>
+        </div>
+        <div>
+            <label>Inserisci il codice del reward che più ti piace:</label><br>
+            <label>(ATTENZIONE: se inserisci il codice di un reward che non è presente in questa schermata allora non riceverai nulla)</label><br>
+            <input type="number" id="id_reward" name="id_reward" step="1"><br><br>
+        </div>
         <button type="submit" <?= $flag_finanziamento==true ? '' : 'disabled'  ?>>Finanzia</button>
         <label><?=$motivazione?></label>
     </form>

@@ -36,10 +36,11 @@
                     $_SESSION['user_role'] = 'creatore';
                     header("Location: ../home/home.php");
                 }else if($rowA>0){
-                    $_SESSION['user_role'] = 'amministratore';
+                    $_SESSION['status'] = 'security_code';
                     header("Location: ./login.php");
                 } 
             } else {
+                header("Location: ./login.php");
                 echo("<p style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Credenziali errate o utente non registrato, riprova</p>");
             }
             exit();
@@ -67,10 +68,12 @@
             $row = $res->rowCount();
 
             if($row > 0){
+                $_SESSION['user_role'] = 'amministratore';
                 header("Location: ../home/home.php");
             } else {
+                header("Location: login.php");
                 echo("<p style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Codice di sicurezza errato, riprova</p>");
-                unset($_SESSION['user_role'], $_SESSION['email']);
+                unset($_SESSION['user_role'], $_SESSION['email'], $_SESSION['status']);
             }
             exit();
         }

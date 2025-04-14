@@ -611,7 +611,12 @@ VALUES
 ('E-commerce Platform', 'Creazione di una piattaforma di e-commerce scalabile.', '2024-02-16 11:00:00', 75000.00, '2025-06-30 23:59:59', 'aperto', 'creatore2@example.com'),
 ('Cybersecurity Audit', 'Analisi e miglioramento della sicurezza aziendale.', '2024-02-15 09:45:00', 30000.00, '2025-06-30 23:59:59', 'chiuso', 'creatore@example.com'),
 ('Interfaccia Gestionale', 'Sviluppo di un sistema di interfaccio per gestione di utenti', '2024-02-16 10:30:00', 50000.00, '2025-12-31 23:59:59', 'aperto', 'creatore3@example.com');
-
+INSERT INTO FOTO (foto, nomeProgetto)
+VALUES
+('progetto_ai.jpeg', 'Progetto AI'),
+('ecommerce_platform.jpeg', 'E-commerce Platform'),
+('cybersecurity_audit.jpeg', 'Cybersecurity Audit'),
+('interfaccia_gestionale.jpeg', 'Interfaccia Gestionale');
 
 INSERT INTO progetto_software (nomeProgetto)
 VALUES ('E-commerce Platform'), ('Cybersecurity Audit'),('Interfaccia Gestionale'),('Progetto AI');
@@ -626,6 +631,7 @@ CALL FinanziaProgetto('utente1@example.com', 'E-commerce Platform', 500.00, 2);
 
 
 CALL AggiungiCommento('Un altro commento interessante per il progetto.', 'Progetto AI', 'utente2@example.com');
+CALL AggiungiCommento('Un commento negativo per questo progetto.', 'Progetto AI', 'creatore3@example.com');
 CALL AggiungiProfilo('Sviluppatore Frontend', 'E-commerce Platform');
 CALL AggiungiProfilo('Project Manager', 'E-commerce Platform');
 CALL AggiungiProfilo('Specialista in Sicurezza Informatica', 'Cybersecurity Audit');
@@ -641,7 +647,7 @@ VALUES
 ('Specialista in Sicurezza Informatica', 'Cybersecurity Audit', 'Cybersecurity', 2),
 ('Sviluppatore Backend', 'Cybersecurity Audit', 'Database Management', 4);
 
-CALL InserisciProgetto('Progetto Sistema Distribuito', 'Sviluppo di un sistema di comunicazione', 50000.00, '2024-12-31 23:59:59', 'creatore4@example.com', "fotoInesistente5.jpg");
+CALL InserisciProgetto('Progetto Sistema Distribuito', 'Sviluppo di un sistema di comunicazione', 50000.00, '2024-12-31 23:59:59', 'creatore4@example.com', "sistemaDistribuito.png");
 INSERT INTO progetto_software (nomeProgetto)
 VALUES ('Progetto Sistema Distribuito');
 

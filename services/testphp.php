@@ -102,19 +102,15 @@ try {
 
         foreach ($documents as $document) {
             // Intestazioni solo la prima volta
-            if ($firstRow) {
-                echo "<tr>";
-                foreach ($document as $key => $value) {
-                    echo "<th>" . htmlspecialchars($key) . "</th>";
-                }
-                echo "</tr>";
-                $firstRow = false;
-            }
+            // Non stampare gli attributi come prima riga
+            $firstRow = false;
 
             // Riga dati
             echo "<tr>";
             foreach ($document as $key => $value) {
-                echo "<td>" . htmlspecialchars(is_object($value) ? json_encode($value) : $value) . "</td>";
+                if ($key !== '_id') {
+                    echo "<td>" . htmlspecialchars(is_object($value) ? json_encode($value) : $value) . "</td>";
+                }
             }
             echo "</tr>";
         }

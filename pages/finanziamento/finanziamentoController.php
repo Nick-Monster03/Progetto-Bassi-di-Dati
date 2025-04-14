@@ -6,7 +6,7 @@
         }
         elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
-            if (isset($_SESSION['email'], $_COOKIE['nomeProgetto'], $_POST['importo'])) {
+            if (isset($_SESSION['email'], $_COOKIE['nomeProgetto'], $_POST['importo'], $_POST['id_reward'])) {
 
 
                 $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
@@ -15,7 +15,7 @@
                 $emailUtente = $_SESSION['email'];
                 $nomeProgetto = $_COOKIE['nomeProgetto'];
                 $importo = $_POST['importo'];
-                $reward_id = getFirstReward($pdo, $nomeProgetto); //prendo il primo reward disponibile
+                $reward_id = $_POST['id_reward']; 
                
                 $sql = "CALL FinanziaProgetto(:emailUtente, :nomeProgetto, :importo, :reward_id)";
                 $stmt = $pdo->prepare($sql);
@@ -49,7 +49,7 @@
             session_start();
             $nomeProgetto = $_COOKIE['nomeProgetto'];
             $emailUtente = $_SESSION['email'];
-            $sql = "SELECT codice, descrizione, foto FROM REWARD WHERE nomeProgetto = :nomeProgetto AND NOT EXISTS (SELECT * FROM FINANZIAMENTO WHERE REWARD.codice = FINANZIAMENTO.idReward)";
+            $sql = "SELECT codice, descrizione, foto FROM REWARD WHERE nomeProgetto = :nomeProgetto "; //AND NOT EXISTS (SELECT * FROM FINANZIAMENTO WHERE REWARD.codice = FINANZIAMENTO.idReward)";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
             $stmt->execute();
@@ -83,14 +83,14 @@
         echo 'Errore: ' . $e->getMessage();
     }
 
-//questa funzione mi serve per andare a prednere dal mio database l' id del primo reward disponibile, cioè che non è ancora stato assegnato
-    function getFirstReward($pdo, $nomeProgetto) {
-        $stmt = $pdo->prepare("SELECT codice FROM REWARD WHERE nomeProgetto = :nomeProgetto AND NOT EXISTS (SELECT 1 FROM FINANZIAMENTO WHERE REWARD.codice = FINANZIAMENTO.idReward) ORDER BY codice ASC LIMIT 1");
-        $stmt->bindParam(":nomeProgetto", $nomeProgetto);
-        $stmt->execute();
+// //questa funzione mi serve per andare a prednere dal mio database l' id del primo reward disponibile, cioè che non è ancora stato assegnato
+//     function getFirstReward($pdo, $nomeProgetto) {
+//         $stmt = $pdo->prepare("SELECT codice FROM REWARD WHERE nomeProgetto = :nomeProgetto AND NOT EXISTS (SELECT 1 FROM FINANZIAMENTO WHERE REWARD.codice = FINANZIAMENTO.idReward) ORDER BY codice ASC LIMIT 1");
+//         $stmt->bindParam(":nomeProgetto", $nomeProgetto);
+//         $stmt->execute();
 
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['codice'] ?? null;
-    }
+//         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+//         return $result['codice'] ?? null;
+//     }
    
 ?>

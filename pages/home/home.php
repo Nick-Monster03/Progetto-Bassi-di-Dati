@@ -11,6 +11,14 @@
 </head>
 <?php
     include('homeController.php');
+    //nel caso in cui l' utente decida di tornare indietro dopo essersi loggato come amministratore
+    //ma senza aver inserito il codice di sicurezza
+    if(isset($_SESSION['status']))
+        unset($_SESSION['status']);
+    //nel caso in cui l' utente decidesse di tornare indietro senza aver completato la registrazione
+    //come amministratore
+    if(isset($_SESSION['is_administrator']))
+        unset($_SESSION['is_administrator']);
 ?>
 <body>
     <header>
@@ -27,7 +35,7 @@
                    </form>
                 </div>
                 <div id='actions'>
-                    <?php if (!isset($_SESSION['user_role'])): ?>
+                    <?php if (!isset($_SESSION['user_role']) ): ?>
                         <a href="/pages/register/register.php">Registrati</a>
                         <a href="/pages/login/login.php">Login</a>
                     <?php else: ?>
@@ -44,10 +52,9 @@
                 </div>
             </div>
             <nav class="mt-2">
-                <a href="#" class="menu-item">Tecnologia</a>
-                <a href="#" class="menu-item">Design</a>
-                <a href="#" class="menu-item">Arte</a>
-                <a href="#" class="menu-item">Musica</a>
+                <a href="#top3vicinoscadenza" class="menu-item">Progetti vicini al completamento</a>
+                <a href="#top3creatori"class="menu-item">Classifica creatori</a>
+                <a href="#top3finanziatori" class="menu-item">Classifica Finanziatori</a>
             </nav>
         </div>
     </header>
@@ -82,6 +89,69 @@
             </div>
         </div>
     </div>
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Classifiche Bostarter</h1>
+
+        <!-- Top 3 Creatori -->
+        <h2 class="mt-4" id='top3creatori'>Top 3 Creatori</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Email</th>
+                    <th>Nickname</th>
+                    <th>Affidabilità</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($Top3Creatori as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['email']) ?></td>
+                        <td><?= htmlspecialchars($row['nickname']) ?></td>
+                        <td><?= htmlspecialchars($row['affidabilità']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <!-- Top 3 Progetti Vicino alla Scadenza -->
+        <h2 class="mt-4" id='top3vicinoscadenza'>Top 3 Progetti Vicino alla Scadenza</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nome Progetto</th>
+                    <th>Rimanenza (€)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($Top3ProgettiVicinoScadenza as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['nome']) ?></td>
+                        <td><?= htmlspecialchars(number_format($row['rimanenza'], 2, ',', '.')) ?> €</td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <!-- Top 3 Finanziatori -->
+        <h2 class="mt-4" id='top3finanziatori'>Top 3 Finanziatori</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nickname</th>
+                    <th>Totale Finanziato (€)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($top3finanziatori as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['nickname']) ?></td>
+                        <td><?= htmlspecialchars(number_format($row['totale'], 2, ',', '.')) ?> €</td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
 
     <footer class="bg-dark text-white py-4 mt-5">
         <div class="container text-center">

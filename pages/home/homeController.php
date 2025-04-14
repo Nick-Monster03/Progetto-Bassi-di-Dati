@@ -13,12 +13,29 @@ try {
 }
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     logout();
-    exit(); // ← importante: blocca l’esecuzione dopo il redirect
+    exit(); 
 }
 $projects = [];
 try {
-    $res = $pdo->query("SELECT nome FROM Progetto");
+    $query = "SELECT nome FROM Progetto";
+    $res = $pdo->prepare($query);
+    $res->execute();
     $projects = $res->fetchAll(PDO::FETCH_ASSOC);
+
+    // Query per Top3Creatori
+    $stmt1 = $pdo->prepare("SELECT * FROM Top3Creatori");
+    $stmt1->execute();
+    $Top3Creatori = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+    // Query per Top3ProgettiVicinoScadenza
+    $stmt2 = $pdo->prepare("SELECT * FROM Top3ProgettiVicinoScadenza");
+    $stmt2->execute();
+    $Top3ProgettiVicinoScadenza = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+    // Query per top3finanziatori
+    $stmt3 = $pdo->prepare("SELECT * FROM top3finanziatori");
+    $stmt3->execute();
+    $top3finanziatori = $stmt3->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Query SQL non riuscita. Errore: " . $e->getMessage());
 }
@@ -40,7 +57,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'search') {
 }
 
 function logout() {
-    
     $_SESSION=[];
     session_destroy();
     header("Location: ../home/home.php");

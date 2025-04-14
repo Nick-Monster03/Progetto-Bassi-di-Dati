@@ -27,7 +27,7 @@
     <?php
     session_start();
     
-    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'amministratore') {       
+    if (isset($_SESSION['status']) && $_SESSION['status'] == 'security_code') {       
     ?>
         <br>
         <form method="POST" action="login.php">

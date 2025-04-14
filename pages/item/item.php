@@ -60,9 +60,9 @@
                 </div>
 
                 <div class="project-actions text-center mt-4">
-                    <?php if ($stato == "aperto" && $creatore != $_SESSION["email"]): ?>
+                    <?php if ($stato == "aperto"): ?>
                         <a href='../finanziamento/finanziamento.php' class="btn btn-success">Finanzia progetto</a>
-                    <?php elseif ($creatore != $_SESSION["email"]): ?>
+                    <?php else: ?>
                         <h5 class="text-danger">Progetto chiuso</h5>
                         <p><span class="text-muted">Il progetto risulta chiuso, quindi non puoi effettuare finanziamenti.</span></p>
                     <?php endif; ?>
