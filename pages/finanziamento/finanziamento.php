@@ -10,12 +10,10 @@
             if (!isset($_COOKIE['nomeProgetto']) || !isset($_COOKIE['valoreAttuale'])) {
                 throw new Exception('SESSIONE SCADUTA. <a href="../home/home.php">backHome</a>');
             }
-    
             $nomeProgetto = $_COOKIE['nomeProgetto'];
             $budgetAttuale = $_COOKIE['valoreAttuale'];
         }catch(Exception $e){
             echo 'Errore: ' . $e->getMessage();
-            echo '<a href="../item/item.php">Torna alla pagina del progetto</a>';
         }
         include('./finanziamentoController.php');
         
@@ -47,8 +45,11 @@
                 <div class="reward-card">
                     <h4>Codice: <?= htmlspecialchars($r['codice']) ?></h4>
                     <p><?= htmlspecialchars($r['descrizione']) ?></p>
-                    <?php if (!empty($r['foto'])): ?>
-                        <img src="<?= htmlspecialchars('../../services/uploads/' . $r['foto']) ?>" alt="reward image">
+                    <?php if (!empty($r['foto'])): 
+                        $imageData = base64_encode($r['foto']);
+                        $src = 'data:image/jpeg;base64,' . $imageData;    
+                    ?>
+                        <img src="<?= htmlspecialchars($src) ?>" alt="reward image">
                     <?php else: ?>
                         <p><em>Nessuna immagine disponibile</em></p>
                     <?php endif; ?>

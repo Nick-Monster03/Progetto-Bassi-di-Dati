@@ -17,7 +17,9 @@
             $row = $res->rowCount();
         
             if ($row> 0) {
-                session_start();
+                if (session_status() === PHP_SESSION_NONE) {
+                    session_start();
+                }
                 $_SESSION['email'] = $email;
                 $resC = $pdo->prepare("SELECT * FROM CREATORE WHERE emailUtente = :email");
                 $resC->bindValue(":email",$email);

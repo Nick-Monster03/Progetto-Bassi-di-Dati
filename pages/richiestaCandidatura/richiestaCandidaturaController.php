@@ -16,7 +16,7 @@
             $stmt->bindParam(':nomeProgettoSoftware', $_POST['nomeProgettoSoftware'], PDO::PARAM_STR);
             $stmt->bindParam(':emailUtente', $_SESSION['email'], PDO::PARAM_STR);
             $stmt->execute();
-            addLog("nuova_candidatura", (object)['emailUtente' => $_Session['email'],'nomeProgettoSoftware' => $_POST['nomeProgettoSoftware'], 'nomeProfilo' => $_POST['nomeProfilo']]);
+            addLog("nuova_candidatura", (object)['emailUtente' => $_SESSION['email'],'nomeProgettoSoftware' => $_POST['nomeProgettoSoftware'], 'nomeProfilo' => $_POST['nomeProfilo']]);
             header("Location: ../richiestaCandidatura/richiestaCandidatura.php");
             exit();
             
@@ -57,7 +57,8 @@
         echo '<a href="../home/home.php">Torna alla Home</a>';
         exit();
     }catch(Exception $e){
-        echo("SESSIONE SCADUTA");
+        echo "[ERRORE] " . $e->getMessage() . "<br>";
+        echo '<a href="../home/home.php">Torna alla Home</a>';
     }
 
     function checkCandidatura($nomeProfilo, $emailUtente, $nomeProgetto){
@@ -76,7 +77,7 @@
             echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
             echo '<a href="../home/home.php">Torna alla Home</a>';
             exit();
-    }
+        }
        
     }
 

@@ -19,6 +19,8 @@
     //come amministratore
     if(isset($_SESSION['is_administrator']))
         unset($_SESSION['is_administrator']);
+    if(isset($_SESSION['creation_phase']))
+        unset($_SESSION['creation_phase']);
 ?>
 <body>
     <header>

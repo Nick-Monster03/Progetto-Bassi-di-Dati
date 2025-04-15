@@ -14,11 +14,18 @@
     </style>
 </head>
 <body>
-<div class="top-right">
-    <a href="../../home/home.php">
-        <button>Home</button>
-    </a>
-</div>
+<?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($_SESSION['creation_phase'])):
+?>
+    <div class="top-right">
+        <a href="../../home/home.php">
+            <button>Home</button>
+        </a>
+    </div>
+<?php endif; ?>
 <div class="container">
     <h2>Profili Skill per il progetto: <?php echo htmlspecialchars($nomeProgettoSoftware); ?></h2>
     <?php 
@@ -57,5 +64,15 @@
         <button type="submit">Invia</button>
     </form>
 </div>
+<?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (isset($_SESSION['creation_phase']) && $_SESSION['creation_phase'] == 1):
+?>
+<div class="bottom-right" style="position: absolute; bottom: 10px; right: 10px;">
+    <a href="../../reward/newReward/newReward.php">Sezione reward</a>
+</div>
+<?php endif; ?>
 </body>
 </html>

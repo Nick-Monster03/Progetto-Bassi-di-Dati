@@ -17,8 +17,15 @@
 
         <button type="submit">Create Reward</button>
     </form>
-
-    <a href='../reward.php'>Torna indietro</a>
-
+    <?php
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['creation_phase']) && $_SESSION['creation_phase'] == 2) :
+    ?>
+        <a href='../../home/home.php'>Torna alla home</a>
+    <?php elseif (!isset($_SESSION['creation_phase'])): ?>
+    <a href='../reward.php'>Torna Indietro</a>
+    <?php endif; ?>
 </body>
 </html>

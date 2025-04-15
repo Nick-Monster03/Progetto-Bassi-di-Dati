@@ -1,5 +1,10 @@
 <?php
     session_start();
+    //questa variabile sarà creata solo ed unicamente nella fase in cui si crea un nuovo progetto
+    //in maniera tale che un creatore non possa uscire prima di aver designato per un progetto
+    //almeno un reward e almeno un profilo o componente
+    $_SESSION['creation_phase'] = 0;
+    include '../../services/mostraErrore.php';
     try {
 
         if (!isset($_POST['projectName'], $_POST['description'], $_POST['budget'], $_POST['endDate'], $_POST['tipologia'], $_FILES['immagine'])) {
@@ -11,7 +16,7 @@
         $data_limite = $_POST['endDate'];
         $tipologia = $_POST['tipologia'];
         $email_creatore = $_SESSION['email'];
-        $img = basename($_FILES["immagine"]["name"]);
+        $img =file_get_contents($_FILES["immagine"]["tmp_name"]);
 
 
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
@@ -28,11 +33,13 @@
         $pdo->beginTransaction();
         $stmt->execute();
 
-        $file = $_FILES["immagine"];
-        $uploadPath = __DIR__ . "/../../services/uploads/" . basename($file["name"]);
-        move_uploaded_file($file["tmp_name"], $uploadPath);
-        
+        // $uploadPath = __DIR__ . "/../../services/uploads/" . basename($file["name"]);
+        // //questa funzione sposta il file caricato momentaneamento sul browser come tmp_name con l' input di type=file
+        // //nella cartella di destinazione che abbiamo specificato in $uploadPath
+        // move_uploaded_file($file["tmp_name"], $uploadPath);
 
+        
+        //quando si torna alla home ogni coockie sarà cancellato
         setcookie("nomeProgetto", $nome, time() + 3600, "/");
         
         if($tipologia == "Hardware"){
@@ -51,8 +58,7 @@
         
     
     } catch (PDOException $e) {
-        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage() .  "]");
-        echo '<a href="../home/home.php" class="btn btn-secondary">Torna alla Home</a>';
+        mostraErrore($e->getCode(), $e->errorInfo[2] ?? $e->getMessage());
         if($pdo && $pdo->inTransaction()){
             $pdo->rollBack();
         }

@@ -26,18 +26,22 @@
         <input type="number" id="quantity" name="quantity" min="1" required>
         <br><br>
         <button type="submit">Invia</button>
+        
     </form>
+    <div class="bottom-right" style="position: absolute; bottom: 10px; right: 10px;">
+        <a href="../../reward/newReward/newReward.php">Sezione reward</a>
+    </div>
     
-        <?php
-        ini_set('display_errors', 1);
-        echo("<h2>Componenti inseriti:</h2>");
-        $components = getComponentsIn();
-        echo "<ul>";
-        foreach ($components as $component) {
-            echo "<li>" . htmlspecialchars($component['nomeComponente']) . " - Quantità: " . htmlspecialchars($component['quantita']) . "</li>";
-        }
-        echo "</ul>";
-        ?>
+    <?php
+    // ini_set('display_errors', 1);
+    echo("<h2>Componenti inseriti:</h2>");
+    $components = getComponentsIn();
+    echo "<ul>";
+    foreach ($components as $component) {
+        echo "<li>" . htmlspecialchars($component['nomeComponente']) . " - Quantità: " . htmlspecialchars($component['quantita']) . "</li>";
+    }
+    echo "</ul>";
+    ?>
 
 </body>
 </html>

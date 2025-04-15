@@ -21,19 +21,16 @@
         <?php
             session_start();
             include './itemController.php';
-            
-            
+            echo "<script>console.log('Email: " . ($_SESSION["email"] ?? 'non c è nessuan mail') . "');</script>";
         ?>
 
         <?php if ($result): ?>
             <div class="project-container">
                 <div class="project-info">
-                    <?php foreach ($result as $row): ?>
-                        <?php foreach ($row as $column => $value): ?>
+                        <?php foreach ($result as $column => $value): ?>
                             <?php
                                 if ($column == "emailUtenteCreatore") {
                                     $creatore = $value;
-                                    setcookie("creatore", $creatore, time() + 3600, "/");
                                 } elseif ($column == "stato") {
                                     $stato = $value;
                                 } elseif ($column == "budget") {
@@ -41,7 +38,6 @@
                                 }
                             ?>
                             <p><span class="label"><?= htmlspecialchars($column) ?>:</span> <?= htmlspecialchars($value) ?></p>
-                        <?php endforeach; ?>
                     <?php endforeach; ?>
                 </div>
 

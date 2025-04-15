@@ -1,7 +1,5 @@
 <?php
     try {
-        ini_set('display_errors', 1); // Mostra gli errori
-ini_set('display_startup_errors', 1);
         include '../../services/log_eventi.php';
         if (!isset($_COOKIE["nomeProgetto"], $_COOKIE["creatore"]))
             throw new Exception("SESSIONE SCADUTA.");
@@ -32,7 +30,9 @@ ini_set('display_startup_errors', 1);
             exit();
         }
         if(isset($_POST['testoCommento'])){
-            session_start();
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
             $testo= $_POST['testoCommento'];
             $emailUtente = $_SESSION['email'];
 

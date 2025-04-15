@@ -20,6 +20,10 @@
             $stmt->execute();
             include "../../../services/log_eventi.php";
             addLog("nuovo_profilo", (object)['nomeProfilo' => $profileName, 'nomeProgettoSoftware' => $projectName]);
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION['creation_phase'] = 1;
             header("Location: newProjectSoftware.php");
         } catch (PDOException $e) {
             echo "<p>[ERRORE] Errore durante la connsessione con il db: " . $e->getMessage() . $e->getLine() . "</p>";
