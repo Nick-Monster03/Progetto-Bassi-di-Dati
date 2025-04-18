@@ -22,10 +22,12 @@
         unset($_SESSION['creation_phase']);
 ?>
 <body>
-    <header>
+    <header id="main-header">
         <div class="container d-flex flex-column align-items-center py-3">
             <div class="d-flex justify-content-between align-items-center w-100">
-                <h1 class="titleWebSite">Bostarter</h1>
+                <h1 class="titleWebSite">
+                    <img src="/logo/bostarter_trasparente.png" alt="Bostarter Logo" class="logo">
+                </h1>
                 <div class="search-bar d-flex">
                    <form action="/pages/home/searchResults.php" method="GET" class="d-flex">
                        <input type="text" name="query" id="search-input" placeholder="Cerca progetti..." class="form-control" onkeyup="searchProjects()">
@@ -90,71 +92,79 @@
             </div>
         </div>
     </div>
-    <div class="container mt-5">
-        <h1 class="mb-4 text-center">Classifiche Bostarter</h1>
+   <div class="container mt-5">
+       <h1 class="mb-4 text-center">Classifiche Bostarter</h1>
+         <p class="text-center">Scopri la top 3 dei migliori progetti e i creatori più affidabili!</p>
+       <div class="d-flex flex-nowrap justify-content-center gap-4">
+           <!-- Top 3 Creatori -->
+           <div class="text-center">
+               <h2 class="mt-4" id='top3creatori'>Creatori</h2>
+               <table class="table-rounded mx-auto">
+                   <thead class="table-dark">
+                       <tr>
+                           <th>Email</th>
+                           <th>Nickname</th>
+                           <th>Affidabilità</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <?php foreach ($Top3Creatori as $row): ?>
+                           <tr>
+                               <td><?= htmlspecialchars($row['email']) ?></td>
+                               <td><?= htmlspecialchars($row['nickname']) ?></td>
+                               <td><?= htmlspecialchars($row['affidabilità']) ?></td>
+                           </tr>
+                       <?php endforeach; ?>
+                   </tbody>
+               </table>
+           </div>
 
-        <!-- Top 3 Creatori -->
-        <h2 class="mt-4" id='top3creatori'>Top 3 Creatori</h2>
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>Email</th>
-                    <th>Nickname</th>
-                    <th>Affidabilità</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($Top3Creatori as $row): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($row['email']) ?></td>
-                        <td><?= htmlspecialchars($row['nickname']) ?></td>
-                        <td><?= htmlspecialchars($row['affidabilità']) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+           <!-- Top 3 Progetti Vicino alla Scadenza -->
+           <div class="text-center">
+               <h2 class="mt-4" id='top3vicinoscadenza'>Progetti Vicino alla Scadenza</h2>
+               <table class="table-rounded mx-auto">
+                   <thead class="table-secondary">
+                       <tr>
+                           <th>Nome Progetto</th>
+                           <th>Rimanenza (€)</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <?php foreach ($Top3ProgettiVicinoScadenza as $row): ?>
+                           <tr>
+                               <td><?= htmlspecialchars($row['nome']) ?></td>
+                               <td><?= htmlspecialchars(number_format($row['rimanenza'], 2, ',', '.')) ?> €</td>
+                           </tr>
+                       <?php endforeach; ?>
+                   </tbody>
+               </table>
+           </div>
 
-        <!-- Top 3 Progetti Vicino alla Scadenza -->
-        <h2 class="mt-4" id='top3vicinoscadenza'>Top 3 Progetti Vicino alla Scadenza</h2>
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>Nome Progetto</th>
-                    <th>Rimanenza (€)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($Top3ProgettiVicinoScadenza as $row): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($row['nome']) ?></td>
-                        <td><?= htmlspecialchars(number_format($row['rimanenza'], 2, ',', '.')) ?> €</td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-
-        <!-- Top 3 Finanziatori -->
-        <h2 class="mt-4" id='top3finanziatori'>Top 3 Finanziatori</h2>
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>Nickname</th>
-                    <th>Totale Finanziato (€)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($top3finanziatori as $row): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($row['nickname']) ?></td>
-                        <td><?= htmlspecialchars(number_format($row['totale'], 2, ',', '.')) ?> €</td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
+           <!-- Top 3 Finanziatori -->
+           <div class="text-center">
+               <h2 class="mt-4" id='top3finanziatori'>Finanziatori</h2>
+               <table class="table-rounded mx-auto">
+                   <thead class="table-dark">
+                       <tr>
+                           <th>Nickname</th>
+                           <th>Totale Finanziato (€)</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <?php foreach ($top3finanziatori as $row): ?>
+                           <tr>
+                               <td><?= htmlspecialchars($row['nickname']) ?></td>
+                               <td><?= htmlspecialchars(number_format($row['totale'], 2, ',', '.')) ?> €</td>
+                           </tr>
+                       <?php endforeach; ?>
+                   </tbody>
+               </table>
+           </div>
+       </div>
+   </div>
 
 
-    <footer class="bg-dark text-white py-4 mt-5">
+    <footer class="text-white py-4 mt-5">
         <div class="container text-center">
             <p>&copy; 2025 Bostarter. Tutti i diritti riservati.</p>
         </div>
@@ -187,5 +197,7 @@
             }
         }
     </script>
+
+
 </body>
 </html>

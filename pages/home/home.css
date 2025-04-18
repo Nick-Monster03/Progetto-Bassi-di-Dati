@@ -9,6 +9,7 @@ body {
     margin: 0;
     font-family: 'Arial', sans-serif;
     background-color: #f7f7f7;
+    padding: 0;
 }
 
 /* Header */
@@ -19,17 +20,24 @@ header {
     align-items: center;
     padding: 20px 0;
     color: black;
+    position: relative;
+    z-index: 10;
+}
+
+.main-content {
+    margin-top: 0;
+    width: 100%;
 }
 
 .menu-item {
     margin: 0 10px;
     text-decoration: none;
-    color: #28a745;
+    color: #0a899a;
     font-weight: bold;
 }
 
 .menu-item:hover {
-    color: #218838;
+    color: #0a899a;
 }
 
 /* Barra di ricerca */
@@ -49,7 +57,7 @@ header {
 .search-bar button {
     padding: 10px 15px;
     margin-left: 10px;
-    background-color: #28a745;
+    background-color: #0a899a;
     color: white;
     border: none;
     border-radius: 5px;
@@ -57,7 +65,8 @@ header {
 }
 
 .search-bar button:hover {
-    background-color: #218838;
+    background-color:
+            #1aa9b2;
 }
 
 .search-dropdown {
@@ -80,7 +89,7 @@ header {
 /* Bottoni di azione */
 #actions a, #actions button {
     color: white;
-    background-color: #28a745;
+    background-color: #0a899a;
     padding: 10px 15px;
     border-radius: 5px;
     text-decoration: none;
@@ -88,7 +97,7 @@ header {
 }
 
 #actions a:hover, #actions button:hover {
-    background-color: #218838;
+    background-color: #1aa9b2;
 }
 
 /* Layout dei Progetti */
@@ -126,7 +135,8 @@ header {
 
 /* Footer */
 footer {
-    background-color: #0f0f0f;
+    width: 100%;
+    background-color: #0a899a;
     color: #f8f9fa;
     padding: 20px 0;
     text-align: center;
@@ -154,4 +164,36 @@ footer {
     .card-body {
         padding: 15px;
     }
+}
+.logo {
+    max-width: 200px;
+    height: auto;
+    display:block;
+    margin: 0 auto;
+}
+
+.table-rounded {
+    border-radius: 10px;
+    overflow: hidden; /* Per assicurarsi che i bordi arrotondati funzionino */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Effetto ombra */
+    border: none; /* Rimuove i bordi predefiniti */
+}
+
+.table-rounded thead {
+    background-color: #0a899a; /* Colore di sfondo per l'intestazione */
+    color: white; /* Colore del testo */
+}
+
+.table-rounded tbody tr {
+    transition: transform 0.3s, box-shadow 0.3s; /* Animazione al passaggio del mouse */
+}
+
+.table-rounded tbody tr:hover {
+    transform: translateY(-5px); /* Solleva la riga */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra */
+}
+
+.table-rounded td, .table-rounded th {
+    padding: 15px; /* Spaziatura interna */
+    vertical-align: middle; /* Allineamento verticale */
 }

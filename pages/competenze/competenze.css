@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #055160;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.header .logo {
+    max-width: 150px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.header h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.card {
+    background: #0a899a;
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    width: calc(33.333% - 10px);
+    box-sizing: border-box;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Stile per il bottone "Aggiungi competenza" */
+.btn-add {
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #055160;
+    color: white;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.btn-add:hover {
+    background-color: #087990;
+}
+
+/* Stile per il bottone "Torna alla Home" */
+.btn-home {
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #dddddd;
+    color: #055160;
+    transition: background-color 0.3s ease;
+}
+
+.btn-home:hover {
+    background-color: #6edff6;
+}
+
+/* Stile per il pulsante "Aggiungi" */
+.btn-success {
+    background-color: #0a899a;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #1aa9b2;
+}
+
+/* Stile per il pulsante "Annulla" */
+.btn-secondary {
+    background-color: #dddddd;
+    color: #055160;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #babbbc;
+    color: #055160;
+}
