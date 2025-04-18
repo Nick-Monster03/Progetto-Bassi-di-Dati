@@ -18,7 +18,7 @@
         }
     }
 
-    function getCandatures($nomeProgetto){
+    function getCandidatures($nomeProgetto){
         try {
             $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme', [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -35,24 +35,13 @@
     }
 
     function getCandidaturesByProject() {
-        // Ottieni tutti i progetti per l'utente
         $projects = getProjects();
-        
-        // Array per memorizzare le candidature per ogni progetto
         $candidaturesByProject = [];
-    
-        // Cicla attraverso tutti i progetti
         foreach ($projects as $project) {
-            $nomeProgetto = $project['nome'];  // Prendi il nome del progetto
-            
-            // Ottieni tutte le candidature per il progetto corrente
-            $candidatures = getCandatures($nomeProgetto);
-    
-            // Aggiungi le candidature per questo progetto nell'array associativo
+            $nomeProgetto = $project['nome'];  
+            $candidatures = getCandidatures($nomeProgetto);
             $candidaturesByProject[$nomeProgetto] = $candidatures;
         }
-    
-        // Restituisci l'array associativo con le candidature per progetto
         return $candidaturesByProject;
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

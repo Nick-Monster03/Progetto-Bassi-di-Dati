@@ -127,6 +127,7 @@ try{
             //prima di tornare alla  home distruggiamo tutti i cocckie che non sono più necessari
             setcookie("user_email", $email, time() - 3600, "/");
             setcookie("user_nickname", $nickname, time() - 3600, "/");
+            setcookie("user_password", $password, time() - 3600, "/");
             setcookie("user_nome", $nome, time() - 3600, "/");
             setcookie("user_cognome", $cognome, time() - 3600, "/");
             setcookie("user_annoNascita", $annoNascita, time() - 3600, "/");

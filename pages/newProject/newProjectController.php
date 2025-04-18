@@ -32,12 +32,6 @@
 
         $pdo->beginTransaction();
         $stmt->execute();
-
-        // $uploadPath = __DIR__ . "/../../services/uploads/" . basename($file["name"]);
-        // //questa funzione sposta il file caricato momentaneamento sul browser come tmp_name con l' input di type=file
-        // //nella cartella di destinazione che abbiamo specificato in $uploadPath
-        // move_uploaded_file($file["tmp_name"], $uploadPath);
-
         
         //quando si torna alla home ogni coockie sarà cancellato
         setcookie("nomeProgetto", $nome, time() + 3600, "/");
@@ -52,19 +46,20 @@
             header("Location: projectSoftware/newProjectSoftware.php");
         }
         $pdo->commit();
+
         require '../../services/log_eventi.php';
         addLog("nuovo_progetto", (object) ["nome" => $nome, "descrizione" => $descrizione, "budget" => $budget, "data_limite" => $data_limite, "email_creatore" => $email_creatore]);
         exit();
         
     
     } catch (PDOException $e) {
-        mostraErrore($e->getCode(), $e->errorInfo[2] ?? $e->getMessage());
+        mostraErrore($e->getCode(), $e->getMessage(), "../home/home.php");
         if($pdo && $pdo->inTransaction()){
             $pdo->rollBack();
         }
     }catch(Exception $e){
+        mostraErrore($e->getCode(), $e->getMessage(), "../home/home.php");
         echo("[ERRORE] " . $e->getMessage() .  "]");
-        echo '<a href="../home/home.php" class="btn btn-secondary">Torna alla Home</a>';
         exit();
     }
 ?>

@@ -1,5 +1,5 @@
 <?php
-function mostraErrore($titolo, $messaggio) {
+function mostraErrore($titolo, $messaggio, $path) {
     ?>
     <!DOCTYPE html>
     <html lang="it">
@@ -33,9 +33,9 @@ function mostraErrore($titolo, $messaggio) {
     </head>
     <body>
         <div class="error-container">
-            <h2>⚠️ <?= htmlspecialchars($titolo) ?></h2>
+            <h2> <?= htmlspecialchars($titolo) ?></h2>
             <p><strong>Dettagli:</strong> <?= htmlspecialchars($messaggio) ?></p>
-            <a href="../home/home.php" class="btn btn-danger btn-home">Torna alla Home</a>
+            <a href="<?= htmlspecialchars($path) ?>" class="btn btn-danger btn-home">Torna alla Home</a>
         </div>
     </body>
     </html>

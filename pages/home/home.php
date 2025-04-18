@@ -12,16 +12,28 @@
 <?php
     include('homeController.php');
     //nel caso in cui l' utente decida di tornare indietro dopo essersi loggato come amministratore
-    //ma senza aver inserito il codice di sicurezza
-    if(isset($_SESSION['status']))
-        unset($_SESSION['status']);
+    //ma senza aver inserito il codice di sicurezza il coockie status viene eliminato.
     //nel caso in cui l' utente decidesse di tornare indietro senza aver completato la registrazione
-    //come amministratore
-    if(isset($_SESSION['is_administrator']))
+    //come amministratore il ccockie is_administrator viene eliiinato.
+    //nel caso in cui l' utentee creatore abbia terminato il processo di creazione di un progetto:
+    //$_SESSION['creation_phase']=0 dobbiamo ancora creare il rrpogetto
+    //$_SESSION['creation_phase']=1 stiamo scegliendo il profilo da inserire 
+    //$_SESSION['creation_phase']=2 stiamo scegliendo almeno un reward
+    if (isset($_SESSION['status'])) {
+        unset($_SESSION['status']);
+    }
+    if (isset($_SESSION['is_administrator'])) {
         unset($_SESSION['is_administrator']);
-    if(isset($_SESSION['creation_phase']))
+    }
+    if (isset($_SESSION['creation_phase'])) {
         unset($_SESSION['creation_phase']);
-?>
+    }
+    // if (isset($_COOKIE)) {
+    //     foreach ($_COOKIE as $key => $value) {
+    //         setcookie($key, '', time() - 3600, '/');
+    //     }
+    // }
+ ?>
 <body>
     <header>
         <div class="container d-flex flex-column align-items-center py-3">
