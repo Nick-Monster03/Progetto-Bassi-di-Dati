@@ -14,8 +14,8 @@ CALL RegistrazioneCreatore('creatore3@example.com');
 CALL RegistrazioneCreatore('creatore4@example.com');
 
 -- Creazione della tabella SKILL con alcune competenze
-INSERT INTO SKILL (nome)
-VALUES ('Programmazione Java'), ('Database Management'), ('Sicurezza Informatica'), ('Gestione Progetti'), ('E-commerce Development'),('Cybersecurity');
+INSERT INTO SKILL (nome, emailAmministratore)
+VALUES ('Programmazione Java', 'utente1@example.com'), ('Database Management', 'utente1@example.com'), ('Sicurezza Informatica', 'utente1@example.com'), ('Gestione Progetti', 'utente1@example.com'), ('E-commerce Development', 'utente1@example.com'),('Cybersecurity', 'utente1@example.com');
 
 CALL InserisciSkillCurriculum('Programmazione Java', 'utente1@example.com', 4);
 CALL InserisciSkillCurriculum('Database Management', 'utente2@example.com', 3);
@@ -57,16 +57,16 @@ VALUES
 ('Sviluppatore Backend', 'Cybersecurity Audit', 'Database Management', 4);
 
 CALL InserisciProgetto('Progetto Sistema Distribuito', 'Sviluppo di un sistema di comunicazione', 50000.00, '2024-12-31 23:59:59', 'creatore4@example.com', "sistemaDistribuito.png");
-INSERT INTO progetto_software (nomeProgetto)
+INSERT INTO progetto_hardware (nomeProgetto)
 VALUES ('Progetto Sistema Distribuito');
 
 CALL RispondiCommento(1, 'creatore@example.com', 'grazie per il tuo commento è stato molto utile');
-CALL RispondiCommento(2, 'creatore2@example.com', 'grazie per il tuo commento è stato molto utile');
+CALL RispondiCommento(2, 'creatore@example.com', 'grazie per il tuo commento è stato molto utile');
 
-INSERT INTO COMPONENTE (nome, descrizione, prezzo)
+INSERT INTO COMPONENTE (nome, descrizione, prezzo, quantita, nomeProgettoHardware)
 VALUES 
-('CPU Intel i7', 'Processore Intel Core i7 di ultima generazione', 300.00),
-('GPU NVIDIA GTX 3080', 'Scheda grafica NVIDIA RTX 3080 con 10 GB di memoria', 750.00),
-('RAM Corsair 16GB', 'Modulo RAM Corsair da 16 GB DDR4', 100.00),
-('SSD Samsung 1TB', 'Disco SSD Samsung 1TB NVMe', 120.00),
-('HDD Seagate 2TB', 'Hard disk Seagate da 2 TB per storage di massa', 60.00);
+('CPU Intel i7', 'Processore Intel Core i7 di ultima generazione', 300.00, 1, 'Progetto Sistema Distribuito'),
+('GPU NVIDIA GTX 3080', 'Scheda grafica NVIDIA RTX 3080 con 10 GB di memoria', 750.00, 1, 'Progetto Sistema Distribuito'),
+('RAM Corsair 16GB', 'Modulo RAM Corsair da 16 GB DDR4', 100.00, 3, 'Progetto Sistema Distribuito'),
+('SSD Samsung 1TB', 'Disco SSD Samsung 1TB NVMe', 120.00, 2, 'Progetto Sistema Distribuito'),
+('HDD Seagate 2TB', 'Hard disk Seagate da 2 TB per storage di massa', 60.00, 1, 'Progetto Sistema Distribuito');

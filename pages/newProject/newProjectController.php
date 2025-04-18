@@ -35,11 +35,12 @@
         
         //quando si torna alla home ogni coockie sarà cancellato
         setcookie("nomeProgetto", $nome, time() + 3600, "/");
+        setcookie("creatore", $email_creatore, time() + 3600, "/");
         
         if($tipologia == "Hardware"){
             $sql='INSERT INTO progetto_hardware(nomeProgetto) VALUES("'.$nome.'")';
             $res=$pdo->exec($sql);
-            header("Location: projectHardware/newProjectHardware.php");
+            header("Location: ../componenti/componenti.php");
         } else {
             $sql='INSERT INTO progetto_software(nomeProgetto) VALUES("'.$nome.'")';
             $res=$pdo->exec($sql);

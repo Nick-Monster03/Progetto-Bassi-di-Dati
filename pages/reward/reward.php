@@ -27,9 +27,6 @@
 </head>
 <body>
     <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
     include('rewardController.php');
     ?>
     <?php  
@@ -37,16 +34,12 @@
         <h2>Reward disponibili per il progetto "<?= htmlspecialchars($nomeProgetto) ?>"</h2>
         <div class="reward-container">
             <?php foreach ($rewards as $r): ?>
-                <?php 
-                    if (!empty($r['foto'])): 
-                    // Convert the BLOB data to an image
-                        $imageData = base64_encode($r['foto']);
-                        $src = 'data:image/jpeg;base64,' . $imageData;
-                ?>
                 <div class="reward-card">
                     <h4>Codice: <?= htmlspecialchars($r['codice']) ?></h4>
-                    <p><?= htmlspecialchars($r['descrizione']) ?></p>                    
-                        <img src="<?= $src ?>" alt="reward image">
+                    <p><?= htmlspecialchars($r['descrizione']) ?></p>
+                    <p><?= htmlspecialchars($r['foto']) ?></p>
+                    <?php if (!empty($r['foto'])): ?>
+                        <img src="../../services/uploads/<?= htmlspecialchars($r['foto']) ?>" alt="reward image">
                     <?php else: ?>
                         <p><em>Nessuna immagine disponibile</em></p>
                     <?php endif; ?>
@@ -61,7 +54,8 @@
         <button onclick="window.location.href='../item/item.php?nome=<?= urlencode($nomeProgetto) ?>'">Torna Indietro</button>
     </div>
     <?php
-        //la casistica in cui il coockie sia scaduto è già gestita nel controller, quindi non serve fare un controllo anche qui
+        session_start();
+        //la casistica in cui il coockie sia scaduto è già gestita nel controller, quindi non serve fare un controllo qui
         if($_COOKIE["creatore"] == $_SESSION["email"]){
             echo "<a href='./newReward/newReward.php'>Aggiungi un nuovo reward</a>";
         }

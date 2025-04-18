@@ -50,5 +50,6 @@
 
     }catch(Exception $e){
         echo("[ERRORE] connessione a mongo db non riuscita: " . $e->getMessage() .  "]");
+        echo($e->getLine());
     }
 ?>

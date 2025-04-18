@@ -29,27 +29,27 @@
     session_start();
     if (isset($_COOKIE['nomeProgetto'])): ?>
         <h1>Lista Componenti - <?= htmlspecialchars($_COOKIE['nomeProgetto']) ?></h1>
-        <a href="../item/item.php?nome=<?= urlencode($_COOKIE['nomeProgetto']) ?>">Torna Indietro</a><br><br>
+        <?php if (!isset($_SESSION['creation_phase'])): ?>
+            <a href="../item/item.php?nome=<?= urlencode($_COOKIE['nomeProgetto']) ?>">Torna Indietro</a><br><br>
+        <?php endif; ?>
     <?php endif; ?>
 
     <?php 
     if (isset($_SESSION['email'], $_COOKIE['creatore']) && $_SESSION['email'] == $_COOKIE['creatore']): ?>
         <form action="componentiController.php" method="post">
-            <label for="nomeComponente">Aggiungi un nuovo componente:</label><br><br>
             <label for="nomeComponente">Nome Componente:</label>
-            <select id="nomeComponente" name="nomeComponente" required>
-               
-                <?php 
-                     $componentiInutilizzati= getComponentiInutilizzati($_COOKIE['nomeProgetto']);
-                    foreach ($componentiInutilizzati as $componente): ?>
-                        <option value="<?= htmlspecialchars($componente['nome']) ?>">
-                            <?= htmlspecialchars($componente['nome']) ?>
-                        </option>
-                <?php endforeach; ?>
-            </select><br><br>
+            <input type="text" id="nomeComponente" name="nomeComponente" maxlength="40" required><br><br>
+
+            <label for="descrizione">Descrizione:</label>
+            <textarea id="descrizione" name="descrizione" maxlength="300" required></textarea><br><br>
+
+            <label for="prezzo">Prezzo:</label>
+            <input type="number" id="prezzo" name="prezzo" step="0.01" min="0" required><br><br>
+
             <label for="quantita">Quantità:</label>
             <input type="number" id="quantita" name="quantita" min="1" required><br><br>
-            <button type="submit">Aggiungi</button>
+
+            <button type="submit">Aggiungi Componente</button>
         </form>
     <?php endif; ?>
     <table>
@@ -58,6 +58,7 @@
                 <th>Nome Componente</th>
                 <th>Prezzo</th>
                 <th>Quantità</th>
+                <th>Descrizione</th>
             </tr>
         </thead>
         <tbody>
@@ -66,9 +67,10 @@
             if (!empty($componenti)): ?>
                 <?php foreach ($componenti as $componente): ?>
                     <tr>
-                        <td><?= htmlspecialchars($componente['nomeComponente']) ?></td>
+                        <td><?= htmlspecialchars($componente['nome']) ?></td>
                         <td><?= htmlspecialchars($componente['prezzo']) ?> €</td>
                         <td><?= htmlspecialchars($componente['quantita']) ?></td>
+                        <td><?= htmlspecialchars($componente['descrizione']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -78,5 +80,8 @@
             <?php endif; ?>
         </tbody>
     </table>
+    <?php if (isset($_SESSION['creation_phase']) && $_SESSION['creation_phase']==1): ?>
+        <a href="../reward/newReward/newReward.php">Seleziona Reward</a>
+    <?php endif; ?>
 </body>
 </html>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profilo Utente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="profiloUtente.css">
 </head>
 <body>
     <?php
@@ -12,12 +13,12 @@
         include 'profiloUtenteController.php';
     ?>
 
-    <div class="container mt-5">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h3 class="mb-0">Profilo Utente</h3>
-            </div>
-            <div class="card-body">
+    <div class="container">
+        <div class="header">
+            <h1>Profilo Utente</h1>
+        </div>
+        <div class="skills-container">
+            <div class="card">
                 <?php if (isset($result) && count($result) > 0): ?>
                     <?php $utente = $result[0]; ?>
                     <p><strong>Email:</strong> <?= htmlspecialchars($utente['email']) ?></p>
@@ -33,26 +34,22 @@
                             foreach ($progettiCreati as $progetto) {
                                 echo '<p>' . htmlspecialchars($progetto['nome']) . '</p>';
                             }
-                        } 
+                        }
                         echo '<p><strong>Progetti Finanziati:</strong></p>';
                         foreach ($progettiFinanziati as $progetto) {
                             echo '<p>' . htmlspecialchars($progetto['nomeProgetto']) . ': ' . htmlspecialchars($progetto['totale']) .'</p>';
                         }
-                        
                     ?>
                 <?php else: ?>
-                    <div class="alert alert-warning">Nessun dato trovato per questo utente.</div>
+                    <div class="alert">Nessun dato trovato per questo utente.</div>
                 <?php endif; ?>
-
-                <a href="javascript:history.back()" class="btn btn-secondary mt-3">&larr; Torna indietro</a>
             </div>
+        </div>
+        <div class="actions">
+            <a href="javascript:history.back()" class="btn-home">&larr; Torna indietro</a>
         </div>
     </div>
 
-    <footer class="bg-dark text-white text-center py-4 mt-5">
-        <div class="container">
-            <p class="mb-0">&copy; 2025 Bostarter. Tutti i diritti riservati.</p>
-        </div>
-    </footer>
+
 </body>
 </html>

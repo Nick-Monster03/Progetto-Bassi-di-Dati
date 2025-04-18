@@ -12,8 +12,16 @@ create table UTENTE(
     luogoNascita varchar(30)
 )ENGINE="INNODB";
 
+create table AMMINISTRATORE(
+    emailUtente varchar(40) primary key,
+    codice_sicurezza varchar(20),
+    foreign key (emailUtente) references UTENTE(email) on delete cascade
+) ENGINE="INNODB";
+
 create table SKILL(
-	nome  varchar(25) primary key
+	nome  varchar(25) primary key,
+    emailAmministratore varchar(40),
+    foreign key (emailAmministratore) references AMMINISTRATORE(emailUtente) on delete cascade
 )ENGINE="INNODB";
 
 create table CURRICULUM(
@@ -24,12 +32,6 @@ create table CURRICULUM(
     foreign key (emailutente) references UTENTE(email) on delete cascade,
     primary key (nomeskill, emailutente)
 )ENGINE="INNODB";
-
-create table AMMINISTRATORE(
-    emailUtente varchar(40) primary key,
-    codice_sicurezza varchar(20),
-    foreign key (emailUtente) references UTENTE(email) on delete cascade
-) ENGINE="INNODB";
 
 create table CREATORE(
     emailUtente varchar(40) primary key,
@@ -59,8 +61,8 @@ create table FOTO(
 create table REWARD(
 	codice int auto_increment primary key,
     descrizione varchar(300),
-    nomeProgetto varchar(30),
     foto longblob,
+    nomeProgetto varchar(30),
     foreign key(nomeProgetto) references PROGETTO(nome) on delete cascade
 ) ENGINE="INNODB";
 
@@ -75,19 +77,21 @@ create table PROGETTO_SOFTWARE(
 ) ENGINE="INNODB";
 
 create table COMPONENTE(
-	nome varchar(40) primary key,
+	nome varchar(40),
     descrizione varchar(300),
-    prezzo decimal(8,2)
+    prezzo decimal(8,2),
+    quantita int check (quantita > 0),
+    nomeProgettoHardware varchar(30),
+    primary key(nome, nomeProgettoHardware),
+    foreign key (nomeProgettoHardware) references PROGETTO_HARDWARE(nomeProgetto) on delete cascade
 ) ENGINE="INNODB";
 
-create table COMPONENTI_PROGETTO(
-	nomeProgettoHardware varchar(30),
-    nomeComponente varchar(40),
-    quantita int check (quantita > 0),
-    foreign key (nomeProgettoHardware) references PROGETTO_HARDWARE(nomeProgetto) on delete cascade,
-    foreign key (nomeComponente) references COMPONENTE(nome) on delete cascade,
-    primary key(nomeProgettoHardware, nomeComponente)
-) ENGINE="INNODB";
+-- create table COMPONENTI_PROGETTO(
+--     nomeComponente varchar(40),
+--     quantita int check (quantita > 0),
+--     foreign key (nomeComponente) references COMPONENTE(nome) on delete cascade,
+--     primary key(nomeProgettoHardware, nomeComponente)
+-- ) ENGINE="INNODB";
 
 create table PROFILO(
 	nome varchar(50),
@@ -260,8 +264,8 @@ DELIMITER ;
 DELIMITER $
 
 CREATE EVENT aggiorna_progetti
--- ON SCHEDULE EVERY 1 minute
-ON SCHEDULE EVERY 1 DAY
+-- ON SCHEDULE EVERY 1 MINUTE
+ON SCHEDULE EVERY 24 HOUR
  STARTS NOW()  -- parte subito
 DO
 BEGIN
@@ -491,11 +495,13 @@ DELIMITER $
 create procedure RispondiCommento(idCommento int, emailCreatore varchar(40), risposta varchar(400))
 begin
     declare is_ok_commento int default 0;
-    declare email_creatore_progetto varchar(40);
+    declare is_ok_creatore int default 0;
+
+    set is_ok_creatore = (select count(*) from CREATORE where emailUtente = emailCreatore);
     
     set is_ok_commento = (select count(*) from COMMENTO where id = idCommento);
     
-    if is_ok_commento > 0 then
+    if is_ok_commento > 0 AND is_ok_creatore > 0 then
         INSERT INTO RISPOSTA (idCommento, emailUtenteCreatore, risposta)
         VALUES (idCommento, emailCreatore, risposta);
     else
@@ -565,8 +571,9 @@ create view ProgettiFinanziati(nome, totale) as
     where nomeProgetto in (select nome from progetto where stato='aperto')
 	group by nomeProgetto;
 create view ProgettiScadenza(nome, rimanenza) as
-	select pf.nome as nome, (p.budget-pf.totale) as rimanenza
-    from ProgettiFinanziati as pf join progetto as p on p.nome=pf.nome;
+	select p.nome as nome, (p.budget-IFNULL(pf.totale, 0)) as rimanenza
+    from progetto as p left join ProgettiFinanziati as pf on p.nome=pf.nome
+    where p.stato='aperto';
 create view Top3ProgettiVicinoScadenza(nome,rimanenza) as
 	select ps.nome,rimanenza
     from ProgettiScadenza as ps

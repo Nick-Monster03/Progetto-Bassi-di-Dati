@@ -37,7 +37,7 @@
                                     $budget = $value;
                                 }
                             ?>
-                            <p><span class="label"><?= htmlspecialchars($column) ?>:</span> <?= htmlspecialchars($value) ?></p>
+                            <p><strong><span class="label"><?= htmlspecialchars($column) ?>:</span></strong>&nbsp;<?= htmlspecialchars($value) ?></p>
                     <?php endforeach; ?>
                 </div>
 

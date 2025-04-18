@@ -1,6 +1,6 @@
 <?php
     try{
-        session_start();
+
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
