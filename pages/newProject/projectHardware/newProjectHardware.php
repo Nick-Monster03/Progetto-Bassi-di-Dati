@@ -10,7 +10,7 @@
         <a href="../../home/home.php" style="text-decoration: none; padding: 10px 15px; background-color: #007BFF; color: white; border-radius: 5px;">Home</a>
     </div>
     <h1>HARDWARE</h1>
-    <form action="newProjectHardwareController.php" method="post">
+    <!-- <form action="newProjectHardwareController.php" method="post">
         <label for="hardware">Seleziona Componenti:</label>
         <select id="hardware" name="hardware"  required>
         <?php
@@ -27,7 +27,7 @@
         <br><br>
         <button type="submit">Invia</button>
         
-    </form>
+    </form> -->
     <div class="bottom-right" style="position: absolute; bottom: 10px; right: 10px;">
         <a href="../../reward/newReward/newReward.php">Sezione reward</a>
     </div>
