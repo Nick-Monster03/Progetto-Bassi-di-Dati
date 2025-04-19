@@ -33,151 +33,155 @@
     //     }
     // }
  ?>
-<body>
+<body class="bg-light">
     <header id="main-header">
-        <div class="container d-flex flex-column align-items-center py-3">
-            <div class="d-flex justify-content-between align-items-center w-100">
-                <h1 class="titleWebSite">
-                    <img src="/logo/bostarter_trasparente.png" alt="Bostarter Logo" class="logo">
-                </h1>
-                <div class="search-bar d-flex">
-                   <form action="/pages/home/searchResults.php" method="GET" class="d-flex">
-                       <input type="text" name="query" id="search-input" placeholder="Cerca progetti..." class="form-control" onkeyup="searchProjects()">
-                       <button type="submit" class="btn btn-primary">Cerca</button>
-                       <div id="search-dropdown" class="search-dropdown">
-                           <!-- Risultati della ricerca -->
-                       </div>
-                   </form>
-                </div>
-                <div id='actions'>
+        <nav class="navbar navbar-expand-lg navbar-light sticky-top p-4">
+            <div class="container-fluid flex-column">
+                <div class="w-100 d-flex justify-content-between align-items-center">
+                    <a class="navbar-brand" href="/pages/home/home.php"><img src="/logo/bostarter_trasparente.png" alt="Bostarter Logo" class="logo"></a>
+
+                    <form action="/pages/home/searchResults.php" method="GET" class="serach-form d-flex">
+                        <input class="form-control rounded-0 rounded-start" type="text" name="query" id="search-input" placeholder="Cerca progetti..." onkeyup="searchProjects()">
+                        <button type="submit" class="btn btn-primary rounded-0 rounded-end">Cerca
+                            <div id="search-dropdown" class="search-dropdown">
+                                <!-- Risultati della ricerca -->
+                            </div>
+                        </button>  
+                    </form>
+
                     <?php if (!isset($_SESSION['user_role']) ): ?>
-                        <a href="/pages/register/register.php">Registrati</a>
-                        <a href="/pages/login/login.php">Login</a>
+                        <div>
+                            <a class="btn btn-primary m-0" href="/pages/register/register.php">SingIn</a>
+                            <a class="btn btn-primary" href="/pages/login/login.php">LogIn</a>
+                        </div>
                     <?php else: ?>
                         <a href="../profiloUtente/profiloUtente.php">Visualizza Profilo</a>
-                        <?php if ($_SESSION['user_role'] == 'creatore'): ?>
-                            <a href="../newProject/newProject.php">Crea Progetto</a>
-                            <a href="../candidature/candidatura.php">Visualizza Candidature</a>
-                        <?php elseif ($_SESSION['user_role'] == 'amministratore'): ?>
-                            <a href="../competenze/competenze.php">Visualizza Lista Competenze</a>
-                        <?php endif; ?>
+                    <?php if ($_SESSION['user_role'] == 'creatore'): ?>
+                        <a href="../newProject/newProject.php">Crea Progetto</a>
+                        <a href="../candidature/candidatura.php">Visualizza Candidature</a>
+                    <?php elseif ($_SESSION['user_role'] == 'amministratore'): ?>
+                        <a href="../competenze/competenze.php">Visualizza Lista Competenze</a>
+                    <?php endif; ?>
                         <a href="../skillList/skillList.php">Mie Competenze</a>
                         <button onclick="window.location.href='homeController.php?action=logout'">Logout</button>
                     <?php endif; ?>
                 </div>
-            </div>
-            <nav class="mt-2">
-                <a href="#top3vicinoscadenza" class="menu-item">Progetti vicini al completamento</a>
-                <a href="#top3creatori"class="menu-item">Classifica creatori</a>
-                <a href="#top3finanziatori" class="menu-item">Classifica Finanziatori</a>
-            </nav>
-        </div>
-    </header>
-
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-12 col-md-8 offset-md-2">
-                <div class="row">
-                    <?php
-                    if (!empty($GLOBALS['projects'])) {
-                        $projects = $GLOBALS['projects'];
-                        foreach ($projects as $i => $project) {
-                            $project_name = htmlspecialchars($project['nome']);
-                            $project_link = isset($_SESSION['user_role']) ? "../item/item.php?nome=" . urlencode($project_name) : "#";
-                            $card_colors = ['#f8f9fa', '#e9ecef', '#dee2e6', '#ced4da', '#adb5bd'];
-                    ?>
-                    <div class="col-12 col-md-6 mb-4">
-                        <div class="card" style="background-color: <?php echo $card_colors[$i % count($card_colors)]; ?>; cursor: pointer; transition: transform 0.3s;" onclick="window.location.href='<?php echo $project_link; ?>'">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $project_name; ?></h5>
-                                <p class="card-text">Descrizione breve del progetto. Clicca per maggiori dettagli.</p>
-                            </div>
-                        </div>
+                <div class="w-100">       
+                    <div class="d-flex justify-content-center">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="#top3vicinoscadenza" class="menu-item">Progetti vicini al completamento</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#top3creatori"class="menu-item">Classifica creatori</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#top3finanziatori" class="menu-item">Classifica Finanziatori</a></li>
+                        </ul>
                     </div>
-                    <?php
-                        }
-                    } else {
-                        echo "<p class='text-center'>Nessun progetto trovato.</p>";
-                    }
-                    ?>
                 </div>
             </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid p-4 bg-light">
+        <h1 class="titoli text-center pt-4">I NOSTRI PROGETTI</h1>
+        <div class="row justify-content-center">
+            <?php
+            if (!empty($GLOBALS['projects'])) {
+                $projects = $GLOBALS['projects'];
+                foreach ($projects as $i => $project) {
+                    $project_name = htmlspecialchars($project['nome']);
+                    $project_link = isset($_SESSION['user_role']) ? "../item/item.php?nome=" . urlencode($project_name) : "#";
+
+            ?>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 g-5">
+                <div class="card text-center pb-4 align-items-center pt-5" onclick="window.location.href='<?php echo $project_link; ?>'">
+                    <img class="card-img-top rounded-circle w-25 pb-2" src="/services/uploads/cybersecurity_audit.jpeg" alt="">
+                    <div class="card-body">
+                        <h3 class="card-title"><?php echo $project_name; ?></h3>
+                        <p class="card-text">Descrizione breve del progetto.</p>
+                        <a class="btn btn-primary" href="#">Scopri di più</a>
+                    </div>
+                </div>
+            </div>
+            <?php
+                }
+            } else {
+                echo "<p class='text-center'>Nessun progetto trovato.</p>";
+            }
+            ?>
         </div>
     </div>
-   <div class="container mt-5">
-       <h1 class="mb-4 text-center">Classifiche Bostarter</h1>
-         <p class="text-center">Scopri la top 3 dei migliori progetti e i creatori più affidabili!</p>
-       <div class="d-flex flex-nowrap justify-content-center gap-4">
-           <!-- Top 3 Creatori -->
-           <div class="text-center">
-               <h2 class="mt-4" id='top3creatori'>Creatori</h2>
-               <table class="table-rounded mx-auto">
-                   <thead class="table-dark">
-                       <tr>
-                           <th>Email</th>
-                           <th>Nickname</th>
-                           <th>Affidabilità</th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                       <?php foreach ($Top3Creatori as $row): ?>
-                           <tr>
-                               <td><?= htmlspecialchars($row['email']) ?></td>
-                               <td><?= htmlspecialchars($row['nickname']) ?></td>
-                               <td><?= htmlspecialchars($row['affidabilità']) ?></td>
-                           </tr>
-                       <?php endforeach; ?>
-                   </tbody>
-               </table>
-           </div>
+    <div class="container-fluid mt-5">
+        <h1 class="titoli mb-4 text-center">CLASSIFICHE BOSTARTER</h1>
+        <div class="container bg-white w-75 border border-3 rounded-3 shadow-sm p-4">
+            <!-- Top 3 Creatori -->
+            <h2 class="titoli pl-3 pt-4" id='top3creatori'>Creatori</h2>
+            <p class="subtitle mb-4">Di seguito la top 3 dei creatori più affidabili tra i nostri membri!</p>
+            <hr class="custom-line">
+            <table class="table-rounded text-center mx-auto w-75">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>Email</th>
+                        <th>Nickname</th>
+                        <th>Affidabilità</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($Top3Creatori as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['email']) ?></td>
+                        <td><?= htmlspecialchars($row['nickname']) ?></td>
+                        <td><?= htmlspecialchars($row['affidabilità']) ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
 
-           <!-- Top 3 Progetti Vicino alla Scadenza -->
-           <div class="text-center">
-               <h2 class="mt-4" id='top3vicinoscadenza'>Progetti Vicino alla Scadenza</h2>
-               <table class="table-rounded mx-auto">
-                   <thead class="table-secondary">
-                       <tr>
-                           <th>Nome Progetto</th>
-                           <th>Rimanenza (€)</th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                       <?php foreach ($Top3ProgettiVicinoScadenza as $row): ?>
-                           <tr>
-                               <td><?= htmlspecialchars($row['nome']) ?></td>
-                               <td><?= htmlspecialchars(number_format($row['rimanenza'], 2, ',', '.')) ?> €</td>
-                           </tr>
-                       <?php endforeach; ?>
-                   </tbody>
-               </table>
-           </div>
+            <!-- Top 3 Progetti Vicino alla Scadenza -->
+            <h2 class="titoli pl-3 pt-4 mt-5" id='top3vicinoscadenza'>Progetti Vicino alla Scadenza</h2>
+            <p class="subtitle mb-4">Di seguito i progetti a scadenza più recente!</p>
+            <hr class="custom-line">
+            <table class="table-rounded text-center mx-auto w-75">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>Nome Progetto</th>
+                        <th>Rimanenza (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($Top3ProgettiVicinoScadenza as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['nome']) ?></td>
+                        <td><?= htmlspecialchars(number_format($row['rimanenza'], 2, ',', '.')) ?> €</td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
 
            <!-- Top 3 Finanziatori -->
-           <div class="text-center">
-               <h2 class="mt-4" id='top3finanziatori'>Finanziatori</h2>
-               <table class="table-rounded mx-auto">
-                   <thead class="table-dark">
-                       <tr>
-                           <th>Nickname</th>
-                           <th>Totale Finanziato (€)</th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                       <?php foreach ($top3finanziatori as $row): ?>
-                           <tr>
-                               <td><?= htmlspecialchars($row['nickname']) ?></td>
-                               <td><?= htmlspecialchars(number_format($row['totale'], 2, ',', '.')) ?> €</td>
-                           </tr>
-                       <?php endforeach; ?>
-                   </tbody>
-               </table>
-           </div>
-       </div>
+            <h2 class="titoli pl-3 pt-4 mt-5" id='top3finanziatori'>Finanziatori</h2>
+            <p class="subtitle mb-4">Di seguito la top 3 con i migliori finanziatori sulla pittaforma!</p>
+            <hr class="custom-line">
+            <table class="table-rounded text-center mx-auto w-75">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>Nickname</th>
+                        <th>Totale Finanziato (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($top3finanziatori as $row): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['nickname']) ?></td>
+                            <td><?= htmlspecialchars(number_format($row['totale'], 2, ',', '.')) ?> €</td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
    </div>
 
 
-    <footer class="text-white py-4 mt-5">
+    <footer class="py-4 mt-5">
         <div class="container text-center">
+            <img src="/logo/bostarter_trasparente.png" alt="Bostarter Logo" class="logo pb-3 pt-3">
             <p>&copy; 2025 Bostarter. Tutti i diritti riservati.</p>
         </div>
     </footer>
