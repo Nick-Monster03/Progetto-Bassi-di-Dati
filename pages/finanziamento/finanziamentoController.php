@@ -14,14 +14,15 @@
 
                 $emailUtente = $_SESSION['email'];
                 $nomeProgetto = $_COOKIE['nomeProgetto'];
-                $importo = $_POST['importo'];
+              
                 $reward_id = $_POST['id_reward']; 
-               
+                $importo = $_POST['importo']; // Conversione da stringa a intero
+
                 $sql = "CALL FinanziaProgetto(:emailUtente, :nomeProgetto, :importo, :reward_id)";
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindParam(':emailUtente', $emailUtente, PDO::PARAM_STR);
                 $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
-                $stmt->bindParam(':importo', $importo, PDO::PARAM_STR);
+                $stmt->bindParam(':importo', $importo, PDO::PARAM_INT);
                 $stmt->bindParam(':reward_id', $reward_id, PDO::PARAM_INT);
                 $stmt->execute();
                 addLog("nuovo_finanziamento", (object)['nomeProgetto'=>$nomeProgetto, 'utente'=>$emailUtente]);

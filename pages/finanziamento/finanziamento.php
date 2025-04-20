@@ -29,7 +29,12 @@
 
         <label for="importo">Importo (€):</label><br>
         <input type="number" id="importo" name="importo" step="0.01" min="0.01" required><br><br>
-
+        <label >Seleziona un reward:</label><br>
+        <select id="id_reward" name="id_reward" required>
+            <?php foreach ($rewards as $r): ?>
+            <option value="<?= htmlspecialchars($r['codice']) ?>"><?= htmlspecialchars($r['codice']) ?></option>
+            <?php endforeach; ?>
+        </select><br><br>
         <button type="submit" <?= $flag_finanziamento==true ? '' : 'disabled'  ?>>Finanzia</button>
         <label><?=$motivazione?></label>
     </form>
@@ -43,8 +48,11 @@
                 <div class="reward-card">
                     <h4>Codice: <?= htmlspecialchars($r['codice']) ?></h4>
                     <p><?= htmlspecialchars($r['descrizione']) ?></p>
-                    <?php if (!empty($r['foto'])): ?>
-                        <img src="<?= htmlspecialchars('../../services/uploads/' . $r['foto']) ?>" alt="reward image">
+                    <?php if (!empty($r['foto'])): 
+                        $imageData = base64_encode($r['foto']);
+                        $src = 'data:image/jpeg;base64,' . $imageData;
+                    ?>
+                    <img src="<?= $src ?>" alt="Reward Image">
                     <?php else: ?>
                         <p><em>Nessuna immagine disponibile</em></p>
                     <?php endif; ?>

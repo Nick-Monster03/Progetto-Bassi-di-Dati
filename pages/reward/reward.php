@@ -37,9 +37,11 @@
                 <div class="reward-card">
                     <h4>Codice: <?= htmlspecialchars($r['codice']) ?></h4>
                     <p><?= htmlspecialchars($r['descrizione']) ?></p>
-                    <p><?= htmlspecialchars($r['foto']) ?></p>
-                    <?php if (!empty($r['foto'])): ?>
-                        <img src="../../services/uploads/<?= htmlspecialchars($r['foto']) ?>" alt="reward image">
+                    <?php if (!empty($r['foto'])): 
+                        $imageData = base64_encode($r['foto']);
+                        $src = 'data:image/jpeg;base64,' . $imageData;
+                    ?>
+                    <img src="<?= $src ?>" alt="Reward Image">
                     <?php else: ?>
                         <p><em>Nessuna immagine disponibile</em></p>
                     <?php endif; ?>
