@@ -1,4 +1,5 @@
 <?php
+    include_once '../../services/mostraErrore.php';
     try {
         if (isset($_POST["email"]) and isset($_POST["password"])) {
 
@@ -81,12 +82,12 @@
         }
 
     } catch (PDOException $e) {
-        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
-        echo("<br> <a href='../home/home.php'>Torna alla Home</a>");
+        $title = "[ERRORE] Connessione al DB non riuscita " + $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
         exit();
     }catch (Exception $e){
-        echo ("[ERRORE] " . $e->getMessage());
-        echo ("<br> <a href='./login.php'>Torna alla shcermata di Login</a>");
+        $title = "[ERRORE] " . $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
         exit();
     }
 ?>

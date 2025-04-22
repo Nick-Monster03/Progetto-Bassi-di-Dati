@@ -1,5 +1,5 @@
 <?php
-    
+   include_once '../../services/mostraErrore.php';
     if (isset($_POST["competenze"]) and isset($_POST["livello"])) {
         
         $competenza = $_POST["competenze"];
@@ -7,19 +7,18 @@
         try {
             $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-       
-        $sqlCheck = "SELECT * FROM PROFILO_SKILL WHERE nomeProfilo = :nomeProfilo AND nomeProgettoSoftware = :nomeProgettoSoftware AND nomeSkill = :nomeSkill";
-        $stmtCheck = $pdo->prepare($sqlCheck);
-        $nome = $_COOKIE['nome'];
-        $nomeProgettoSoftware = $_COOKIE['nomeProgettoSoftware'];
-        $stmtCheck->bindValue(":nomeProfilo", $nome);
-        $stmtCheck->bindValue(":nomeProgettoSoftware", $nomeProgettoSoftware);
-        $stmtCheck->bindValue(":nomeSkill", $competenza);
-        $stmtCheck->execute();
+            
+            $sqlCheck = "SELECT * FROM PROFILO_SKILL WHERE nomeProfilo = :nomeProfilo AND nomeProgettoSoftware = :nomeProgettoSoftware AND nomeSkill = :nomeSkill";
+            $stmtCheck = $pdo->prepare($sqlCheck);
+            $nome = $_COOKIE['nomeProfilo'];
+            $nomeProgettoSoftware = $_COOKIE['nomeProgettoSoftware'];
+            $stmtCheck->bindValue(":nomeProfilo", $nome);
+            $stmtCheck->bindValue(":nomeProgettoSoftware", $nomeProgettoSoftware);
+            $stmtCheck->bindValue(":nomeSkill", $competenza);
+            $stmtCheck->execute();
 
         if ($stmtCheck->rowCount() > 0) {
-            // Skill already exists, show alert with form
-            echo 'sei entrato';
+            //echo 'sei entrato';
             echo "<div>
                 <p>La competenza esiste già. Vuoi sovrascriverla?</p>
                 <form method='post' action='menageProfileController.php'>
@@ -34,7 +33,6 @@
             exit();
         } else {
             // No conflict, proceed with insert
-            
             $sql = "INSERT INTO PROFILO_SKILL (nomeProfilo, nomeProgettoSoftware, nomeSkill, livelloRichiesto) VALUES (:nomeProfilo, :nomeProgettoSoftware, :nomeSkill, :livelloRichiesto)";
             $res = $pdo->prepare($sql);
             $res->bindValue(":nomeProfilo", $nome);
@@ -48,12 +46,10 @@
         header("Location: menageProfile.php?nome=" . urlencode($nome) . "&nomeProgettoSoftware=" . urlencode($nomeProgettoSoftware));
         exit();
         } catch (PDOException $e) {
-            echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
+            $title = "Errore di connessione al database ". $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../home/home.php');
             exit();
         }
-    }
-    else {
-        echo "<script>console.log('Non sei entrato nell\'if');</script>";
     }
 
     //QUESTO BLOCCO DI CODICE SERVE PER GESTIRE IL CASO IN CUI IO VOGLIA SOVRASCIVERE UNA SKILL GIA' DEFINITA
@@ -78,16 +74,33 @@
             header("Location: menageProfile.php?nome=" . urlencode($nome) . "&nomeProgettoSoftware=" . urlencode($nomeProgettoSoftware));
             exit();
         } catch (PDOException $e) {
-            echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
+            $title = "Errore di connessione al database ". $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../home/home.php');
             exit();
         }
     }
-
-    // Handle cancel action
     if (isset($_POST['cancel'])) {
         $nome = $_POST["nome"];
         $nomeProgettoSoftware = $_POST["nomeProgettoSoftware"];
         header("Location: menageProfile.php?nome=" . urlencode($nome) . "&nomeProgettoSoftware=" . urlencode($nomeProgettoSoftware));
         exit();
+    }
+    function existed($nomeProfilo, $nomeProgettoSoftware){
+        try {
+            $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            $sqlCheck = "SELECT * FROM PROFILO_SKILL WHERE nomeProfilo = :nomeProfilo AND nomeProgettoSoftware = :nomeProgettoSoftware";
+            $stmtCheck = $pdo->prepare($sqlCheck);
+            $stmtCheck->bindValue(":nomeProfilo", $nomeProfilo);
+            $stmtCheck->bindValue(":nomeProgettoSoftware", $nomeProgettoSoftware);
+            $stmtCheck->execute();
+            return $stmtCheck->rowCount() > 0;
+
+        }catch (PDOException $e) {
+            $title = "Errore di connessione al database ". $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../home/home.php');
+            exit();
+        }
     }
 ?>

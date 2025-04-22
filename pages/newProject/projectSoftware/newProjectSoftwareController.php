@@ -1,5 +1,6 @@
 <?php
     global $pdo;
+    include_once '../../../services/mostraErrore.php';
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!isset($pdo)) {
             Init();
@@ -7,7 +8,7 @@
             
         try {
             if (!isset($_POST['profileName']) || empty($_POST['profileName'])) {
-                throw new Exception("Il nome del profilo non è definito.");
+                throw new Exception("Il nome del profilo non è definito.", 4404);
             }
 
             $projectName = $_COOKIE['nomeProgetto'];
@@ -23,15 +24,19 @@
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
-            $_SESSION['creation_phase'] = 1;
+            if (isset($_SESSION['creation_phase']) && $_SESSION['creation_phase'] === 0) {
+                $_SESSION['creation_phase'] = 1;
+            }
             header("Location: newProjectSoftware.php");
         } catch (PDOException $e) {
-            echo "<p>[ERRORE] Errore durante la connsessione con il db: " . $e->getMessage() . $e->getLine() . "</p>";
-            echo '<a href="../../home/home.php">Torna alla Home</a>';
+            $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../../home/home.php');
+            exit();
         } 
         catch (Exception $e) {
-            echo "<p>[ERRORE] " . $e->getMessage() . "</p>";
-            echo '<a href="../../home/home.php">Torna alla Home</a>';
+            $title =  "ERRORE: " . $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../../home/home.php');
+            exit();
         }
         
     }
@@ -40,7 +45,7 @@
         global $pdo;
         try {
             if(!isset ($_COOKIE['nomeProgetto'])) {
-                throw new Exception("SESSIONE SCADUTA.");
+                throw new Exception("SESSIONE SCADUTA.", 444);
             }
             $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -54,10 +59,13 @@
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
+            $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../../home/home.php');
             exit();
-        }catch (Exception $e) {
-            echo "[ERRORE] " . $e->getMessage();
+        } 
+        catch (Exception $e) {
+            $title =  "ERRORE: " . $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../../home/home.php');
             exit();
         }
     }

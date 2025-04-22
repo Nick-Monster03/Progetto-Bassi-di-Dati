@@ -71,10 +71,14 @@
  
         
         } catch (PDOException $e) {
-            echo "[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage();
+            include '../../services/mostraErrore.php';
+            echo "[ERRORE] Connessione al DB non riuscita. Errore: \n";
+            mostraErrore($e->getCode(), $e->getMessage(), "../home/home.php");
             exit();
         } catch (Exception $e) {
-            echo "[ERRORE] : " . $e->getMessage();
+            include '../../services/mostraErrore.php';
+            echo "[ERRORE] : \n";
+            mostraErrore($e->getCode(), $e->getMessage(), "../home/home.php");
             exit();
         }
     header("Location: candidatura.php");

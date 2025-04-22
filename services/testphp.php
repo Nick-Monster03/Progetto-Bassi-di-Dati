@@ -63,11 +63,11 @@ displayTable($pdo, "SELECT * FROM AMMINISTRATORE", "AMMINISTRATORE");
 displayTable($pdo, "SELECT * FROM CREATORE", "CREATORE");
 displayTable($pdo, "SELECT * FROM PROGETTO", "PROGETTO");
 // displayTable($pdo, "SELECT * FROM FOTO", "FOTO");
-// displayTable($pdo, "SELECT * FROM REWARD", "REWARD");
+displayTable($pdo, "SELECT codice,descrizione FROM REWARD", "REWARD");
 displayTable($pdo, "SELECT * FROM PROGETTO_HARDWARE", "PROGETTO_HARDWARE");
 displayTable($pdo, "SELECT * FROM PROGETTO_SOFTWARE", "PROGETTO_SOFTWARE");
 displayTable($pdo, "SELECT * FROM COMPONENTE", "COMPONENTE");
-displayTable($pdo, "SELECT * FROM COMPONENTI_PROGETTO", "COMPONENTI_PROGETTO");
+//displayTable($pdo, "SELECT * FROM COMPONENTI_PROGETTO", "COMPONENTI_PROGETTO");
 displayTable($pdo, "SELECT * FROM PROFILO", "PROFILO");
 displayTable($pdo, "SELECT * FROM PROFILO_SKILL", "PROFILO_SKILL");
 displayTable($pdo, "SELECT * FROM FINANZIAMENTO", "FINANZIAMENTO");
@@ -79,7 +79,7 @@ displayTable($pdo, "SELECT * FROM Top3ProgettiVicinoScadenza", "Top3ProgettiVici
 displayTable($pdo, "SELECT * FROM Top3Creatori", "Top3Creatori");
 
 
-require 'vendor/autoload.php';  // Assicurati che 'vendor/autoload.php' esista nella tua cartella di progetto
+require 'vendor/autoload.php';  
 
 try {
     // Crea il client MongoDB

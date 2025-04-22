@@ -1,4 +1,5 @@
 <?php
+    include_once '../../services/mostraErrore.php';
     try{
 
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
@@ -25,7 +26,8 @@
         
         
     }catch(PDOException $e){
-        echo "[ERRORE] Database non accessibile: " . $e->getMessage();
+        $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
         exit();
     }
 ?>

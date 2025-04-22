@@ -28,6 +28,7 @@
 <body>
     <?php
     include('rewardController.php');
+    session_start();
     ?>
     <?php  
     if (!empty($rewards)): ?>
@@ -56,7 +57,9 @@
         <button onclick="window.location.href='../item/item.php?nome=<?= urlencode($nomeProgetto) ?>'">Torna Indietro</button>
     </div>
     <?php
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         //la casistica in cui il coockie sia scaduto è già gestita nel controller, quindi non serve fare un controllo qui
         if($_COOKIE["creatore"] == $_SESSION["email"]){
             echo "<a href='./newReward/newReward.php'>Aggiungi un nuovo reward</a>";

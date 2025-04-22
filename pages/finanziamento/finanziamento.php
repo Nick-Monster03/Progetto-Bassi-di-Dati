@@ -6,18 +6,20 @@
 </head>
 <body>
     <?php
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
+    // error_reporting(E_ALL);
+    // ini_set('display_errors', 1);
+    include('../../services/mostraErrore.php');
         try{
             if (!isset($_COOKIE['nomeProgetto']) || !isset($_COOKIE['valoreAttuale'])) {
-                throw new Exception('SESSIONE SCADUTA. <a href="../home/home.php">backHome</a>');
+                throw new Exception('SESSIONE SCADUTA. Torna indietro.');
             }
     
             $nomeProgetto = $_COOKIE['nomeProgetto'];
             $budgetAttuale = $_COOKIE['valoreAttuale'];
         }catch(Exception $e){
-            echo 'Errore: ' . $e->getMessage();
-            echo '<a href="../item/item.php">Torna alla pagina del progetto</a>';
+            echo 'Errore: ';
+            mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
+            exit();
         }
         include('./finanziamentoController.php');
         

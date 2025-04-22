@@ -1,4 +1,5 @@
 <?php
+include_once '../../services/mostraErrore.php';
     try {
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -18,8 +19,12 @@
             throw new Exception("SESSIONE SCADUTA");
         }
     } catch (PDOException $e) {
-        echo "Errore di connessione: " . $e->getMessage();
+        $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
+        exit();
     }catch (Exception $e) {
-        echo "Errore: " . $e->getMessage();
+        $title =  "[ERRORE]: " . $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
+        exit();
     }
 ?>

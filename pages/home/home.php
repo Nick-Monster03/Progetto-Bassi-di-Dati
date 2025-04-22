@@ -18,6 +18,9 @@
     //$_SESSION['creation_phase']=0 dobbiamo ancora creare il rrpogetto
     //$_SESSION['creation_phase']=1 stiamo scegliendo il profilo da inserire 
     //$_SESSION['creation_phase']=2 stiamo scegliendo almeno un reward
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     if (isset($_SESSION['status'])) {
         unset($_SESSION['status']);
     }

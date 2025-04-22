@@ -8,7 +8,7 @@
     try {
 
         if (!isset($_POST['projectName'], $_POST['description'], $_POST['budget'], $_POST['endDate'], $_POST['tipologia'], $_FILES['immagine'])) {
-            throw new Exception("DATI MANCANTI");
+            throw new Exception("DATI MANCANTI", 4400);
         }
         $nome = $_POST['projectName'];
         $descrizione = $_POST['description'];
@@ -48,19 +48,20 @@
         }
         $pdo->commit();
 
-        require '../../services/log_eventi.php';
+        require_once '../../services/log_eventi.php';
         addLog("nuovo_progetto", (object) ["nome" => $nome, "descrizione" => $descrizione, "budget" => $budget, "data_limite" => $data_limite, "email_creatore" => $email_creatore]);
         exit();
         
     
     } catch (PDOException $e) {
-        mostraErrore($e->getCode(), $e->getMessage(), "../home/home.php");
+        $title = "Errore di connessione al database " .$e->getCode();
+        mostraErrore($title, $e->getMessage(), "../home/home.php");
         if($pdo && $pdo->inTransaction()){
             $pdo->rollBack();
         }
     }catch(Exception $e){
+        $title = "[ERRORE] " . $e->getCode();
         mostraErrore($e->getCode(), $e->getMessage(), "../home/home.php");
-        echo("[ERRORE] " . $e->getMessage() .  "]");
         exit();
     }
 ?>

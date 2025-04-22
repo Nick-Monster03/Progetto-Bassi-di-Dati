@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+//svuoto i coocke che mi sono serviti per interagire con il progetto in precedenza
 if(isset($_COOKIE["creatore"]) || isset($_COOKIE["nomeProgetto"]) || isset($_COOKIE["valoreAttuale"])){
     setcookie("nomeProgetto", "", time() - 3600, "/");
     setcookie("creatore", "", time() - 3600, "/");

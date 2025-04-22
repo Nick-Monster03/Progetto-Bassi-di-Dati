@@ -3,6 +3,7 @@ session_start();
 
 try {
     include '../../../services/log_eventi.php';
+    include_once '../../../services/mostraErrore.php';
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!isset($_COOKIE['nomeProgetto']) || !isset($_FILES['foto'])) {
             throw new Exception("Sessione scaduta. Progetto non selezionato.");
@@ -33,12 +34,12 @@ try {
         echo "Richiesta non valida.";
     }
 } catch (PDOException $e) {
-    echo "Errore del database: " . $e->getMessage();
-    echo '<a href="./newReward.php">Torna alla Home</a>';
+    $title =  "[ERRORE] Problemi di inserimento o accesso: " . $e->getCode();
+    mostraErrore($title, $e->getMessage(), '../../home/home.php');
     exit();
 } catch (Exception $e) {
-    echo "Errore: " . $e->getMessage();
-    echo '<a href="./newReward.php">Torna alla Home</a>';
+    $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+    mostraErrore($title, $e->getMessage(), '../home/home.php');
     exit();
 }
 ?>

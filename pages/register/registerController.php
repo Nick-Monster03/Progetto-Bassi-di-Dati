@@ -9,8 +9,8 @@ try{
                 session_start();
             }
         
-            
-        require '../../services/log_eventi.php';
+        include_once '../../services/log_eventi.php';
+        include_once '../../services/mostraErrore.php';
             if (!(isset($_POST['securityCode']) || (isset($_POST['userRole'], $_POST['email'], $_POST['nickname'], $_POST['password'], $_POST['nome'], $_POST['cognome'], $_POST['annoNascita'], $_POST['luogoNascita'])))) {
                 throw new Exception("DATI MANCANTI");
             }
@@ -140,8 +140,8 @@ try{
     }
 } catch (PDOException $e) {
     
-    echo "[ERRORE] Operazione non riuscita. Errore " . $e->getMessage();
-    echo "<button onclick='window.history.back();'>TORNA ALLA SCHERMATA PRECEDENTE</button>";
+    $title =  "[ERRORE] Di accesso al Database: " . $e->getCode();
+    mostraErrore($title, $e->getMessage(), '../home/home.php');
     if ($pdo && $pdo->inTransaction()) {
         $pdo->rollBack();
     }
@@ -155,8 +155,9 @@ try{
     unset($_SESSION['is_administrator']);
 
 }catch (Exception $e) {
-    echo($e->getMessage()) ;
-    echo "<button onclick='window.history.back();'>TORNA ALLA SCHERMATA PRECEDENTE</button>";
+    $title =  "[ERRORE]: " . $e->getCode();
+    mostraErrore($title, $e->getMessage(), '../home/home.php');
+            
     if($pdo && $pdo->inTransaction()){
         $pdo->rollBack();
     }

@@ -1,6 +1,5 @@
 <?php
-
-    
+    include_once '../../services/mostraErrore.php';
 
     try {
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
@@ -11,7 +10,9 @@
         }
 
         $nomeProgetto = $_GET['nome'];
-        //il nome del progetto è stato inserito in cookie così da avere un tempo di limite di iterazione
+        //il nome del progetto, il suo valoreAttuale(=soldi ricevuti finora) e il nome dell' utente creatore sono stati 
+        //inseriti in cookie così da avere un tempo di limite di iterazione come si ha in molti siti web
+        //per evitare un sovraccarico di operazioni
         setcookie("nomeProgetto", $nomeProgetto, time() + 3600, "/");
         $valoreAttuale = trovaImporto($nomeProgetto)["total"] ?? 0;
         setcookie("valoreAttuale", $valoreAttuale, time() + 3600, "/");
@@ -28,7 +29,6 @@
             $query->execute();
             $row = $query->fetch(PDO::FETCH_ASSOC);
            
-
             echo '<h2 class="text-center mb-4">Dettagli del Progetto: ' . htmlspecialchars($nomeProgetto, ENT_QUOTES, 'UTF-8') . '</h2>';
 
             if ($row && isset($row['foto'])) {
@@ -40,15 +40,16 @@
             }
         } else {
             //per debug echo "<p>Nessun progetto trovato con il nome '$nomeProgetto'.</p>";
-            throw new Exception("non è stato trovato nessun progetto con qeusto nome");
+            throw new Exception("non è stato trovato nessun progetto con questo nome", 1017);
         }
         
     } catch (PDOException $e) {
-        echo "[ERRORE] Database non accessibile: " . $e->getMessage();
+        $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
         exit();
     } catch (Exception $e) {
-        echo "<p>[ERRORE] " . $e->getMessage() . "</p>";
-        echo "<a href='../home/home.php'>Torna alla home</a>";
+        $title = "[ERRORE] " . $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
         exit();
     }
     
@@ -62,7 +63,8 @@
             $res->execute();
             return $res->fetch(PDO::FETCH_ASSOC);
         }catch(PDOException $e){
-            echo "[ERRORE] Database non accessibile: " . $e->getMessage();
+            $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../home/home.php');
             exit();
         }
     }
@@ -80,7 +82,8 @@
             $result = $res->fetch(PDO::FETCH_ASSOC);
             return $result['count'] >= 1;
         }catch(PDOException $e){
-            echo "[ERRORE] Database non accessibile: " . $e->getMessage();
+            $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../home/home.php');
             exit();
         }
     }

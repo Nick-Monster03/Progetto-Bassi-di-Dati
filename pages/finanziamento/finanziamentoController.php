@@ -1,8 +1,9 @@
 <?php
     try{
         include '../../services/log_eventi.php';
+        include_once '../../services/mostraErrore.php';
         if(!isset($_COOKIE['nomeProgetto'])) {
-            throw new Exception('SESSIONE SCADUTA. <a href="../home/home.php">backHome</a>');
+            throw new Exception('SESSIONE SCADUTA. TORNA INDIETRO');
         }
         elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
@@ -76,12 +77,12 @@
             }
         }
     }catch(PDOException $e){
-            echo 'Errore di connessione: ' . $e->getMessage();
-            echo "<a href='../item/item.php'>Torna alla pagina del progetto</a>";
-            
-            exit();
+        echo 'Errore con il database: ';
+        mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
+        exit();
     }catch(Exception $e){
-        echo 'Errore: ' . $e->getMessage();
+        echo 'Errore: ';
+        mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
     }
 
 // //questa funzione mi serve per andare a prednere dal mio database l' id del primo reward disponibile, cioè che non è ancora stato assegnato

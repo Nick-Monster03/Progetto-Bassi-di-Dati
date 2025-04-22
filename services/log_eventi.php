@@ -32,12 +32,13 @@
                     ];
                     break;
                 case "nuova_skill":
-                    $descrizioneEvento = "L' amministratore ha aggiunto la competenza:  " . $newInsert->nome;
+                    $descrizioneEvento = "L' amministratore " . $newInsert->amministratore . " ha aggiunto la competenza:  " . $newInsert->nome;
                     $document = [
                         "tipo_azione" => $tipoInserimento,
                         "descrizioneEvento" => $descrizioneEvento,
                         "timestamp" => $timestamp,
-                        "nome" => $newInsert->nome
+                        "nome" => $newInsert->nome,
+                        "amministratore" => $newInsert->amministratore
                     ];
                     break;
                 case "nuovo_finanziamento":
@@ -117,6 +118,16 @@
                         "tipo_azione" => $tipoInserimento,
                         "descrizioneEvento" => $descrizioneEvento,
                         "timestamp" => $timestamp,
+                        "nomeProgetto" => $newInsert->nomeProgetto
+                    ];
+                    break;
+                case "nuovo_componente":
+                    $descrizioneEvento = "E' stato aggiunto un nuovo coponente " . $newInsert->nomeComponente . " al progetto " . $newInsert->nomeProgetto;
+                    $document = [
+                        "tipo_azione" => $tipoInserimento,
+                        "descrizioneEvento" => $descrizioneEvento,
+                        "timestamp" => $timestamp,
+                        "nomeComponente" => $newInsert->nomeComponente,
                         "nomeProgetto" => $newInsert->nomeProgetto
                     ];
                     break;

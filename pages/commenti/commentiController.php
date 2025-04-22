@@ -1,6 +1,7 @@
 <?php
     try {
         include '../../services/log_eventi.php';
+        include '../../services/mostraErrore.php';
         if (!isset($_COOKIE["nomeProgetto"], $_COOKIE["creatore"]))
             throw new Exception("SESSIONE SCADUTA.");
 
@@ -83,12 +84,12 @@
 
         
     } catch (PDOException $e) {
-        echo "Errore di connessione al db: " . $e->getMessage();
-        echo ' <div><a href="../home/home.php" class="btn btn-secondary">Home</a></div>';
+        echo "Errore di connessione al db: ";
+        mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
         exit();
     } catch (Exception $e) {
-        echo $e->getMessage();
-        echo ' <div><a href="../home/home.php" class="btn btn-secondary">Home</a></div>';
+        echo "Errore: ";
+        mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
         exit();
     }
  

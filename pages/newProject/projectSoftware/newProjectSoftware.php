@@ -31,8 +31,6 @@
     <?php 
     require_once 'newProjectSoftwareController.php';
     $profili = Init();
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
     if (!empty($profili)) {
         echo '<table border="1">';
         echo '<tr><th>Nome Profilo</th><th>Nome Progetto Software</th></tr>';
@@ -65,6 +63,14 @@
     </form>
 </div>
 <?php
+    //questi sono i due coockie che usa lo scripr manageProfile
+    if (isset($_COOKIE['nomeProfilo'])) {
+        setcookie('nomeProfilo', '', time() - 3600, '/');
+    }
+
+    if (isset($_COOKIE['nomeProgettoSoftware'])) {
+        setcookie('nomeProgettoSoftware', '', time() - 3600, '/');
+    }
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }

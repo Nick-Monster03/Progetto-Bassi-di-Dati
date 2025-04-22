@@ -1,6 +1,6 @@
 <?php
     include '../../services/log_eventi.php';
-
+    include '../../services/mostraErrore.php';
     session_start();
 
     try{
@@ -12,19 +12,18 @@
         $competenze = $query->fetchAll(PDO::FETCH_ASSOC);
 
         if(isset($_POST['nuovaCompetenza'])){
-            $nuovaCompetenza = $_POST['nuovaCompetenza'];
+            $nuovaCompetenza = trim($_POST['nuovaCompetenza']);
             $query = $pdo->prepare("INSERT INTO skill (nome, emailAmministratore) VALUES (:nome, :emailAmministratore)");
             $query->bindParam(':emailAmministratore', $_SESSION['email']);
             $query->bindParam(':nome', $nuovaCompetenza);
             $query->execute();
-            addLog("nuova_skill", (object)['nome'=>$nuovaCompetenza]);
-            
+            addLog("nuova_skill", (object)['nome'=>$nuovaCompetenza, 'amministratore'=>$_SESSION['email']]);
             header("Location: competenze.php");
             exit();
         }
     }catch(PDOException $e){
-        echo "Errore: " . $e->getMessage();
-        echo "<a href='../home/home.php'>Torna alla Home</a>";
+        echo "Errore: " ;
+        mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
         exit();
     }
 ?>

@@ -20,8 +20,8 @@
     <div class="container mt-4">
         <?php
             session_start();
+            
             include './itemController.php';
-            echo "<script>console.log('Email: " . ($_SESSION["email"] ?? 'non c è nessuan mail') . "');</script>";
         ?>
 
         <?php if ($result): ?>
@@ -95,7 +95,9 @@
             <p>&copy; 2025 Bostarter. Tutti i diritti riservati.</p>
         </div>
     </footer>
+    
+<!--     PER DEBUGGING
     <?php ini_set('display_errors', 1);
-error_reporting(E_ALL);?>
+error_reporting(E_ALL);?> -->
 </body>
 </html>

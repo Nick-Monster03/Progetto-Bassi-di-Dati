@@ -80,7 +80,7 @@
             <?php endif; ?>
         </tbody>
     </table>
-    <?php if (isset($_SESSION['creation_phase']) && $_SESSION['creation_phase']==1): ?>
+    <?php if (isset($_SESSION['creation_phase']) && $_SESSION['creation_phase'] == 1): ?>
         <a href="../reward/newReward/newReward.php">Seleziona Reward</a>
     <?php endif; ?>
 </body>

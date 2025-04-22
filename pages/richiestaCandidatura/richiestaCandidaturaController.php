@@ -53,12 +53,13 @@
         $esito = $stmt->fetchColumn();
 
     }catch(PDOException $e){
-        echo("[ERRORE] Connessione al DB non riuscita. Errore " . $e->getMessage() );
-        echo '<a href="../home/home.php">Torna alla Home</a>';
+        $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
         exit();
     }catch(Exception $e){
-        echo "[ERRORE] " . $e->getMessage() . "<br>";
-        echo '<a href="../home/home.php">Torna alla Home</a>';
+        $title =  "[ERRORE]: " . $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
+        exit();
     }
 
     function checkCandidatura($nomeProfilo, $emailUtente, $nomeProgetto){
@@ -74,8 +75,8 @@
             $esito = $stmt->fetchColumn();
             return $esito;
         } catch(PDOException $e){
-            echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
-            echo '<a href="../home/home.php">Torna alla Home</a>';
+            $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../home/home.php');
             exit();
         }
        

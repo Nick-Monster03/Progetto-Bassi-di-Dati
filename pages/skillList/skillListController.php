@@ -70,8 +70,7 @@
     //     }
     // }
     session_start();
-
-   
+    include_once '../../services/mostraErrore.php';
     try{
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["competenzeDisponibili"]) && isset($_POST["level"])) {
             $competenza = $_POST['competenzeDisponibili'];
@@ -93,12 +92,12 @@
             throw new Exception("DATI MANCANTI");
 
     }catch (PDOException $e) {
-        echo("[ERRORE] Problemi di connessione con il database. Errore: " . $e->getMessage());
-        echo '<a href="./skillList.php" class="btn btn-secondary">Torna alla Home</a>';
+        $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
         exit();
     }catch (Exception $e) {
-        echo "[ERRORE] " . $e->getMessage();
-        echo '<a href="../home/home.php" class="btn btn-secondary">Torna alla Home</a>';
+        $title =  "[ERRORE]: " . $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
         exit();
     }
 
@@ -106,6 +105,7 @@
     //exit();
 
     function getSkills() {
+        include_once '../../services/mostraErrore.php';
         try {
             $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme', [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -115,8 +115,8 @@
             $query->execute();
             return $query->fetchAll();
         } catch (PDOException $e) {
-            echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage());
-            echo '<a href="../home/home.php" class="btn btn-secondary">Torna alla Home</a>';
+            $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../home/home.php');
             exit();
         }
 
@@ -124,6 +124,7 @@
     }
 
     function getSkillsUser($emailUtente) {
+        include_once '../../services/mostraErrore.php';
         try {
             $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme', [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -136,8 +137,8 @@
             return $query->fetchAll(PDO::FETCH_ASSOC);
         }
         catch (PDOException $e) {
-            echo("[ERRORE] Problemi di connessione con il database. Errore: " . $e->getMessage());
-            echo '<a href="../home/home.php" class="btn btn-secondary">Torna alla Home</a>';
+            $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+            mostraErrore($title, $e->getMessage(), '../home/home.php');
             exit();
         }
     }
