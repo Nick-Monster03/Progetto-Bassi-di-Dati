@@ -41,7 +41,8 @@
         <label><?=$motivazione?></label>
     </form>
     <br>
-
+    <a href="../item/item.php?nome=<?= urlencode($nomeProgetto) ?>">Torna alla pagina del progetto</a>
+    <br><br>
     <?php  
     if (!empty($rewards)): ?>
         <h2>Reward disponibili per il progetto "<?= htmlspecialchars($nomeProgetto) ?>"</h2>
@@ -65,6 +66,6 @@
         <p>Nessun reward disponibile al momento.</p>
     <?php endif; ?>
     <br>
-    <a href="../item/item.php?nome=<?= urlencode($nomeProgetto) ?>">Torna alla pagina del progetto</a>
+
 </body>
 </html>

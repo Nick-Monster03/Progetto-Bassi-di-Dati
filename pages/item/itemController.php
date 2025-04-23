@@ -24,17 +24,23 @@
         setcookie("creatore", $result['emailUtenteCreatore'], time() + 3600, "/");
         $isSoftware = isSoftware($nomeProgetto);
         if ($result) {
-            $query = $pdo->prepare('SELECT foto FROM FOTO WHERE nomeProgetto = :nomeProgetto LIMIT 1');
+            $query = $pdo->prepare('SELECT foto FROM FOTO WHERE nomeProgetto = :nomeProgetto');
             $query->bindValue(':nomeProgetto', $nomeProgetto);
             $query->execute();
-            $row = $query->fetch(PDO::FETCH_ASSOC);
+            $rows = $query->fetchAll(PDO::FETCH_ASSOC);
            
             echo '<h2 class="text-center mb-4">Dettagli del Progetto: ' . htmlspecialchars($nomeProgetto, ENT_QUOTES, 'UTF-8') . '</h2>';
 
-            if ($row && isset($row['foto'])) {
-            $blob = $row['foto'];
-            $base64Image = base64_encode($blob);
-            echo "<img src='data:image/jpeg;base64," . htmlspecialchars($base64Image, ENT_QUOTES, 'UTF-8') . "' alt='Foto Progetto' style='max-width: 400px; margin: 10px;'>";
+            if ($rows) {
+                foreach ($rows as $row) {
+                    if (isset($row['foto'])) {
+                        $blob = $row['foto'];
+                        $base64Image = base64_encode($blob);
+                        echo "<img src='data:image/jpeg;base64," . htmlspecialchars($base64Image, ENT_QUOTES, 'UTF-8') . "' alt='Foto Progetto' style='max-width: 400px; margin: 10px;'>";
+                    } else {
+                        echo "<p>Nessuna foto disponibile.</p>";
+                    }
+                }
             } else {
                 echo "<p>Nessuna foto disponibile.</p>";
             }

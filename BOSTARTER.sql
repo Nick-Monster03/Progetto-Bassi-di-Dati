@@ -114,7 +114,7 @@ create table FINANZIAMENTO(
     emailUtente varchar(40) not null,
     dataVersamento dateTime,
     nomeProgetto varchar(30),
-    idReward int null,
+    idReward int,
     importo decimal(10,2),
     foreign key (emailUtente) references UTENTE(email) on delete cascade,
     foreign key (nomeProgetto) references PROGETTO(nome) on delete cascade,
@@ -383,18 +383,22 @@ begin
     declare is_ok_progetto int default 0;
     declare is_ok_reward int default 0;
     declare date_now datetime;
+    declare yestarday datetime;
+    declare is_ok_time int default 0;
     
     set date_now = now();
+    set yestarday = date_sub(now(), interval 1 day);
     set is_ok_email = (select count(*) from utente as u where u.email = emailUtente);
     set is_ok_progetto = (select count(*) from progetto as p where p.nome=nomeProgetto and p.stato='aperto');
     set is_ok_reward = (select count(*) from reward as r where reward_id = r.codice and nomeProgetto=r.nomeProgetto);
-     
-    if(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward > 0) then
+    set is_ok_time = (select count(*) from finanziamento as f where f.nomeProgetto = nomeProgetto and f.emailUtente = emailUtente and f.dataVersamento between yestarday and date_now); 
+    
+    if(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward > 0 and is_ok_time = 0) then
             INSERT INTO finanziamento(emailUtente, dataVersamento, nomeProgetto, idReward, importo)
             VALUES (emailUtente, date_now, nomeProgetto, reward_id, importo);
-    elseif(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward < 1) then
-            INSERT INTO finanziamento(emailUtente, dataVersamento, nomeProgetto, importo)
-            VALUES (emailUtente, date_now, nomeProgetto, importo);
+    -- elseif(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward < 1 and is_ok_time = 0) then
+    --         INSERT INTO finanziamento(emailUtente, dataVersamento, nomeProgetto, importo)
+    --         VALUES (emailUtente, date_now, nomeProgetto, importo);
     else
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Errore: email, progetto o reward non validi.';

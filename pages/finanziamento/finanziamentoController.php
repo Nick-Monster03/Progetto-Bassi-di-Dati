@@ -61,6 +61,8 @@
             $oraLimite = new DateTime();                                      
             $oraLimite->modify('-1 day');
             $timestampLimite = $oraLimite->format('Y-m-d H:i:s');
+            //adesso preparo la query che controlli se l' utente ha effettuati un finanziamento per questo progetto nel range temporale compreso tra
+            //ora e timestampLimite (ovvero esattamente 24 ore fa)
             $stmt = $pdo->prepare("SELECT COUNT(*) AS numero FROM FINANZIAMENTO WHERE emailUtente = :email AND nomeProgetto = :progetto AND dataVersamento >= :limite");
             $stmt->bindParam(':email', $emailUtente);
             $stmt->bindParam(':progetto', $nomeProgetto);
@@ -68,7 +70,7 @@
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($result['numero'] == 0 ) { //se non ha effettuato nessun finanziamento nelle ultime 24 ore allora può finazniare
+            if ($result['numero'] == 0 && !empty($rewards)) { //se non ha effettuato nessun finanziamento nelle ultime 24 ore allora può finazniare
                 $flag_finanziamento = true;
                 $motivazione = "";
             } else {
