@@ -36,8 +36,8 @@ body {
 }
 
 .card {
-    background: #0a899a;
-    color: #fff;
+    background: linear-gradient(to right, #b5e9f0, #ebf5f7);
+    color: black;
     padding: 15px;
     border-radius: 8px;
     text-align: center;

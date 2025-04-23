@@ -149,28 +149,3 @@ footer {
     margin: 0 auto;
 }
 
-.table-rounded {
-    border-radius: 10px;
-    overflow: hidden; /* Per assicurarsi che i bordi arrotondati funzionino */
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Effetto ombra */
-    border: none; /* Rimuove i bordi predefiniti */
-}
-
-.table-rounded thead {
-    background-color: #0a899a; /* Colore di sfondo per l'intestazione */
-    color: white; /* Colore del testo */
-}
-
-.table-rounded tbody tr {
-    transition: transform 0.3s, box-shadow 0.3s; /* Animazione al passaggio del mouse */
-}
-
-.table-rounded tbody tr:hover {
-    transform: translateY(-5px); /* Solleva la riga */
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra */
-}
-
-.table-rounded td, .table-rounded th {
-    padding: 15px; /* Spaziatura interna */
-    vertical-align: middle; /* Allineamento verticale */
-}

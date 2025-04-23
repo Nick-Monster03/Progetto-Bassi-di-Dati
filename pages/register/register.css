@@ -1,27 +1,21 @@
 body {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 0;
-    font-family: 'Arial', sans-serif;
     background-color: #055160;
-    padding: 1px;
 }
 
-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-control-custom {
+    border: none !important;
+    border-bottom: 3px solid #00d1c1 !important;
+    background: transparent !important;
+}
+.form-control-custom:focus {
+    box-shadow: none !important;
+    border-bottom: 3px solid #00d1c1 !important;
+    outline: none !important;
 }
 
 h1 {
@@ -42,7 +36,6 @@ input[type="email"], input[type="text"], input[type="date"], input[type="passwor
 }
 
 button[type="submit"] {
-    width: 100%;
     padding: 10px;
     background-color: #0a899a;
     color: white;
@@ -57,25 +50,24 @@ button[type="submit"]:hover {
     background-color: #1aa9b2;
 }
 
-/* Media Query per dispositivi mobili */
-@media (max-width: 768px) {
-    form {
-        padding: 15px;
-    }
+button {
+    padding: 10px;
+    background-color: #0a899a;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    h1 {
-        font-size: 1.2rem;
-    }
+button:hover {
+    background-color: #1aa9b2;
+}
 
-    input[type="email"], input[type="text"], input[type="date"], input[type="password"], select {
-        font-size: 0.9rem;
-        padding: 8px;
-    }
-
-    button[type="submit"] {
-        font-size: 0.9rem;
-        padding: 8px;
-    }
+a {
+    color: white;
+    text-decoration: none;
 }
 
 .btn-home {

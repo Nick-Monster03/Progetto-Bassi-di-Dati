@@ -12,7 +12,7 @@
 <body>
     <header>
         <div class="container d-flex flex-column align-items-center py-3">
-            <h1 class="titleWebSite">Bostarter</h1>
+            <img src="/logo/bostarter_trasparente.png" alt="Bostarter Logo" class="logo">
         </div>
     </header>
 

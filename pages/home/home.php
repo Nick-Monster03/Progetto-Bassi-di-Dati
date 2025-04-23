@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bostarter</title>
-    <link rel="stylesheet" href="home.css">
     <link href="../../bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="home.css">
     <script src="../../bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
 </head>
 <?php
@@ -52,27 +52,29 @@
                         </button>  
                     </form>
 
-                    <?php if (!isset($_SESSION['user_role']) ): ?>
-                        <div>
-                            <a class="btn btn-primary m-0" href="/pages/register/register.php">SingIn</a>
-                            <a class="btn btn-primary" href="/pages/login/login.php">LogIn</a>
-                        </div>
-                    <?php else: ?>
-                        <a href="../profiloUtente/profiloUtente.php">Visualizza Profilo</a>
-                    <?php if ($_SESSION['user_role'] == 'creatore'): ?>
-                        <a href="../newProject/newProject.php">Crea Progetto</a>
-                        <a href="../candidature/candidatura.php">Visualizza Candidature</a>
-                    <?php elseif ($_SESSION['user_role'] == 'amministratore'): ?>
-                        <a href="../competenze/competenze.php">Visualizza Lista Competenze</a>
-                    <?php endif; ?>
-                        <a href="../skillList/skillList.php">Mie Competenze</a>
-                        <button onclick="window.location.href='homeController.php?action=logout'">Logout</button>
-                    <?php endif; ?>
+                    <div class="d-flex align-items-center gap-3">
+                        <?php if (!isset($_SESSION['user_role']) ): ?>
+                            <div>
+                                <a class="btn btn-primary m-0" href="/pages/register/register.php">SingIn</a>
+                                <a class="btn btn-primary" href="/pages/login/login.php">LogIn</a>
+                            </div>
+                        <?php else: ?>
+                            <a class="btn btn-primary" href="../profiloUtente/profiloUtente.php">Visualizza Profilo</a>
+                        <?php if ($_SESSION['user_role'] == 'creatore'): ?>
+                            <a class="btn btn-primary" href="../newProject/newProject.php">Crea Progetto</a>
+                            <a class="btn btn-primary" href="../candidature/candidatura.php">Visualizza Candidature</a>
+                        <?php elseif ($_SESSION['user_role'] == 'amministratore'): ?>
+                            <a class="btn btn-primary" href="../competenze/competenze.php">Visualizza Lista Competenze</a>
+                        <?php endif; ?>
+                            <a class="btn btn-primary" href="../skillList/skillList.php">Mie Competenze</a>
+                            <button class="btn btn-primary rounded" onclick="window.location.href='homeController.php?action=logout'">Logout</button>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <div class="w-100">       
                     <div class="d-flex justify-content-center">
                         <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link" href="#top3vicinoscadenza" class="menu-item">Progetti vicini al completamento</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#top3vicinoscadenza" class="menu-item">Progetti in Chiusura</a></li>
                             <li class="nav-item"><a class="nav-link" href="#top3creatori"class="menu-item">Classifica creatori</a></li>
                             <li class="nav-item"><a class="nav-link" href="#top3finanziatori" class="menu-item">Classifica Finanziatori</a></li>
                         </ul>

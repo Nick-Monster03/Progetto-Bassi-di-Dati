@@ -3,62 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="register.css">
+    <link href="../../bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="register.css">
     <title>Registrazione</title>
 </head>
-<body>
+<body class="p-5">
     <?php
         session_start();
         include('registerController.php');
     ?>
 
-
-    <div class="container">
+    <div class="container-fluid w-50 p-5" style="background-color: white;">
         <form action="registerController.php" method="post">
-             <a href="../home/home.php" class="btn-home">Torna alla Home</a>
-             <div class="header">
-            <div style="display: flex; flex-direction: column; align-items: center;">
-                       <img src="/logo/bostarter_trasparente.png" alt="Logo" style="width: 150px; height:auto;">
-                       <h1>Registrati</h1>
-                   </div>
-               </div>
+            <div class="logo-container text-center mb-3">
+                <img src="/logo/bostarter_trasparente.png" alt="Logo" style="width: 150px; height:auto;">
+            </div>
+            <h1>SingIn</h1>
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Inserisci la tua email" required>
+                <input type="email" id="email" name="email" class="form-control-custom" placeholder="Indirizzo email" required>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Inserisci la tua password" required>
+                <input type="password" id="password" name="password" class="form-control-custom" placeholder="Password" required>
             </div>
             <div class="form-group">
-                <label for="nickname">Nickname</label>
-                <input type="text" id="nickname" name="nickname" placeholder="Inserisci il tuo nickname" required>
+                <input type="text" id="nickname" name="nickname" class="form-control-custom" placeholder="Nickname" required>
             </div>
             <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome" placeholder="Inserisci il tuo nome" required>
+                <input type="text" id="nome" name="nome" class="form-control-custom" placeholder="Nome" required>
             </div>
             <div class="form-group">
-                <label for="cognome">Cognome</label>
-                <input type="text" id="cognome" name="cognome" placeholder="Inserisci il tuo cognome" required>
+                <input type="text" id="cognome" name="cognome" class="form-control-custom" placeholder="Cognome" required>
             </div>
             <div class="form-group">
-                <label for="annoNascita">Anno di Nascita</label>
-                <input type="date" id="annoNascita" name="annoNascita" required>
+                <input type="date" id="annoNascita" name="annoNascita" class="form-control-custom" placeholder="Anno di nascita" required>
             </div>
             <div class="form-group">
-                <label for="luogoNascita">Luogo di Nascita</label>
-                <input type="text" id="luogoNascita" name="luogoNascita" placeholder="Inserisci il tuo luogo di nascita" required>
+                <input type="text" id="luogoNascita" name="luogoNascita" class="form-control-custom" placeholder="Luogo di nascita" required>
             </div>
-            <div class="form-group">
-                <label for="userRole">Ruolo</label>
-                <select id="userRole" name="userRole" required>
-                    <option value="utente">Utente</option>
-                    <option value="creatore">Creatore</option>
-                    <option value="amministratore">Amministratore</option>
-                </select>
+            <select id="userRole" name="userRole" required>
+                <option value="utente">Utente</option>
+                <option value="creatore">Creatore</option>
+                <option value="amministratore">Amministratore</option>
+            </select>
+            <div class="text-center">
+                <button><a href="../home/home.php">Torna alla Home</a></button>
+                <button type="submit">Registrati</button>
             </div>
-            <button type="submit">Registrati</button>
         </form>
     </div>
     <?php 
