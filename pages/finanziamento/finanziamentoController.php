@@ -79,12 +79,11 @@
             }
         }
     }catch(PDOException $e){
-        echo 'Errore con il database: ';
         mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
         exit();
     }catch(Exception $e){
-        echo 'Errore: ';
         mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
+        exit();
     }
 
 // //questa funzione mi serve per andare a prednere dal mio database l' id del primo reward disponibile, cioè che non è ancora stato assegnato
