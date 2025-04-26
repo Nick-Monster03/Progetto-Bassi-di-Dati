@@ -282,13 +282,14 @@ create procedure Registrazione(IN email varchar(40), IN password varchar(40), IN
 							   IN cognome varchar (20), IN annoNascita datetime, IN luogoNascita varchar(30))
 begin
     declare is_ok int default 0;
-    
+    declare exist int default 0;
 	if (email is null or email = '' or password is null or password ='' or nickname is null or nickname = '' or nome is null or nome = '' or 
 		cognome is null or cognome = '' or annoNascita is null or luogoNascita is null or luogoNascita = '' ) then
         set is_ok = 0;
 	else
 		set is_ok = 1;
     END IF;
+    
     
     if(is_ok = 1) then
 		INSERT INTO utente (email, password, nickname, nome, cognome, annoNascita, luogoNascita) 
@@ -330,7 +331,7 @@ begin
 		VALUES (email);
      else
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Non è statop creato alcun utente con questo nome';
+        SET MESSAGE_TEXT = 'Non è stato creato alcun utente con questo nome';
 	end if;
     
     
@@ -444,18 +445,23 @@ $
 DELIMITER ;
  
 DELIMITER $
-create procedure InserisciCompetenza(nuovaCompetenza varchar(25))
+create procedure InserisciCompetenza(nuovaCompetenza varchar(25), emailAmministratore varchar(40))
 begin
 	declare exist int default 0;
+    declare ok_amministrator int default 0;
     
     set exist = (select count(*) from skill where nome=nuovaCompetenza);
+    set ok_amministrator = (select count(*) from amministratore where emailUtente=emailAmministratore);
     
-    if(exist = 0) then
+    if(exist = 0 and ok_amministrator <> 0) then
 		INSERT INTO skill(nome)
         VALUES (nuovaCompetenza);
-    else
+    elseif(exist > 0) then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Errore: la competenza esiste già.';
+	else 
+		SIGNAL SQLSTATE '45001'
+        SET MESSAGE_TEXT = 'Errore: solo un amministratore può aggiungere una competenza alla lista';
     end if;
 end
 $
@@ -466,17 +472,23 @@ create procedure InserisciProgetto(nome varchar(30), descrizione varchar(300), b
 begin
     declare date_now datetime;
     DECLARE is_ok_creatore int default 0;
+    declare is_ok_nome  int default 0;
     
 
     set date_now = now();
 	set is_ok_creatore = (select count(*) from CREATORE where emailUtente = emailUtenteCreatore);
+    set is_ok_nome = (select count(*) from PROGETTO where nome = nome);
+    
+    if (is_ok_nome <> 0) then
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Esiste già un progetto con questo nome';
+	end if;
     
     if(is_ok_creatore > 0) then
 		INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, emailUtenteCreatore)
 		VALUES(nome, descrizione, date_now, budget, data_limite, emailUtenteCreatore);
         INSERT INTO FOTO (foto, nomeProgetto)
         VALUES (foto, nome);
-
     else
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Errore: creatore non valido.';

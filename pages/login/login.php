@@ -12,7 +12,13 @@
         session_start();
         require 'loginController.php';
     ?>
+    <?php if (isset($_COOKIE['credential_flag']) && $_COOKIE['credential_flag'] == 'false'): ?>
+        <p style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Credenziali errate o utente non registrato, riprova</p>
+    <?php endif; ?>
 
+    <?php if (isset($_COOKIE['security_code_flag']) && $_COOKIE['security_code_flag'] == 'false'): ?>
+        <p style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Codice di sicurezza non valido</p>
+    <?php endif; ?>
     <div class="container-fluid w-25 p-5" style="background-color: white;">
         <form action="login.php" method="post">
             <div class="logo-container text-center mb-3">

@@ -12,17 +12,16 @@
         $competenze = $query->fetchAll(PDO::FETCH_ASSOC);
 
         if(isset($_POST['nuovaCompetenza'])){
-            $nuovaCompetenza = trim($_POST['nuovaCompetenza']);
-            $query = $pdo->prepare("INSERT INTO skill (nome, emailAmministratore) VALUES (:nome, :emailAmministratore)");
+            $nuovaCompetenza = strtolower(trim($_POST['nuovaCompetenza']));
+            $query = $pdo->prepare("CALL InserisciCompetenza(:nuovaCompetenza, :emailAmministratore)");
+            $query->bindParam(':nuovaCompetenza', $nuovaCompetenza);
             $query->bindParam(':emailAmministratore', $_SESSION['email']);
-            $query->bindParam(':nome', $nuovaCompetenza);
             $query->execute();
             addLog("nuova_skill", (object)['nome'=>$nuovaCompetenza, 'amministratore'=>$_SESSION['email']]);
             header("Location: competenze.php");
             exit();
         }
     }catch(PDOException $e){
-        echo "Errore: " ;
         mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
         exit();
     }

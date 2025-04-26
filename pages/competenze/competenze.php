@@ -33,7 +33,6 @@ include 'competenzeController.php'; // carica $competenze
         </div>
     </div>
 
-    <!-- Modal per aggiungere competenze -->
     <div class="modal" id="modalAggiungi">
         <div class="modal-dialog">
             <div class="modal-content">

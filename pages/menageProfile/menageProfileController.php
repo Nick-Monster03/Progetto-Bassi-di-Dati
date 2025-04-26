@@ -86,11 +86,13 @@
         exit();
     }
     function existed($nomeProfilo, $nomeProgettoSoftware){
+        //piccola funzioni che controlli che il profilo sia stato creato correttamente
+        //per quel progetto software
         try {
             $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
-            $sqlCheck = "SELECT * FROM PROFILO_SKILL WHERE nomeProfilo = :nomeProfilo AND nomeProgettoSoftware = :nomeProgettoSoftware";
+            $sqlCheck = "SELECT * FROM PROFILO WHERE nome = :nomeProfilo AND nomeProgettoSoftware = :nomeProgettoSoftware";
             $stmtCheck = $pdo->prepare($sqlCheck);
             $stmtCheck->bindValue(":nomeProfilo", $nomeProfilo);
             $stmtCheck->bindValue(":nomeProgettoSoftware", $nomeProgettoSoftware);

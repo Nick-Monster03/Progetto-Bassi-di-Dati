@@ -79,7 +79,7 @@
             
             $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $query = $pdo->prepare("INSERT INTO CURRICULUM(nomeskill, emailUtente, livello) VALUES (:nomeskill, :emailUtente, :livello)");
+            $query = $pdo->prepare("CALL InserisciSkillCurriculum(:nomeskill, :emailUtente, :livello)");
             $query->bindParam(':nomeskill', $competenza, PDO::PARAM_STR);
             $query->bindParam(':emailUtente', $emailUtente, PDO::PARAM_STR);
             $query->bindParam(':livello', $livello, PDO::PARAM_INT);

@@ -140,7 +140,7 @@ try{
     }
 } catch (PDOException $e) {
     
-    $title =  "[ERRORE] Di accesso al Database: " . $e->getCode();
+    $title =  "[ERRORE]: " . $e->getCode();
     mostraErrore($title, $e->getMessage(), '../home/home.php');
     if ($pdo && $pdo->inTransaction()) {
         $pdo->rollBack();

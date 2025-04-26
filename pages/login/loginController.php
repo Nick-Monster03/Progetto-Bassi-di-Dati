@@ -1,7 +1,15 @@
 <?php
     include_once '../../services/mostraErrore.php';
+
     try {
         if (isset($_POST["email"]) and isset($_POST["password"])) {
+
+            if (isset($_COOKIE['credential_flag'])) {
+                setcookie("credential_flag", "", time() - 3600, "/");
+            }
+            if (isset($_COOKIE['security_code_flag'])) {
+                setcookie("security_code_flag", "", time() - 3600, "/");
+            }
 
             $email = $_POST["email"];
             $password = $_POST["password"];
@@ -13,7 +21,7 @@
             $res->bindValue(":password",$password);
             $res->execute(); 
 
-            //per controllare che l' utente sia registrato omeno basta controllare se la nostra query restituisce almeno una riga
+            //per controllare che l' utente sia registrato o meno basta controllare se la nostra query restituisce almeno una riga
             //se non restituisce righe significa che l' utente non è registrato
             $row = $res->rowCount();
         
@@ -32,19 +40,20 @@
                 $resA->execute(); 
                 $rowA = $resA->rowCount();
 
-                if($rowC==0 && $rowA==0){ //verifica che non sia un creatore o un amministratore
+
+                if ($rowC == 0 && $rowA == 0) { // verifica che non sia un creatore o un amministratore
                     $_SESSION['user_role'] = 'utente';
                     header("Location: ../home/home.php");
-                }else if($rowC>0){
+                } else if ($rowC > 0) {
                     $_SESSION['user_role'] = 'creatore';
                     header("Location: ../home/home.php");
-                }else if($rowA>0){
+                } else if ($rowA > 0) {
                     $_SESSION['status'] = 'security_code';
                     header("Location: ./login.php");
-                } 
+                }
             } else {
+                setcookie("credential_flag", "false", time() + 3600, "/");
                 header("Location: ./login.php");
-                echo("<p style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Credenziali errate o utente non registrato, riprova</p>");
             }
             exit();
         }
@@ -74,15 +83,15 @@
                 $_SESSION['user_role'] = 'amministratore';
                 header("Location: ../home/home.php");
             } else {
+                setcookie("security_code_flag", "false", time() + 3600, "/");
                 header("Location: login.php");
-                echo("<p style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Codice di sicurezza errato, riprova</p>");
                 unset($_SESSION['user_role'], $_SESSION['email'], $_SESSION['status']);
             }
             exit();
         }
 
     } catch (PDOException $e) {
-        $title = "[ERRORE] Connessione al DB non riuscita " + $e->getCode();
+        $title = "[ERRORE] Connessione al DB non riuscita: " + $e->getCode();
         mostraErrore($title, $e->getMessage(), '../home/home.php');
         exit();
     }catch (Exception $e){
