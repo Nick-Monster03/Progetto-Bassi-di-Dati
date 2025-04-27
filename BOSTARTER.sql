@@ -473,7 +473,7 @@ $
 DELIMITER ;
  
 DELIMITER $
-create procedure InserisciProgetto(nome varchar(30), descrizione varchar(300), budget decimal(10,2), data_limite datetime, emailUtenteCreatore varchar(40), foto longblob)
+create procedure InserisciProgetto(nomeProgetto varchar(30), descrizione varchar(300), budget decimal(10,2), data_limite datetime, emailUtenteCreatore varchar(40), foto longblob)
 begin
     declare date_now datetime;
     DECLARE is_ok_creatore int default 0;
@@ -482,7 +482,7 @@ begin
 
     set date_now = now();
 	set is_ok_creatore = (select count(*) from CREATORE where emailUtente = emailUtenteCreatore);
-    set is_ok_nome = (select count(*) from PROGETTO where nome = nome);
+    set is_ok_nome = (select count(*) from PROGETTO where nome = nomeProgetto);
     
     if (is_ok_nome <> 0) then
 		SIGNAL SQLSTATE '45000'
@@ -491,9 +491,9 @@ begin
     
     if(is_ok_creatore > 0) then
 		INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, emailUtenteCreatore)
-		VALUES(nome, descrizione, date_now, budget, data_limite, emailUtenteCreatore);
+		VALUES(nomeProgetto, descrizione, date_now, budget, data_limite, emailUtenteCreatore);
         INSERT INTO FOTO (foto, nomeProgetto)
-        VALUES (foto, nome);
+        VALUES (foto, nomeProgetto);
     else
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Errore: creatore non valido.';

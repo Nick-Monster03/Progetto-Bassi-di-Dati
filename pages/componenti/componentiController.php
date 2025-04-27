@@ -48,8 +48,8 @@
         }
 
     }catch(PDOEXCEPTION $e){
-        echo "Errore: di connessone al database" ;
-        mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
+        $title = "Errore: " . $e->getCode();
+        mostraErrore($title, $e->getMessage(), '../home/home.php');
         exit();
     }catch(Exception $e){
         echo  "ERRORE";

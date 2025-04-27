@@ -13,7 +13,7 @@
         require 'loginController.php';
     ?>
     <?php if (isset($_COOKIE['credential_flag']) && $_COOKIE['credential_flag'] == 'false'): ?>
-        <p style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Credenziali errate o utente non registrato, riprova</p>
+        <p class="alert alert-danger" role="alert" style='color: darkred; background-color: lightcoral; opacity: 0.8; width: 16%; margin: 20px auto; text-align: center;'>Credenziali errate o utente non registrato, riprova</p>
     <?php endif; ?>
 
     <?php if (isset($_COOKIE['security_code_flag']) && $_COOKIE['security_code_flag'] == 'false'): ?>

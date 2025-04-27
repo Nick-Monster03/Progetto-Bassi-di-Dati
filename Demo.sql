@@ -34,9 +34,9 @@ VALUES ('E-commerce Platform'), ('Cybersecurity Audit'),('Interfaccia Gestionale
 
 
 
-CALL FinanziaProgetto('utente2@example.com', 'Progetto AI', 1000.00, 1);
-CALL FinanziaProgetto('utente1@example.com', 'Progetto AI', 900.00, 3);
-CALL FinanziaProgetto('utente1@example.com', 'E-commerce Platform', 500.00, 2);
+#CALL FinanziaProgetto('utente2@example.com', 'Progetto AI', 1000.00, 1);
+#CALL FinanziaProgetto('utente1@example.com', 'Progetto AI', 900.00, 3);
+#CALL FinanziaProgetto('utente1@example.com', 'E-commerce Platform', 500.00, 2);
 
 
 CALL AggiungiCommento('Un altro commento interessante per il progetto.', 'Progetto AI', 'utente2@example.com');

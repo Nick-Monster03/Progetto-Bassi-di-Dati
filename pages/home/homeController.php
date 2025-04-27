@@ -51,9 +51,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'search') {
         $res->bindValue(":query", "%$query%");
         $res->execute();
         $results = $res->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($results);
+        //echo json_encode($results);
     } catch (PDOException $e) {
-        echo json_encode(["error" => "Query SQL non riuscita. Errore: " . $e->getMessage()]);
+        //DEBUG :echo json_encode(["error" => "Query SQL non riuscita. Errore: " . $e->getMessage()]);
     }
     exit();
 }
