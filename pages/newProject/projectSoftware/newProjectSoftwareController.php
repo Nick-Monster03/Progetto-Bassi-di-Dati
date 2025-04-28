@@ -1,6 +1,8 @@
 <?php
     global $pdo;
     include_once '../../../services/mostraErrore.php';
+
+    $nomeProgettoSoftware = $_COOKIE['nomeProgetto'];
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!isset($pdo)) {
             Init();
@@ -10,17 +12,15 @@
             if (!isset($_POST['profileName']) || empty($_POST['profileName'])) {
                 throw new Exception("Il nome del profilo non è definito.", 4404);
             }
-
-            $projectName = $_COOKIE['nomeProgetto'];
-            echo "<p>Nome Progetto: " . htmlspecialchars($projectName) . "</p>";
+            //echo "<p>Nome Progetto: " . htmlspecialchars($nomeProgettoSoftware) . "</p>";
             $profileName = $_POST['profileName'];
             $sql = "CALL AggiungiProfilo (:profileName, :nomeProgettoSoftware)";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':profileName', $profileName);
-            $stmt->bindParam(':nomeProgettoSoftware', $projectName);
+            $stmt->bindParam(':nomeProgettoSoftware', $nomeProgettoSoftware);
             $stmt->execute();
             include "../../../services/log_eventi.php";
-            addLog("nuovo_profilo", (object)['nomeProfilo' => $profileName, 'nomeProgettoSoftware' => $projectName]);
+            addLog("nuovo_profilo", (object)['nomeProfilo' => $profileName, 'nomeProgettoSoftware' => $nomeProgettoSoftware]);
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
@@ -29,8 +29,12 @@
             }
             header("Location: newProjectSoftware.php");
         } catch (PDOException $e) {
-            $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
-            mostraErrore($title, $e->getMessage(), '../../home/home.php');
+            $title =  "[ERRORE] : " . $e->getCode();
+            //se il profilo esiste già allora dalla shcermata di errore torna alla precedente
+            if($e.getCode() == 23000)
+                mostraErrore($title, $e->getMessage(), '../projectSoftware/newProjectSoftware.php');
+            else //altrimenti se c' è un errore più grave torna alla home
+                mostraErrore($title, $e->getMessage(), '../../home/home.php');
             exit();
         } 
         catch (Exception $e) {
@@ -59,7 +63,7 @@
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $title =  "[ERRORE] Database non accessibile: " . $e->getCode();
+            $title =  "[ERRORE] : " . $e->getCode();
             mostraErrore($title, $e->getMessage(), '../../home/home.php');
             exit();
         } 

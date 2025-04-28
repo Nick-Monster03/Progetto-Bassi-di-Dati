@@ -30,7 +30,7 @@
 
     ?>
     <a href="../newProject/projectSoftware/newProjectSoftware.php"
-   style="position: absolute; top: 10px; right: 10px; font-size: 16px; background-color: #4CAF50; color: white; padding: 10px; text-decoration: none; border-radius: 5px;">
+   style="position: absolute; top: 10px; right: 10px; font-size: 16px; background-color: #0a899a; color: white; padding: 10px; text-decoration: none; border-radius: 5px;">
    Torna alla pagina precedente
     </a>
     <h1>Gestione Profilo</h1>

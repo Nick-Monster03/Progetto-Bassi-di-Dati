@@ -459,8 +459,8 @@ begin
     set ok_amministrator = (select count(*) from amministratore where emailUtente=emailAmministratore);
     
     if(exist = 0 and ok_amministrator <> 0) then
-		INSERT INTO skill(nome)
-        VALUES (nuovaCompetenza);
+		INSERT INTO skill(nome, emailAmministratore)
+        VALUES (nuovaCompetenza, emailAmministratore);
     elseif(exist > 0) then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Errore: la competenza esiste già.';

@@ -5,7 +5,8 @@
         $pdo = new PDO("mysql:host=localhost;dbname=BOSTARTER", "root", "changeme");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-        // --- Se è POST, gestisci la candidatura
+        // se c' è una chiamata post allora effettuiamo la candidatura
+        // il fatto che l' utente sia idoneo o meno viene controllata nel codice
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!isset($_POST['nomeProfilo'], $_POST['nomeProgettoSoftware'], $_SESSION['email'])) {
                 throw new Exception("SESSIONE SCADUTA o DATI MANCANTI");

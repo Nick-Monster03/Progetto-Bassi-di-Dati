@@ -27,9 +27,9 @@
     </div>
 <?php endif; ?>
 <div class="container">
-    <h2>Profili Skill per il progetto: <?php echo htmlspecialchars($nomeProgettoSoftware); ?></h2>
     <?php 
     require_once 'newProjectSoftwareController.php';
+    echo '<h2>Profili Skill per il progetto: ' . htmlspecialchars($nomeProgettoSoftware) . '</h2>';
     $profili = Init();
     if (!empty($profili)) {
         echo '<table border="1">';
@@ -52,13 +52,6 @@
     <form action="newProjectSoftwareController.php" method="post">
         <label for="profileName">Nome Profilo:</label>
         <input type="text" id="profileName" name="profileName" required><br><br>
-
-        <!-- <label for="skillName">Nome Skill:</label>
-        <input type="text" id="skillName" name="skillName" required><br><br>
-
-        <label for="skillLevel">Livello Richiesto:</label>
-        <input type="number" id="skillLevel" name="skillLevel" min="0" max="5" required><br><br> -->
-
         <button type="submit">Invia</button>
     </form>
 </div>

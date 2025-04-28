@@ -17,24 +17,6 @@
         th {
             background-color: #eee;
         }
-
-        .btn {
-            background-color: #0a899a !important;
-            border: none !important;
-        }
-        .btn:hover {
-            background-color: #1aa9b2 !important;
-        }
-
-        footer {
-            width: 100%;
-            background: linear-gradient(135deg, #e0f7fa, #b3eafb);
-            color: #0a899a;
-            padding: 20px 0;
-            text-align: center;
-            font-weight: bold;
-            position: relative;
-        }
     </style>
 </head>
 <body>
@@ -46,14 +28,18 @@
         <button class="btn btn-primary" onclick="window.location.href='../item/item.php?nome=<?= urlencode($nomeProgetto) ?>';" style="padding: 10px; color: white; cursor: pointer; border-radius: 5px;">Torna Indietro</button>
     </div>
     <?php if (count($profili) > 0): ?>
-        <?php
-        // Raggruppa le skill per nomeProfilo
-        $gruppoProfili = [];
-        foreach ($profili as $p) { 
-            $gruppoProfili[$p['nomeProfilo']][] = new Competenza($p['nomeSkill'], $p['livelloRichiesto']);
-        }
-    ?>
+    <?php
+    // Raggruppa le skill per nomeProfilo
+    $gruppoProfili = [];
+    foreach ($profili as $p) { 
+        $gruppoProfili[$p['nomeProfilo']][] = new Competenza($p['nomeSkill'], $p['livelloRichiesto']);
+    }
+   
 
+    ?>
+   
+            
+    <tbody>
     <?php
         // Converto le competenze dell'utente in oggetti Competenza
         $competenzeUtente = [];
@@ -115,8 +101,9 @@
             session_start();
             $esito=checkCandidatura($nomeProfilo, $_SESSION["email"], $nomeProgetto);
             if ($utenteCompatibile): ?>
+            <!-- Se l'utente è compatibile e non ha già fatto richiesta per quel profilo allora può candidarsi
+            in caso contrario gli verrà mostrato l' esito della candidatura (accettata, rifiutata o non vista) -->
                 <?php if ($esito == null || $esito ==''): ?>
-                    <!-- Nessuna candidatura trovata: mostra il form -->
                     <form action="richiestaCandidaturaController.php" method="POST" style="margin: 0;">
                         <input type="hidden" name="nomeProfilo" id="nomeProfilo" value="<?= htmlspecialchars($nomeProfilo) ?>">
                         <input type="hidden" name="nomeProgettoSoftware" id="nomeProgetto" value="<?= htmlspecialchars($nomeProgetto) ?>">

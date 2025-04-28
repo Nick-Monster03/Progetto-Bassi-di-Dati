@@ -70,7 +70,7 @@
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($result['numero'] == 0 && !empty($rewards)) { //se non ha effettuato nessun finanziamento nelle ultime 24 ore allora può finazniare
+            if ($result['numero'] == 0 && !empty($rewards)) { //se non ha effettuato nessun finanziamento nelle ultime 24 ore allora può finanziare
                 $flag_finanziamento = true;
                 $motivazione = "";
             } else {
@@ -86,14 +86,6 @@
         exit();
     }
 
-// //questa funzione mi serve per andare a prednere dal mio database l' id del primo reward disponibile, cioè che non è ancora stato assegnato
-//     function getFirstReward($pdo, $nomeProgetto) {
-//         $stmt = $pdo->prepare("SELECT codice FROM REWARD WHERE nomeProgetto = :nomeProgetto AND NOT EXISTS (SELECT 1 FROM FINANZIAMENTO WHERE REWARD.codice = FINANZIAMENTO.idReward) ORDER BY codice ASC LIMIT 1");
-//         $stmt->bindParam(":nomeProgetto", $nomeProgetto);
-//         $stmt->execute();
 
-//         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-//         return $result['codice'] ?? null;
-//     }
    
 ?>
