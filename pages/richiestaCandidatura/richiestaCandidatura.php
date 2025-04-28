@@ -4,20 +4,96 @@
     <meta charset="UTF-8">
     <title>Profili per il progetto <?= htmlspecialchars($nomeProgetto) ?></title>
     <style>
-        table {
-            border-collapse: collapse;
-            width: 70%;
-            margin: 20px auto;
-        }
-        th, td {
-            border: 1px solid #aaa;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #eee;
-        }
-    </style>
+    body {
+      font-family: 'Cinzel', serif;
+      background: linear-gradient(135deg, #e0f7fa, #b3eafb);
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      color: #0a899a;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
+    .profile-list {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+    }
+
+    .profile-item {
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .not-suitable {
+      color: red;
+      font-weight: bold;
+    }
+
+    .outcome {
+      margin-top: 20px;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .accepted {
+      color: #0a899a;
+    }
+
+    .rejected {
+      color: red;
+    }
+
+    button {
+      background-color: #0a899a;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #1aa9b2;
+    }
+
+    ul {
+      list-style-type: disc;
+      padding-left: 20px;
+      margin-top: 5px;
+    }
+
+    @font-face {
+      font-family: 'Cinzel';
+      src: url('./font/Cinzel-Regular.ttf') format('truetype');
+    }
+
+    @media (max-width: 500px) {
+      .profile-list {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
 </head>
 <body>
     <?php
@@ -34,11 +110,7 @@
     foreach ($profili as $p) { 
         $gruppoProfili[$p['nomeProfilo']][] = new Competenza($p['nomeSkill'], $p['livelloRichiesto']);
     }
-   
-
-    ?>
-   
-            
+    ?>       
     <tbody>
     <?php
     // Converto le competenze dell'utente in oggetti Competenza
@@ -100,8 +172,9 @@
             session_start();
             $esito=checkCandidatura($nomeProfilo, $_SESSION["email"], $nomeProgetto);
             if ($utenteCompatibile): ?>
+            <!-- Se l'utente è compatibile e non ha già fatto richiesta per quel profilo allora può candidarsi
+            in caso contrario gli verrà mostrato l' esito della candidatura (accettata, rifiutata o non vista) -->
                 <?php if ($esito == null || $esito ==''): ?>
-                    <!-- Nessuna candidatura trovata: mostra il form -->
                     <form action="richiestaCandidaturaController.php" method="POST" style="margin: 0;">
                         <input type="hidden" name="nomeProfilo" id="nomeProfilo" value="<?= htmlspecialchars($nomeProfilo) ?>">
                         <input type="hidden" name="nomeProgettoSoftware" id="nomeProgetto" value="<?= htmlspecialchars($nomeProgetto) ?>">

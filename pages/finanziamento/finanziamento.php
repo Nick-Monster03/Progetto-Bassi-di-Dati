@@ -3,6 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <title>Finanzia Progetto</title>
+    <style>
+    body {
+      font-family: 'Cinzel', serif;
+      background: linear-gradient(135deg, #e0f7fa, #b3eafb);
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      color: #0a899a;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: left;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #0a899a;
+      font-size: 1.1rem;
+    }
+
+    input[type="number"], select {
+      width: 100%;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #0a899a;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #1aa9b2;
+    }
+
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #0a899a;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .reward-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .reward-card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      width: 250px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .reward-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .reward-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .reward-card h4 {
+      color: #444;
+      margin-bottom: 10px;
+    }
+
+    .reward-card p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    @font-face {
+      font-family: 'Cinzel';
+      src: url('./font/Cinzel-Regular.ttf') format('truetype');
+    }
+
+    @media (max-width: 500px) {
+      form {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
 </head>
 <body>
     <?php
@@ -45,7 +185,7 @@
     <br><br>
     <?php  
     if (!empty($rewards)): ?>
-        <h2>Reward disponibili per il progetto "<?= htmlspecialchars($nomeProgetto) ?>"</h2>
+        <h2 style="color: white;">Reward disponibili per il progetto "<?= htmlspecialchars($nomeProgetto) ?>"</h2>
         <div class="reward-container">
             <?php foreach ($rewards as $r): ?>
                 <div class="reward-card">

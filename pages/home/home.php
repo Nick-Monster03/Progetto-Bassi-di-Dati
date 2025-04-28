@@ -30,11 +30,6 @@
     if (isset($_SESSION['creation_phase'])) {
         unset($_SESSION['creation_phase']);
     }
-    // if (isset($_COOKIE)) {
-    //     foreach ($_COOKIE as $key => $value) {
-    //         setcookie($key, '', time() - 3600, '/');
-    //     }
-    // }
  ?>
 <body class="bg-light">
     <header id="main-header">

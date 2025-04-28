@@ -49,38 +49,18 @@
 
     }catch(PDOEXCEPTION $e){
         $title = "Errore: " . $e->getCode();
-        mostraErrore($title, $e->getMessage(), '../home/home.php');
+        mostraErrore($title, $e->getMessage(), '../componenti/componenti.php');
         exit();
     }catch(Exception $e){
-        echo  "ERRORE";
         mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
         exit();
     }
+    //PER DEBBUGGING
     // finally {
     //     ini_set('display_errors', 1);
     //     ini_set('display_startup_errors', 1);
     //     error_reporting(E_ALL);
     // }
 
-    // function getComponentiInutilizzati($nomeProgetto) {
-    // try{
-    //     if(!isset($_COOKIE['nomeProgetto']))
-    //         throw new Exception("SESSIONE SCADUTA");
-    //     $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
-    //     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    //     $sql = "SELECT nome FROM COMPONENTE c WHERE NOT EXISTS (SELECT * FROM COMPONENTI_PROGETTO WHERE nomeProgettoHardware = :nomeProgetto AND nomeComponente = c.nome)";
-    //     $stmt = $pdo->prepare($sql);
-    //     $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
-    //     $stmt->execute();
-    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // }catch(PDOEXCEPTION $e){
-    //     echo "Errore: di connessone al database" . $e->getMessage();
-    //     echo '<a href="../home/home.php">Torna alla home</a>';
-    //     exit();
-    // }catch(Exception $e){
-    //     echo  $e->getMessage();
-    //     echo '<a href="../home/home.php">Torna alla home</a>';
-    //     exit();
-    // }        
-    // }
+    
 ?>
