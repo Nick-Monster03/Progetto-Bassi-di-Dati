@@ -69,13 +69,13 @@ body {
     padding: 10px 15px;
     border-radius: 5px;
     font-size: 1rem;
-    background-color: #dddddd;
-    color: #055160;
+    background-color: #0a899a;
+    color: white;
     transition: background-color 0.3s ease;
 }
 
 .btn-home:hover {
-    background-color: #6edff6;
+    background-color: #1aa9b2;
 }
 
 .footer {

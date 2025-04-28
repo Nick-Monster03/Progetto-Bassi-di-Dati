@@ -52,21 +52,21 @@
                         </button>  
                     </form>
 
-                    <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex m-3 gap-3">
                         <?php if (!isset($_SESSION['user_role']) ): ?>
                             <div>
-                                <a class="btn btn-primary m-0" href="/pages/register/register.php">SingIn</a>
+                                <a class="btn btn-primary" href="/pages/register/register.php">SignIn</a>
                                 <a class="btn btn-primary" href="/pages/login/login.php">LogIn</a>
                             </div>
                         <?php else: ?>
-                            <a class="btn btn-primary" href="../profiloUtente/profiloUtente.php">Visualizza Profilo</a>
+                            <a class="btn btn-primary text-nowrap h-100" href="../profiloUtente/profiloUtente.php">Visualizza Profilo</a>
                         <?php if ($_SESSION['user_role'] == 'creatore'): ?>
-                            <a class="btn btn-primary" href="../newProject/newProject.php">Crea Progetto</a>
-                            <a class="btn btn-primary" href="../candidature/candidatura.php">Visualizza Candidature</a>
+                            <a class="btn btn-primary text-nowrap h-100" href="../newProject/newProject.php">Crea Progetto</a>
+                            <a class="btn btn-primary text-nowrap h-100" href="../candidature/candidatura.php">Visualizza Candidature</a>
                         <?php elseif ($_SESSION['user_role'] == 'amministratore'): ?>
-                            <a class="btn btn-primary" href="../competenze/competenze.php">Visualizza Lista Competenze</a>
+                            <a class="btn btn-primary text-nowrap h-100" href="../competenze/competenze.php">Visualizza Lista Competenze</a>
                         <?php endif; ?>
-                            <a class="btn btn-primary" href="../skillList/skillList.php">Mie Competenze</a>
+                            <a class="btn btn-primary text-nowrap h-100" href="../skillList/skillList.php">Mie Competenze</a>
                             <button class="btn btn-primary rounded" onclick="window.location.href='homeController.php?action=logout'">Logout</button>
                         <?php endif; ?>
                     </div>

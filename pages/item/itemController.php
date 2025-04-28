@@ -29,21 +29,8 @@
             $query->execute();
             $rows = $query->fetchAll(PDO::FETCH_ASSOC);
            
-            echo '<h2 class="text-center mb-4">Dettagli del Progetto: ' . htmlspecialchars($nomeProgetto, ENT_QUOTES, 'UTF-8') . '</h2>';
+            echo '<h1 class="titoli text-center my-5">Dettagli del Progetto: ' . htmlspecialchars($nomeProgetto, ENT_QUOTES, 'UTF-8') . '</h1>';
 
-            if ($rows) {
-                foreach ($rows as $row) {
-                    if (isset($row['foto'])) {
-                        $blob = $row['foto'];
-                        $base64Image = base64_encode($blob);
-                        echo "<img src='data:image/jpeg;base64," . htmlspecialchars($base64Image, ENT_QUOTES, 'UTF-8') . "' alt='Foto Progetto' style='max-width: 400px; margin: 10px;'>";
-                    } else {
-                        echo "<p>Nessuna foto disponibile.</p>";
-                    }
-                }
-            } else {
-                echo "<p>Nessuna foto disponibile.</p>";
-            }
         } else {
             //per debug echo "<p>Nessun progetto trovato con il nome '$nomeProgetto'.</p>";
             throw new Exception("non è stato trovato nessun progetto con questo nome", 1017);

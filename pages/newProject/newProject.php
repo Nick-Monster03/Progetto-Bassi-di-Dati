@@ -63,8 +63,9 @@
         </form>
     </div>
 
-    <footer class="bg-dark text-white py-4 mt-5">
+    <footer class="py-4 mt-5">
         <div class="container text-center">
+            <img src="/logo/bostarter_trasparente.png" alt="Bostarter Logo" class="logo pb-3 pt-3">
             <p>&copy; 2025 Bostarter. Tutti i diritti riservati.</p>
         </div>
     </footer>

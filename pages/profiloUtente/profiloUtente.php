@@ -16,7 +16,7 @@
 
     <div class="container">
         <div class="header">
-            <i class="bi bi-person-fill" style="color: #6edff6; font-size: 10rem;"></i>
+            <i class="bi bi-person-fill" style="color: #0a899a; font-size: 10rem;"></i>
             <h1>Profilo Utente</h1>
         </div>
         <div class="skills-container">
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="actions">
-            <a href="javascript:history.back()" class="btn-home">&larr; Torna indietro</a>
+            <a href="javascript:history.back()" class="btn-home">Torna indietro</a>
         </div>
     </div>
 

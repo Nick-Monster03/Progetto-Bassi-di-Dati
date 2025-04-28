@@ -9,15 +9,48 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <!-- <link rel="stylesheet" href="../styles/project.css"> -->
+
+    <style>
+        @font-face {
+            font-family: 'Cinzel';
+            src: url('./font/Cinzel-Regular.ttf') format('truetype');
+            font-weight: light;
+            font-style: light;
+        }
+        .titoli {
+            font-size: 3rem;
+            line-height: 1.1;
+            font-family: 'Cinzel', serif;
+            font-weight: light;
+        }
+
+        .btn {
+            background-color: #0a899a !important;
+            border: none !important;
+        }
+        .btn:hover {
+            background-color: #1aa9b2 !important;
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            background: linear-gradient(135deg, #e0f7fa, #b3eafb);
+            color: #0a899a;
+            padding: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="container d-flex flex-column align-items-center py-3">
-            <h1 class="titleWebSite">Bostarter</h1>
+        <a class="navbar-brand text-center" href="/pages/home/home.php"><img src="/logo/bostarter_trasparente.png" alt="Bostarter Logo" class="logo w-50"></a>
         </div>
     </header>
     
-    <div class="container mt-4">
+    <div class="container">
         <?php
             session_start();
             
@@ -25,8 +58,30 @@
         ?>
 
         <?php if ($result): ?>
-            <div class="project-container">
-                <div class="project-info">
+            <div class="project-container d-flex flex-column align-items-center">
+                <div class="w-75 p-0 bg-white border rounded shadow-sm">
+                    <div class="p-3 rounded-top text-center" style="background-color: #0a899a;">
+                        <h2 class="mb-0" style="color: white;">Metadati</h2>
+                    </div>
+                    
+                    <div class="project-photos text-center my-2">
+                        <?php
+                            if ($rows) {
+                                foreach ($rows as $row) {
+                                    if (isset($row['foto'])) {
+                                        $blob = $row['foto'];
+                                        $base64Image = base64_encode($blob);
+                                        echo "<img src='data:image/jpeg;base64," . htmlspecialchars($base64Image, ENT_QUOTES, 'UTF-8') . "' alt='Foto Progetto' style='max-width: 400px; margin: 10px;'>";
+                                    } else {
+                                        echo "<p>Nessuna foto disponibile.</p>";
+                                    }
+                                }
+                            } else {
+                                echo "<p>Nessuna foto disponibile.</p>";
+                            }
+                        ?>
+                    </div>
+                    <ul class="list-group list-group-flush">
                         <?php foreach ($result as $column => $value): ?>
                             <?php
                                 if ($column == "emailUtenteCreatore") {
@@ -37,27 +92,25 @@
                                     $budget = $value;
                                 }
                             ?>
-                            <p><strong><span class="label"><?= htmlspecialchars($column) ?>:</span></strong>&nbsp;<?= htmlspecialchars($value) ?></p>
-                    <?php endforeach; ?>
-                </div>
-
-                
-
-                <div class="budget-bar">
-                    <p>Budget attuale: <strong>€<?= number_format($valoreAttuale, 2, ',', '.') ?></strong> / €<?= number_format($budget, 2, ',', '.') ?></p>
-                    <?php
-                        $percentuale = min(100, ($valoreAttuale / $budget) * 100);
-                    ?>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $percentuale ?>%;" aria-valuenow="<?= $percentuale ?>" aria-valuemin="0" aria-valuemax="100">
-                            <?= $percentuale == 100 ? '100%' : number_format($percentuale, 2, ',', '.') . '%' ?>
+                            <li class="list-group-item"><strong><span class="label" style="color: #0a899a;"><?= htmlspecialchars($column) ?>:</span></strong>&nbsp;<?= htmlspecialchars($value) ?></li>
+                        <?php endforeach; ?>
+                        <div class="budget-bar p-3">
+                            <p><strong style="color: #0a899a;">Budget attuale:</strong> €<?= number_format($valoreAttuale, 2, ',', '.') ?> / €<?= number_format($budget, 2, ',', '.') ?></p>
+                            <?php
+                                $percentuale = min(100, ($valoreAttuale / $budget) * 100);
+                            ?>
+                            <div class="progress">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $percentuale ?>%;" aria-valuenow="<?= $percentuale ?>" aria-valuemin="0" aria-valuemax="100">
+                                    <?= $percentuale == 100 ? '100%' : number_format($percentuale, 2, ',', '.') . '%' ?>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </ul>
                 </div>
 
                 <div class="project-actions text-center mt-4">
                     <?php if ($stato == "aperto"): ?>
-                        <a href='../finanziamento/finanziamento.php' class="btn btn-success">Finanzia progetto</a>
+                        <a href='../finanziamento/finanziamento.php' class="btn btn-success mt-2">Finanzia progetto</a>
                     <?php else: ?>
                         <h5 class="text-danger">Progetto chiuso</h5>
                         <p><span class="text-muted">Il progetto risulta chiuso, quindi non puoi effettuare finanziamenti.</span></p>
@@ -76,10 +129,10 @@
                         <a href="../componenti/componenti.php" class="btn btn-primary mt-2">Visualizza Componenti</a>
                     <?php endif; ?>
 
-                    <a href="../commenti/commenti.php" class="btn btn-outline-primary mt-2">Visualizza Commenti</a>
+                    <a href="../commenti/commenti.php" class="btn btn-primary mt-2">Visualizza Commenti</a>
 
                     <?php if ($stato == "aperto"): ?>
-                        <a href="../reward/reward.php" class="btn btn-outline-success mt-2">Visualizza Reward</a>
+                        <a href="../reward/reward.php" class="btn btn-success mt-2">Visualizza Reward</a>
                     <?php endif; ?>
                 </div>
 
@@ -90,8 +143,9 @@
         <?php endif; ?>
     </div>
 
-    <footer class="bg-dark text-white py-4 mt-5">
+    <footer class="py-4 mt-5">
         <div class="container text-center">
+            <img src="/logo/bostarter_trasparente.png" alt="Bostarter Logo" class="logo pb-3 pt-3 w-25">
             <p>&copy; 2025 Bostarter. Tutti i diritti riservati.</p>
         </div>
     </footer>

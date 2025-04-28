@@ -17,6 +17,24 @@
         th {
             background-color: #eee;
         }
+
+        .btn {
+            background-color: #0a899a !important;
+            border: none !important;
+        }
+        .btn:hover {
+            background-color: #1aa9b2 !important;
+        }
+
+        footer {
+            width: 100%;
+            background: linear-gradient(135deg, #e0f7fa, #b3eafb);
+            color: #0a899a;
+            padding: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -25,66 +43,63 @@
     ?>
     <h2 style="text-align: center;">Profili richiesti per il progetto "<?= htmlspecialchars($nomeProgetto) ?>"</h2>
     <div style="position: absolute; top: 20px; right: 20px;">
-        <button onclick="window.location.href='../item/item.php?nome=<?= urlencode($nomeProgetto) ?>';" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Torna Indietro</button>
+        <button class="btn btn-primary" onclick="window.location.href='../item/item.php?nome=<?= urlencode($nomeProgetto) ?>';" style="padding: 10px; color: white; cursor: pointer; border-radius: 5px;">Torna Indietro</button>
     </div>
     <?php if (count($profili) > 0): ?>
-    <?php
-    // Raggruppa le skill per nomeProfilo
-    $gruppoProfili = [];
-    foreach ($profili as $p) { 
-        $gruppoProfili[$p['nomeProfilo']][] = new Competenza($p['nomeSkill'], $p['livelloRichiesto']);
-    }
-   
-
-    ?>
-   
-            
-    <tbody>
-    <?php
-    // Converto le competenze dell'utente in oggetti Competenza
-    $competenzeUtente = [];
-    foreach ($skill_utente as $su) {
-        $competenzeUtente[] = new Competenza($su['nomeskill'], $su['livello']);
-    }
+        <?php
+        // Raggruppa le skill per nomeProfilo
+        $gruppoProfili = [];
+        foreach ($profili as $p) { 
+            $gruppoProfili[$p['nomeProfilo']][] = new Competenza($p['nomeSkill'], $p['livelloRichiesto']);
+        }
     ?>
 
-     <!-- PER DEBUG 
-    <script>
-        skillRichieste = <?= json_encode($gruppoProfili) ?>;
-        competenzeUtente = <?= json_encode($competenzeUtente) ?>;
+    <?php
+        // Converto le competenze dell'utente in oggetti Competenza
+        $competenzeUtente = [];
+        foreach ($skill_utente as $su) {
+            $competenzeUtente[] = new Competenza($su['nomeskill'], $su['livello']);
+        }
+    ?>
 
-        console.log("Skill richieste:", skillRichieste);
-        console.log("Skill utente:", competenzeUtente);
-    </script> -->
+    <!-- PER DEBUG 
+        <script>
+            skillRichieste = <?= json_encode($gruppoProfili) ?>;
+            competenzeUtente = <?= json_encode($competenzeUtente) ?>;
+
+            console.log("Skill richieste:", skillRichieste);
+            console.log("Skill utente:", competenzeUtente);
+        </script>
+    -->
 
 
     <!-- Mi vado a prendere l' array delle competenze associste per quel profilo -->
     <?php foreach ($gruppoProfili as $nomeProfilo => $competenze): ?>
         <?php
-        // Verifica compatibilità, prende per ogni competenza richiesta da quel profilo 
-        //e la confronta con quelle  possedute dal mio utente se c' è corrispondenza e il 
-        //livello è maggiore o uguale allora risulterà passato e si passerà alla skill successiva.
-        //il flag $utenteCompatibile è un flag che ci dice che l' utente è compatibile per il profilo
-        //indicato da $nomeProfilo
-        $utenteCompatibile = true;
-        foreach ($competenze as $cRichiesta) {
-            $pass = false;
-            foreach ($competenzeUtente as $cPosseduta) {
-                //cRichiesta e cPosseduta sono oggetti Competenza e per confrontarli
-                //userò la funzione equalOrUpper che ho definito nella classe Competenza
-                if ($cRichiesta->equalOrUpper($cPosseduta)) {
-                    $pass = true;
+            //Verifica compatibilità, prende per ogni competenza richiesta da quel profilo 
+            //e la confronta con quelle  possedute dal mio utente se c' è corrispondenza e il 
+            //livello è maggiore o uguale allora risulterà passato e si passerà alla skill successiva.
+            //il flag $utenteCompatibile è un flag che ci dice che l' utente è compatibile per il profilo
+            //indicato da $nomeProfilo
+            $utenteCompatibile = true;
+            foreach ($competenze as $cRichiesta) {
+                $pass = false;
+                foreach ($competenzeUtente as $cPosseduta) {
+                    //cRichiesta e cPosseduta sono oggetti Competenza e per confrontarli
+                    //userò la funzione equalOrUpper che ho definito nella classe Competenza
+                    if ($cRichiesta->equalOrUpper($cPosseduta)) {
+                        $pass = true;
+                        break;
+                    }
+                }
+                //Se una sola delle skill di quel profilo non è posseduta allora l' utente non è compatibile
+                //per quel profilo e con il break esciuma dal secondo ciclo per for-each
+                //e andremo a selezionare un' altro profilo e verificheremo la compatibilità 
+                if (!$pass) {
+                    $utenteCompatibile = false;
                     break;
                 }
             }
-            //Se una sola delle skill di quel profilo non è posseduta allora l' utente non è compatibile
-            //per quel profilo e con il break esciuma dal secondo ciclo per for-each
-            //e andremo a selezionare un' altro profilo e verificheremo la compatibilità 
-            if (!$pass) {
-                $utenteCompatibile = false;
-                break;
-            }
-        }
         ?>
         <tr>
             <td><?= htmlspecialchars($nomeProfilo) ?></td>
@@ -134,7 +149,7 @@
             </td>
         </tr>
     <?php endforeach; ?>
-</tbody>
+
     <?php else: ?>
         <p style="text-align: center;">Nessun profilo definito per questo progetto.</p>
     <?php endif; ?>
@@ -152,6 +167,13 @@
     <?php else: ?>
         <p>Non hai ancora aggiunto skill al tuo curriculum.</p>
     <?php endif; ?> -->
+
+    <footer class="py-4 mt-5">
+        <div class="container text-center">
+            <img src="/logo/bostarter_trasparente.png" alt="Bostarter Logo" class="logo pb-3 pt-3">
+            <p>&copy; 2025 Bostarter. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
     
 </body>
 </html>

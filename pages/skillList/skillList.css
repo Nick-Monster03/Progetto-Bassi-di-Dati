@@ -74,8 +74,8 @@ select, input[type="radio"] {
     display: inline-block;
     margin-top: 15px;
     padding: 10px 15px;
-    background-color: #dddddd;
-    color: #055160;
+    background-color: #0a899a;
+    color: white;
     text-decoration: none;
     border-radius: 5px;
     font-size: 1rem;
@@ -84,7 +84,7 @@ select, input[type="radio"] {
 }
 
 .btn-home:hover {
-    background-color: #6edff6;
+    background-color: #1aa9b2;
 }
 
 .skills-list {
