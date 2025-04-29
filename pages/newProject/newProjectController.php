@@ -16,23 +16,35 @@
         $data_limite = $_POST['endDate'];
         $tipologia = $_POST['tipologia'];
         $email_creatore = $_SESSION['email'];
-        $img =file_get_contents($_FILES["immagine"]["tmp_name"]);
+        //$img =file_get_contents($_FILES["immagine"]["tmp_name"]);
 
 
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $pdo->prepare("CALL InserisciProgetto(:nome, :descrizione, :budget, :data_limite, :emailUtenteCreatore, :fotoProgetto)");
+        $stmt = $pdo->prepare("CALL InserisciProgetto(:nome, :descrizione, :budget, :data_limite, :emailUtenteCreatore, :sestoParametro)");
+        $sestoParametro = null;
+        $stmt->bindParam(":sestoParametro", $sestoParametro, PDO::PARAM_NULL);
         $stmt->bindParam(":nome", $nome, PDO::PARAM_STR);
         $stmt->bindParam(":descrizione", $descrizione, PDO::PARAM_STR);
         $stmt->bindParam(":budget", $budget, PDO::PARAM_STR);
         $stmt->bindParam(":data_limite", $data_limite, PDO::PARAM_STR);
         $stmt->bindParam(":emailUtenteCreatore", $email_creatore, PDO::PARAM_STR);
-        $stmt->bindParam(":fotoProgetto", $img, PDO::PARAM_STR);
+        //$stmt->bindParam(":fotoProgetto", $img, PDO::PARAM_STR);
 
         $pdo->beginTransaction();
         $stmt->execute();
         
+        foreach ($_FILES['immagine']['tmp_name'] as $key => $tmp_name) {
+            if (is_uploaded_file($tmp_name)) {
+                $imgData = file_get_contents($tmp_name);
+    
+                $insertImg = $pdo->prepare('INSERT INTO FOTO (foto, nomeProgetto) VALUES (:foto, :nomeProgetto)');
+                $insertImg->bindParam(':foto', $imgData, PDO::PARAM_LOB);
+                $insertImg->bindParam(':nomeProgetto', $nome, PDO::PARAM_STR);
+                $insertImg->execute();
+            }
+        }
         //quando si torna alla home ogni coockie sarà cancellato
         setcookie("nomeProgetto", $nome, time() + 3600, "/");
         setcookie("creatore", $email_creatore, time() + 3600, "/");
@@ -54,8 +66,14 @@
         
     
     } catch (PDOException $e) {
-        $title = "Errore di connessione al database " .$e->getCode();
-        mostraErrore($title, $e->getMessage(), "../home/home.php");
+        if($e->getCode() == 23000 || $e->getCode() >= 45000){
+            $title = "Errore nella creazione ";
+            mostraErrore($title, $e->getMessage(), "../newProject/newProject.php");
+        }
+        else{
+            $title = "Errore di connessione al database " .$e->getCode();
+            mostraErrore($title, $e->getMessage(), "../home/home.php");
+        }
         if($pdo && $pdo->inTransaction()){
             $pdo->rollBack();
         }

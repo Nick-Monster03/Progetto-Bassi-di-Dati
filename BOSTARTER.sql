@@ -489,11 +489,14 @@ begin
         SET MESSAGE_TEXT = 'Esiste già un progetto con questo nome';
 	end if;
     
-    if(is_ok_creatore > 0) then
+    if(is_ok_creatore > 0 and foto <> null) then
 		INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, emailUtenteCreatore)
 		VALUES(nomeProgetto, descrizione, date_now, budget, data_limite, emailUtenteCreatore);
         INSERT INTO FOTO (foto, nomeProgetto)
         VALUES (foto, nomeProgetto);
+    elseif (is_ok_creatore > 0) then
+        INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, emailUtenteCreatore)
+        VALUES(nomeProgetto, descrizione, date_now, budget, data_limite, emailUtenteCreatore);
     else
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Errore: creatore non valido.';

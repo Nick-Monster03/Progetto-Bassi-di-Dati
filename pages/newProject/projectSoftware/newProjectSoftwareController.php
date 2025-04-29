@@ -31,7 +31,7 @@
         } catch (PDOException $e) {
             $title =  "[ERRORE] : " . $e->getCode();
             //se il profilo esiste già allora dalla shcermata di errore torna alla precedente
-            if($e.getCode() == 23000)
+            if($e->getCode() == 23000)
                 mostraErrore($title, $e->getMessage(), '../projectSoftware/newProjectSoftware.php');
             else //altrimenti se c' è un errore più grave torna alla home
                 mostraErrore($title, $e->getMessage(), '../../home/home.php');

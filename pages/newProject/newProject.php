@@ -56,7 +56,7 @@
 
             <div class="mb-3">
                 <label for="immagine" class="form-label">Seleziona immagine:</label>
-                <input type="file" name="immagine" id="immagine" class="form-control" required>
+                <input type="file" name="immagine[]" id="immagine" class="form-control" multiple required>
             </div>
 
             <button type="submit" class="btn btn-primary">Add Project</button>

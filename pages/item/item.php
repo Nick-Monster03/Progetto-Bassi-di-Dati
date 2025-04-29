@@ -67,6 +67,8 @@
                     <div class="project-photos text-center my-2">
                         <?php
                             if ($rows) {
+                                //$rows rappresenta le foto ed essendo che un progetto può avere più foto ciclo 
+                                //$rows con un for each
                                 foreach ($rows as $row) {
                                     if (isset($row['foto'])) {
                                         $blob = $row['foto'];
