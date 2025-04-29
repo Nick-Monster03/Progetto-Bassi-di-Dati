@@ -1,33 +1,65 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
+    width: 100vw;
+    display: flex;
     flex-direction: column;
-    gap: 40px;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    background-color: #055160;
+    padding-top: 50px;
+    gap: 50px;
 }
 .container {
-    width: 80%;
-    max-width: 600px;
-    background: white;
+    background-color: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
-.skill-card {
-    background: #fff;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+.header {
+    text-align: center;
+    margin-bottom: 20px;
 }
-.skill-card h3 {
-    margin: 0;
-    color: #333;
+
+.btn {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #0a899a !important;
+    border: none !important;
+    color: white;
 }
-.skill-card p {
-    margin: 5px 0;
-    color: #666;
+.btn:hover {
+    background-color: #1aa9b2 !important;
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+}
+
+.table-rounded {
+    border-radius: 10px;
+    overflow: hidden; /* Per assicurarsi che i bordi arrotondati funzionino */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Effetto ombra */
+    border: none; /* Rimuove i bordi predefiniti */
+    margin-bottom: 10px;
+}
+
+.table-rounded thead {
+    background-color: #0a899a; /* Colore di sfondo per l'intestazione */
+    color: white; /* Colore del testo */
+}
+
+.table-rounded tbody tr {
+    transition: transform 0.3s, box-shadow 0.3s; /* Animazione al passaggio del mouse */
+}
+
+.table-rounded tbody tr:hover {
+    transform: translateY(-5px); /* Solleva la riga */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra */
+}
+
+.table-rounded td, .table-rounded th {
+    padding: 15px; /* Spaziatura interna */
+    vertical-align: middle; /* Allineamento verticale */
 }

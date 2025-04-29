@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Competenze</title>
-    <link rel="stylesheet" href="skillList.css">
+    <link href="../../bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./skillList.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-3 w-50">
         <a href="../home/home.php" class="btn-home">Torna alla Home</a>
-        <div class="header">
+        <div class="header m-4">
             <img src="/logo/bostarter_trasparente.png" alt="Logo" class="logo">
-            <h1>Gestione Competenze</h1>
+            <h2 class="mt-2"><strong>Gestione Competenze</strong></h2>
         </div>
 
         <form action="skillListController.php" method="POST">
