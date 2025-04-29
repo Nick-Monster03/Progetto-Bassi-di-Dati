@@ -7,7 +7,7 @@
         "ecommerce_platform.jpeg" => "E-commerce Platform",
         "cybersecurity_audit.jpeg" => "Cybersecurity Audit",
         "interfaccia_gestionale.jpeg" => "Interfaccia Gestionale",
-        "sistemaDistribuito.png" => "Sistema Distribuito"];
+        "sistemaDistribuito.png" => "Progetto Sistema Distribuito"];
         $path = "./services/uploads/";
         $sql = "INSERT INTO FOTO (foto, nomeProgetto) VALUES (:foto, :nomeProgetto)";
         $stmt = $pdo->prepare($sql);
@@ -57,7 +57,8 @@
         }
 
     } catch (PDOException $e) {
-        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage() .  "]");
+        echo("[ERRORE] Connessione al DB non riuscita. Errore: " . $e->getMessage() .  $e->getLine() ."]");
+        
     }
     try{
         require './services/vendor/autoload.php';

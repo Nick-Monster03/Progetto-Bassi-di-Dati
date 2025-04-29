@@ -290,10 +290,14 @@ begin
 		set is_ok = 1;
     END IF;
     
+    set exist = (select count(*) from utente as u where u.email = email);
     
-    if(is_ok = 1) then
+    if(is_ok = 1 and exist = 0) then
 		INSERT INTO utente (email, password, nickname, nome, cognome, annoNascita, luogoNascita) 
 		VALUES (email, password, nickname, nome, cognome, annoNascita, luogoNascita);
+    elseif(exist > 0) then
+        SIGNAL SQLSTATE '45001'
+        SET MESSAGE_TEXT = 'Esiste già un Utente con questa email';
     else
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'I campi specificati non possono essere nulli o vuoti';
