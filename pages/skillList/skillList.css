@@ -134,3 +134,11 @@ select, input[type="radio"] {
     color: #fff;
     font-weight: bold;
 }
+
+.btn {
+    background-color: #0a899a !important;
+    border: none !important;
+}
+.btn:hover {
+    background-color: #1aa9b2 !important;
+}
