@@ -30,6 +30,7 @@
             color: white;
         }
         .btn:hover {
+            color: white;
             background-color: #1aa9b2 !important;
         }
 
@@ -74,7 +75,7 @@
                                     if (isset($row['foto'])) {
                                         $blob = $row['foto'];
                                         $base64Image = base64_encode($blob);
-                                        echo "<img src='data:image/jpeg;base64," . htmlspecialchars($base64Image, ENT_QUOTES, 'UTF-8') . "' alt='Foto Progetto' style='max-width: 400px; margin: 10px;'>";
+                                        echo "<img class='img-fluid w-25' src='data:image/jpeg;base64," . htmlspecialchars($base64Image, ENT_QUOTES, 'UTF-8') . "' alt='Foto Progetto' style='margin: 10px;'>";
                                     } else {
                                         echo "<p>Nessuna foto disponibile.</p>";
                                     }

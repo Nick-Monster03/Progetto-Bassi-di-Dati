@@ -7,7 +7,7 @@
     <style>
     body {
       font-family: 'Cinzel', serif;
-      background: linear-gradient(135deg, #e0f7fa, #b3eafb);
+      background-color: #0a899a;
       margin: 0;
       padding: 40px;
       text-align: center;
@@ -19,7 +19,7 @@
     }
 
     h1 {
-      color: #0a899a;
+      color: white;
       font-size: 2.5rem;
       margin-bottom: 30px;
     }
@@ -69,6 +69,9 @@
     }
 
     a {
+      background-color: white;
+      border-radius: 5px;
+      padding: 10px;
       display: inline-block;
       margin-top: 20px;
       color: #0a899a;
@@ -77,7 +80,7 @@
     }
 
     a:hover {
-      text-decoration: underline;
+      background-color: whitesmoke;
     }
 
     @font-face {

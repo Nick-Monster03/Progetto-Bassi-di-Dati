@@ -7,7 +7,7 @@
     <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f7f9fc;
+      background-color: #0a899a;
       margin: 0;
       padding: 20px;
       text-align: center;
@@ -16,6 +16,7 @@
     h2 {
       color: #333;
       margin-bottom: 30px;
+      color: white;
     }
 
     .reward-container {
@@ -62,9 +63,9 @@
     }
 
     .actions button {
-      background-color: #0a899a;
+      background-color: white;
       border: none;
-      color: white;
+      color: #0a899a;
       padding: 12px 20px;
       margin: 5px;
       border-radius: 6px;
@@ -74,7 +75,7 @@
     }
 
     .actions button:hover {
-      background-color: #0a899a;;
+      background-color: whitesmoke;
     }
 
     a {

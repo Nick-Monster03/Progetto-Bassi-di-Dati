@@ -63,7 +63,7 @@
             <img src="/logo/bostarter_trasparente.png" alt="Logo" class="logo">
         </div>
         <h2><strong>Competenze Disponibili</strong></h2>
-        <div class="w-75 p-0 bg-white border rounded shadow-sm mb-3">
+        <div class="w-75 p-2 bg-white border rounded shadow-sm">
             <form action="menageProfileController.php" method="POST" style="display: flex; flex-direction: column; gap: 10px;  width: 150px;">
                 <div class="form-group m-0">
                     <label class="form-label" for="competenze">Seleziona Skill:</label>
@@ -79,11 +79,14 @@
                     <label class="form-label" for="livello">Inserisci Livello:</label>
                     <input class="form-control" type="number" id="livello" name="livello" min="0" max="5">
                 </div>
+                <button class="btn" type="submit" style="color: white;">Invia</button>
             </form>
         </div>
-        <button class="btn" type="submit" style="color: white;">Invia</button>
     </div>
-    <div class="container mt-3 w-50">
+    <div class="container mt-3 pb-0 w-50">
+        <div class="text-center m-2">
+            <img src="/logo/bostarter_trasparente.png" alt="Logo" class="logo">
+        </div>
     <?php
         try {
             $sql = "SELECT nomeSkill, livelloRichiesto FROM PROFILO_SKILL WHERE nomeProfilo = :nome AND nomeProgettoSoftware = :progetto";
@@ -99,17 +102,17 @@
         }
     ?>
     <h2><strong>Skills</strong></h2>
-    <div class="w-75 p-0 bg-white border rounded shadow-sm mb-3">
-        <ul class="list-group list-group-flush rounded">
             <?php foreach ($skills as $skill): ?>
-                <li class="list-group-item">
-                    <strong>Skill:</strong> <?php echo htmlspecialchars($skill['nomeSkill']); ?> 
-                </li>
-                <li class="list-group-item">
-                    <strong>Livello Richiesto:</strong> <?php echo htmlspecialchars($skill['livelloRichiesto']); ?>
-                </li>
+                <div class="w-75 p-0 bg-white border rounded shadow-sm mb-3">
+                    <ul class="list-group list-group-flush rounded">
+                        <li class="list-group-item">
+                            <strong>Skill:</strong> <?php echo htmlspecialchars($skill['nomeSkill']); ?> 
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Livello Richiesto:</strong> <?php echo htmlspecialchars($skill['livelloRichiesto']); ?>
+                        </li>
+                    </ul>
+                </div>
             <?php endforeach; ?>
-        </ul>
-    </div>
 </body>
 </html>

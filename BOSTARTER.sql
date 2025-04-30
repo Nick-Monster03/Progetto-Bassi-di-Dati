@@ -388,7 +388,7 @@ begin
     declare is_ok_progetto int default 0;
     declare is_ok_reward int default 0;
     declare date_now datetime;
-    declare yestarday datetime;
+    declare today datetime;
     declare is_ok_time int default 0;
     declare is_closed int default 0;
     

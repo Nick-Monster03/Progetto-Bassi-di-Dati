@@ -24,7 +24,7 @@
             echo "<hr class='custom-line'>";
 
             if (!empty($candidatures)) {
-                echo "<table class='table-rounded text-center mx-auto w-75'>";
+                echo "<table class='table-rounded text-center mx-auto'>";
                 echo "<thead class='table-secondary'><tr><th>Nome Profilo</th><th>Email Utente</th><th>Esito</th><th>Azione</th></tr></thead>";
                 echo "<tbody>";
 

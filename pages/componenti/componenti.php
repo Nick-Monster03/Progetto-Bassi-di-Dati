@@ -81,7 +81,10 @@
         </tbody>
     </table>
     <?php if (isset($_SESSION['creation_phase']) && $_SESSION['creation_phase'] == 1): ?>
-        <a href="../reward/newReward/newReward.php">Seleziona Reward</a>
+        <div class="text-center mt-4">
+            <a class="btn" href="../reward/newReward/newReward.php" style="color: white;">Seleziona Reward</a>
+        </div>
+    
     <?php endif; ?>
 
     <footer class="py-4 mt-5">

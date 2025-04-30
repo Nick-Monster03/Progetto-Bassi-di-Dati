@@ -6,20 +6,20 @@
     <style>
     body {
       font-family: 'Cinzel', serif;
-      background: linear-gradient(135deg, #e0f7fa, #b3eafb);
+      background-color: #0a899a;
       margin: 0;
       padding: 40px;
       text-align: center;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     h2 {
-      color: #0a899a;
+      color: white;
       font-size: 2rem;
       margin-bottom: 20px;
+      margin-top: 0;
     }
 
     form {
@@ -72,15 +72,18 @@
     }
 
     a {
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
       display: inline-block;
-      margin-top: 20px;
       color: #0a899a;
       font-weight: bold;
       text-decoration: none;
+      margin-bottom: 30px;
     }
 
     a:hover {
-      text-decoration: underline;
+      background-color: whitesmoke;
     }
 
     .reward-container {
@@ -167,25 +170,21 @@
     <h2>Budget attuale: € <?= number_format($budgetAttuale, 2, ',', '.') ?></h2>
 
     <form action="finanziamentoController.php" method="POST">
-
-
-        <label for="importo">Importo (€):</label><br>
-        <input type="number" id="importo" name="importo" step="0.01" min="0.01" required><br><br>
-        <label >Seleziona un reward:</label><br>
+        <label for="importo">Importo (€):</label>
+        <input type="number" id="importo" name="importo" step="0.01" min="0.01" required>
+        <label >Seleziona un reward:</label>
         <select id="id_reward" name="id_reward" required>
             <?php foreach ($rewards as $r): ?>
             <option value="<?= htmlspecialchars($r['codice']) ?>"><?= htmlspecialchars($r['codice']) ?></option>
             <?php endforeach; ?>
-        </select><br><br>
+        </select>
         <button type="submit" <?= $flag_finanziamento==true ? '' : 'disabled'  ?>>Finanzia</button>
         <label><?=$motivazione?></label>
     </form>
-    <br>
     <a href="../item/item.php?nome=<?= urlencode($nomeProgetto) ?>">Torna alla pagina del progetto</a>
-    <br><br>
     <?php  
     if (!empty($rewards)): ?>
-        <h2 style="color: white;">Reward disponibili per il progetto "<?= htmlspecialchars($nomeProgetto) ?>"</h2>
+        <h2 style="color: white; margin-bottom: 0;">Reward disponibili per il progetto "<?= htmlspecialchars($nomeProgetto) ?>"</h2>
         <div class="reward-container">
             <?php foreach ($rewards as $r): ?>
                 <div class="reward-card">
@@ -205,7 +204,5 @@
     <?php else: ?>
         <p>Nessun reward disponibile al momento.</p>
     <?php endif; ?>
-    <br>
-
 </body>
 </html>
