@@ -22,7 +22,7 @@
             exit();
         }
     }catch(PDOException $e){
-        mostraErrore($e->getCode(), $e->getMessage(), '../home/home.php');
+        mostraErrore($e->getCode(), $e->getMessage(), '../competenze/competenze.php');
         exit();
     }
 ?>

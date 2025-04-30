@@ -290,10 +290,14 @@ begin
 		set is_ok = 1;
     END IF;
     
+    set exist = (select count(*) from utente as u where u.email = email);
     
-    if(is_ok = 1) then
+    if(is_ok = 1 and exist = 0) then
 		INSERT INTO utente (email, password, nickname, nome, cognome, annoNascita, luogoNascita) 
 		VALUES (email, password, nickname, nome, cognome, annoNascita, luogoNascita);
+    elseif(exist > 0) then
+        SIGNAL SQLSTATE '45001'
+        SET MESSAGE_TEXT = 'Esiste già un Utente con questa email';
     else
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'I campi specificati non possono essere nulli o vuoti';
@@ -489,11 +493,14 @@ begin
         SET MESSAGE_TEXT = 'Esiste già un progetto con questo nome';
 	end if;
     
-    if(is_ok_creatore > 0) then
+    if(is_ok_creatore > 0 and foto <> null) then
 		INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, emailUtenteCreatore)
 		VALUES(nomeProgetto, descrizione, date_now, budget, data_limite, emailUtenteCreatore);
         INSERT INTO FOTO (foto, nomeProgetto)
         VALUES (foto, nomeProgetto);
+    elseif (is_ok_creatore > 0) then
+        INSERT INTO PROGETTO (nome, descrizione, data_inserimento, budget, data_limite, emailUtenteCreatore)
+        VALUES(nomeProgetto, descrizione, date_now, budget, data_limite, emailUtenteCreatore);
     else
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Errore: creatore non valido.';

@@ -38,15 +38,6 @@
                 <div class="w-100 d-flex justify-content-between align-items-center">
                     <a class="navbar-brand" href="/pages/home/home.php"><img src="/logo/bostarter_trasparente.png" alt="Bostarter Logo" class="logo"></a>
 
-                    <form action="/pages/home/searchResults.php" method="GET" class="serach-form d-flex">
-                        <input class="form-control rounded-0 rounded-start" type="text" name="query" id="search-input" placeholder="Cerca progetti..." onkeyup="searchProjects()">
-                        <button type="submit" class="btn btn-primary rounded-0 rounded-end">Cerca
-                            <div id="search-dropdown" class="search-dropdown">
-                                <!-- Risultati della ricerca -->
-                            </div>
-                        </button>  
-                    </form>
-
                     <div class="d-flex m-3 gap-3">
                         <?php if (!isset($_SESSION['user_role']) ): ?>
                             <div>
@@ -185,35 +176,5 @@
             <p>&copy; 2025 Bostarter. Tutti i diritti riservati.</p>
         </div>
     </footer>
-
-    <script>
-        function searchProjects() {
-            const query = document.getElementById('search-input').value;
-            if (query.length < 3) {
-                document.getElementById('search-dropdown').innerHTML = '';
-                document.getElementById('search-dropdown').classList.remove('show');
-                return;
-            }
-            fetch(`homeController.php?action=search&query=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    let results = '';
-                    data.forEach(item => {
-                        results += `<a href="../item/item.php?nome=${encodeURIComponent(item.nome)}" class="dropdown-item">${item.nome}</a>`;
-                    });
-                    document.getElementById('search-dropdown').innerHTML = results;
-                    document.getElementById('search-dropdown').classList.add('show');
-                });
-        }
-
-        function submitSearch() {
-            const query = document.getElementById('search-input').value;
-            if (query.length >= 3) {
-                window.location.href = `/pages/home/searchResults.php?query=${query}`;
-            }
-        }
-    </script>
-
-
 </body>
 </html>
