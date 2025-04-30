@@ -29,7 +29,7 @@
     </div>
     <?php if (count($profili) > 0): ?>
     <?php
-    // Raggruppa le skill per nomeProfilo
+    // Raggruppa le skill per nomeProfilo creando un array associativo
     $gruppoProfili = [];
     foreach ($profili as $p) { 
         $gruppoProfili[$p['nomeProfilo']][] = new Competenza($p['nomeSkill'], $p['livelloRichiesto']);

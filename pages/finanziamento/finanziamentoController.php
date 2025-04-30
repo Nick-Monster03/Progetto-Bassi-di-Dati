@@ -58,12 +58,10 @@
             $rewards = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             //verifico se l' utente ha effettuato un finanziamento per questo proeget nelle ultime 24 ore
-            $oraLimite = new DateTime();                                      
-            $oraLimite->modify('-1 day');
-            $timestampLimite = $oraLimite->format('Y-m-d');
-            //adesso preparo la query che controlli se l' utente ha effettuati un finanziamento per questo progetto nel range temporale compreso tra
-            //ora e timestampLimite (ovvero esattamente 24 ore fa)
-            $stmt = $pdo->prepare("SELECT COUNT(*) AS numero FROM FINANZIAMENTO WHERE emailUtente = :email AND nomeProgetto = :progetto AND dataVersamento >= :limite");
+            $oraLimite = new DateTime();   
+            $timestampLimite = $oraLimite->format('Y-m-d'); //data attuale                                   
+            //adesso preparo la query che controlli se l' utente ha effettuati un finanziamento per questo progetto nella data di oggi (da mezzanotte si intende)
+            $stmt = $pdo->prepare("SELECT COUNT(*) AS numero FROM FINANZIAMENTO WHERE emailUtente = :email AND nomeProgetto = :progetto AND  dataVersamento >= :limite");
             $stmt->bindParam(':email', $emailUtente);
             $stmt->bindParam(':progetto', $nomeProgetto);
             $stmt->bindParam(':limite', $timestampLimite);

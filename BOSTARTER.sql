@@ -393,11 +393,11 @@ begin
     declare is_closed int default 0;
     
     set date_now = now();
-    set yestarday = date_sub(now(), interval 1 day);
+    set today = date_format(date_now, '%Y-%m-%d');
     set is_ok_email = (select count(*) from utente as u where u.email = emailUtente);
     set is_ok_progetto = (select count(*) from progetto as p where p.nome=nomeProgetto and p.stato='aperto');
     set is_ok_reward = (select count(*) from reward as r where reward_id = r.codice and nomeProgetto=r.nomeProgetto);
-    set is_ok_time = (select count(*) from finanziamento as f where f.nomeProgetto = nomeProgetto and f.emailUtente = emailUtente and f.dataVersamento between yestarday and date_now); 
+    set is_ok_time = (select count(*) from finanziamento as f where f.nomeProgetto = nomeProgetto and f.emailUtente = emailUtente and f.dataVersamento >= today); 
     set is_closed = (select count(*) from progetto as p where p.nome=nomeProgetto and p.stato='chiuso');
 
     if(is_ok_email > 0 and is_ok_progetto > 0 and is_ok_reward > 0 and is_ok_time = 0) then
