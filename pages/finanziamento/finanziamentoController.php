@@ -17,7 +17,7 @@
                 $nomeProgetto = $_COOKIE['nomeProgetto'];
               
                 $reward_id = $_POST['id_reward']; 
-                $importo = $_POST['importo']; // Conversione da stringa a intero
+                $importo = $_POST['importo']; 
 
                 $sql = "CALL FinanziaProgetto(:emailUtente, :nomeProgetto, :importo, :reward_id)";
                 $stmt = $pdo->prepare($sql);
@@ -51,7 +51,7 @@
             session_start();
             $nomeProgetto = $_COOKIE['nomeProgetto'];
             $emailUtente = $_SESSION['email'];
-            $sql = "SELECT codice, descrizione, foto FROM REWARD WHERE nomeProgetto = :nomeProgetto "; //AND NOT EXISTS (SELECT * FROM FINANZIAMENTO WHERE REWARD.codice = FINANZIAMENTO.idReward)";
+            $sql = "SELECT codice, descrizione, foto FROM REWARD WHERE nomeProgetto = :nomeProgetto ";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
             $stmt->execute();

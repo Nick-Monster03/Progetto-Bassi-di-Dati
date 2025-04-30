@@ -10,7 +10,6 @@
 
     <div class="container">
         <h2 class="mb-4">Commenti con risposte</h2>
-        <!-- Link per aprire la modal -->
         
         <?php 
         session_start();
@@ -49,12 +48,6 @@
             <?php
                 $commento = $item->getCommento();     // Oggetto Commento
                 $risposta = $item->getRisposte(); 
-            //     echo '<pre>';
-            // print_r($commento);
-            // echo '</pre>';    
-            // echo '<pre>';
-            // print_r($risposta);
-            // echo '</pre>';// Array di Risposta o null
             ?>
             
 

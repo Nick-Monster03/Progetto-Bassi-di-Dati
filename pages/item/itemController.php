@@ -11,7 +11,7 @@
 
         $nomeProgetto = $_GET['nome'];
         //il nome del progetto, il suo valoreAttuale(=soldi ricevuti finora) e il nome dell' utente creatore sono stati 
-        //inseriti in cookie così da avere un tempo di limite di iterazione come si ha in molti siti web
+        //inseriti in coockie così da avere un tempo di limite di iterazione come si ha in molti siti web
         //per evitare un sovraccarico di operazioni
         setcookie("nomeProgetto", $nomeProgetto, time() + 3600, "/");
         $valoreAttuale = trovaImporto($nomeProgetto)["total"] ?? 0;

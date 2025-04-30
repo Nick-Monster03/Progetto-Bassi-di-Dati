@@ -18,7 +18,7 @@
             $stmtCheck->execute();
 
         if ($stmtCheck->rowCount() > 0) {
-            //echo 'sei entrato';
+            //Per Debugging echo 'sei entrato';
             echo "<div>
                 <p>La competenza esiste già. Vuoi sovrascriverla?</p>
                 <form method='post' action='menageProfileController.php'>
@@ -32,7 +32,7 @@
             </div>";
             exit();
         } else {
-            // No conflict, proceed with insert
+            // Noessun conflitto, procedo con l'inserimento
             $sql = "INSERT INTO PROFILO_SKILL (nomeProfilo, nomeProgettoSoftware, nomeSkill, livelloRichiesto) VALUES (:nomeProfilo, :nomeProgettoSoftware, :nomeSkill, :livelloRichiesto)";
             $res = $pdo->prepare($sql);
             $res->bindValue(":nomeProfilo", $nome);
@@ -86,7 +86,7 @@
         exit();
     }
     function existed($nomeProfilo, $nomeProgettoSoftware){
-        //piccola funzioni che controlli che il profilo sia stato creato correttamente
+        //piccola funzione che controlla che il profilo sia stato creato correttamente
         //per quel progetto software
         try {
             $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');

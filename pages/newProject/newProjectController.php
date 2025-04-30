@@ -16,7 +16,6 @@
         $data_limite = $_POST['endDate'];
         $tipologia = $_POST['tipologia'];
         $email_creatore = $_SESSION['email'];
-        //$img =file_get_contents($_FILES["immagine"]["tmp_name"]);
 
 
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
@@ -30,7 +29,6 @@
         $stmt->bindParam(":budget", $budget, PDO::PARAM_STR);
         $stmt->bindParam(":data_limite", $data_limite, PDO::PARAM_STR);
         $stmt->bindParam(":emailUtenteCreatore", $email_creatore, PDO::PARAM_STR);
-        //$stmt->bindParam(":fotoProgetto", $img, PDO::PARAM_STR);
 
         $pdo->beginTransaction();
         $stmt->execute();

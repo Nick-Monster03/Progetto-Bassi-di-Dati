@@ -8,11 +8,6 @@
         $pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // $sql = "SELECT cp.nomeComponente, c.prezzo, cp.quantita FROM COMPONENTI_PROGETTO cp JOIN COMPONENTE c ON cp.nomeComponente = c.nome WHERE cp.nomeProgettoHardware=:nomeProgetto";
-        // $stmt = $pdo->prepare($sql);
-        // $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
-        // $stmt->execute();
-
         $sql = "SELECT * FROM COMPONENTE WHERE nomeProgettoHardware = :nomeProgetto";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':nomeProgetto', $nomeProgetto, PDO::PARAM_STR);
@@ -41,7 +36,7 @@
                 $_SESSION['creation_phase'] = 1;
             header("Location: ./componenti.php");
         }
-        else if($_SERVER['REQUEST_METHOD'] === 'POST') { // Se non sono stati forniti i dati necessari
+        else if($_SERVER['REQUEST_METHOD'] === 'POST') { //Per Debbugging Se non sono stati forniti i dati necessari
             echo "Errore: non sono stati forniti i dati necessari per aggiungere un componente.";
             echo '<a href="../home/home.php">Torna alla home</a>';
             exit();

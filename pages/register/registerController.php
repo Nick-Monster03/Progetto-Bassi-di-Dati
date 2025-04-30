@@ -21,7 +21,7 @@ try{
             $password = $_POST['password'];
             $nome = $_POST['nome'];
             $cognome = $_POST['cognome'];
-            $annoNascita = $_POST['annoNascita']; // Riceve in formato YYYY-MM-DD
+            $annoNascita = $_POST['annoNascita']; 
             $luogoNascita = $_POST['luogoNascita'];
 
             $sql = "CALL Registrazione(:email, :password, :nickname, :nome, :cognome, :annoNascita, :luogoNascita)";
@@ -36,7 +36,7 @@ try{
         
             switch ($userRole) {
                 case 'utente':
-                    //echo "Registrazione avvenuta con successo!";
+                    // per debug echo "Registrazione avvenuta con successo!";
                     $pdo->beginTransaction();
                     $stmt->execute();
                     $pdo->commit();
@@ -52,7 +52,7 @@ try{
                     $stmt = $pdo->prepare($sql);
                     $stmt->bindValue(":email", $email, PDO::PARAM_STR);
                     $stmt->execute();
-                    //echo "Registrazione avvenuta con successo come Creatore!";
+                    // per debug echo "Registrazione avvenuta con successo come Creatore!";
                     $pdo->commit();
                     addLog("nuovo_utente", (object) ["email" => $email, "ruolo" => $userRole]);
                     header("Location: ../home/home.php");
@@ -123,7 +123,7 @@ try{
             $pdo->commit();
             addLog("nuovo_utente", (object) ["email" => $email, "ruolo" => "amministratore"]);
 
-            //echo "Registrazione avvenuta con successo come Amministratore!";
+            // per debugging echo "Registrazione avvenuta con successo come Amministratore!";
             //prima di tornare alla  home distruggiamo tutti i cocckie che non sono più necessari
             setcookie("user_email", $email, time() - 3600, "/");
             setcookie("user_nickname", $nickname, time() - 3600, "/");

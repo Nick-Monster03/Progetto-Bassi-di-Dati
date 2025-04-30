@@ -41,7 +41,7 @@
                 $rowA = $resA->rowCount();
 
 
-                if ($rowC == 0 && $rowA == 0) { // verifica che non sia un creatore o un amministratore
+                if ($rowC == 0 && $rowA == 0) { // verifica che sia un creatore o un amministratore
                     $_SESSION['user_role'] = 'utente';
                     header("Location: ../home/home.php");
                 } else if ($rowC > 0) {

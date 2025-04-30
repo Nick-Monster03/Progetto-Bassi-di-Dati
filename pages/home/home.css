@@ -31,29 +31,6 @@ nav {
     transform: translateX(-50%) scaleX(1);
 }
 
-/* Barra di ricerca */
-.search-bar {
-    display: flex;
-    align-items: center;
-    position: relative;
-}
-
-.search-dropdown {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-.search-dropdown.show {
-    display: block;
-}
 
 @font-face {
     font-family: 'Cinzel';
@@ -82,7 +59,6 @@ nav {
     margin-bottom: 30px;
 }
 
-/* Layout dei Progetti */
 .card {
     background-color: white;
     cursor: pointer;
@@ -109,7 +85,6 @@ nav {
     color: #6c757d;
 }
 
-/* Footer */
 footer {
     width: 100%;
     background: linear-gradient(135deg, #e0f7fa, #b3eafb);
@@ -119,7 +94,6 @@ footer {
     font-weight: bold;
 }
 
-/* Media Query per mobile */
 @media (max-width: 767px) {
     header {
         flex-direction: column;
@@ -151,26 +125,26 @@ footer {
 
 .table-rounded {
     border-radius: 10px;
-    overflow: hidden; /* Per assicurarsi che i bordi arrotondati funzionino */
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Effetto ombra */
-    border: none; /* Rimuove i bordi predefiniti */
+    overflow: hidden; 
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); 
+    border: none; 
 }
 
 .table-rounded thead {
-    background-color: #0a899a; /* Colore di sfondo per l'intestazione */
-    color: white; /* Colore del testo */
+    background-color: #0a899a; 
+    color: white; 
 }
 
 .table-rounded tbody tr {
-    transition: transform 0.3s, box-shadow 0.3s; /* Animazione al passaggio del mouse */
+    transition: transform 0.3s, box-shadow 0.3s; 
 }
 
 .table-rounded tbody tr:hover {
-    transform: translateY(-5px); /* Solleva la riga */
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra */
+    transform: translateY(-5px); 
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); 
 }
 
 .table-rounded td, .table-rounded th {
-    padding: 15px; /* Spaziatura interna */
-    vertical-align: middle; /* Allineamento verticale */
+    padding: 15px; 
+    vertical-align: middle; 
 }

@@ -69,8 +69,8 @@
                     <div class="project-photos text-center my-2">
                         <?php
                             if ($rows) {
-                                //$rows rappresenta le foto ed essendo che un progetto può avere più foto ciclo 
-                                //$rows con un for each
+                                //$rows rappresenta le foto ed essendo che un progetto può avere più foto, 
+                                //quindi ciclo $rows con un for each
                                 foreach ($rows as $row) {
                                     if (isset($row['foto'])) {
                                         $blob = $row['foto'];
@@ -155,7 +155,7 @@
     </footer>
     
 <!--     PER DEBUGGING
-    <?php ini_set('display_errors', 1);
-error_reporting(E_ALL);?> -->
+    <?php //ini_set('display_errors', 1);
+//error_reporting(E_ALL);?> -->
 </body>
 </html>

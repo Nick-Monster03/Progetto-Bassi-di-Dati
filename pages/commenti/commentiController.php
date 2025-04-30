@@ -10,11 +10,11 @@
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         if (isset($_POST['idCommento'], $_POST['emailUtenteCreatore'], $_POST['risposta'])){
             // Debug: Print POST values
-            echo "<pre>";
-            echo "idCommento: " . htmlspecialchars($_POST['idCommento']) . "\n";
-            echo "emailUtenteCreatore: " . htmlspecialchars($_POST['emailUtenteCreatore']) . "\n";
-            echo "risposta: " . htmlspecialchars($_POST['risposta']) . "\n";
-            echo "</pre>";
+            // echo "<pre>";
+            // echo "idCommento: " . htmlspecialchars($_POST['idCommento']) . "\n";
+            // echo "emailUtenteCreatore: " . htmlspecialchars($_POST['emailUtenteCreatore']) . "\n";
+            // echo "risposta: " . htmlspecialchars($_POST['risposta']) . "\n";
+            // echo "</pre>";
 
             $idCommento = (int) $_POST['idCommento'];
             $emailCreatore = $_POST['emailUtenteCreatore'];
@@ -64,7 +64,7 @@
             $commento['emailUtente']
             );
 
-            // Fetch the single response for the current comment
+            // cerco la risposta associata al commento
             $query = $pdo->prepare("SELECT * FROM risposta WHERE idCommento=:idCommento LIMIT 1");
             $query->bindParam(':idCommento', $commento['id'], PDO::PARAM_INT);
             $query->execute();

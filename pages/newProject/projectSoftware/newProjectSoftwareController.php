@@ -12,7 +12,7 @@
             if (!isset($_POST['profileName']) || empty($_POST['profileName'])) {
                 throw new Exception("Il nome del profilo non è definito.", 4404);
             }
-            //echo "<p>Nome Progetto: " . htmlspecialchars($nomeProgettoSoftware) . "</p>";
+            //per debugging echo "<p>Nome Progetto: " . htmlspecialchars($nomeProgettoSoftware) . "</p>";
             $profileName = $_POST['profileName'];
             $sql = "CALL AggiungiProfilo (:profileName, :nomeProgettoSoftware)";
             $stmt = $pdo->prepare($sql);

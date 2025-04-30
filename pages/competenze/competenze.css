@@ -78,7 +78,7 @@ body {
     justify-content: center;
 }
 
-/* Stile per il bottone "Aggiungi competenza" */
+
 .btn-add {
     text-decoration: none;
     padding: 10px 15px;
@@ -94,7 +94,7 @@ body {
     background-color: #087990;
 }
 
-/* Stile per il bottone "Torna alla Home" */
+
 .btn-home {
     text-decoration: none;
     padding: 10px 15px;
@@ -109,7 +109,7 @@ body {
     background-color: #6edff6;
 }
 
-/* Stile per il pulsante "Aggiungi" */
+
 .btn-success {
     background-color: #0a899a;
     color: white;
@@ -121,7 +121,7 @@ body {
     background-color: #1aa9b2;
 }
 
-/* Stile per il pulsante "Annulla" */
+
 .btn-secondary {
     background-color: #dddddd;
     color: #055160;

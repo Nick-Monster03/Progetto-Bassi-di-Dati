@@ -1,6 +1,3 @@
-<?php
-// Assumendo che $componenti sia già popolato dalla query SQL
-?>
 
 <!DOCTYPE html>
 <html lang="en">

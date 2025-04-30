@@ -13,7 +13,7 @@
     //nel caso in cui l' utente decida di tornare indietro dopo essersi loggato come amministratore
     //ma senza aver inserito il codice di sicurezza il coockie status viene eliminato.
     //nel caso in cui l' utente decidesse di tornare indietro senza aver completato la registrazione
-    //come amministratore il ccockie is_administrator viene eliiinato.
+    //come amministratore il coockie is_administrator viene eliminato.
     //nel caso in cui l' utentee creatore abbia terminato il processo di creazione di un progetto:
     //$_SESSION['creation_phase']=0 dobbiamo ancora creare il rrpogetto
     //$_SESSION['creation_phase']=1 stiamo scegliendo il profilo da inserire 
