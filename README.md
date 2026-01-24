@@ -104,8 +104,9 @@ Modificare i parametri di connessione nei file PHP se necessario:
 
 **MySQL:**
 ```php
-$pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'root', 'changeme');
+$pdo = new PDO('mysql:host=localhost;dbname=BOSTARTER', 'username', 'password');
 ```
+> **Nota**: Sostituire `username` e `password` con le proprie credenziali del database
 
 **MongoDB:**
 ```php
